@@ -59,7 +59,7 @@ jobs:
         run: |
             charts=$(find -type f -name Chart.yaml -print)
             for chart in $charts; do
-            charthome=dirname $chart
+            charthome=$(dirname $chart)
             declare package
             package=find $charthome -type f -name package.json
             if [ ! -f $(charthome)/package.json ] && [ ! -s -f $(charthome)/package.json ]; then 
