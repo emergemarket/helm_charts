@@ -13,23 +13,29 @@ jobs:
         changes: ${{ steps.changed-files-specific.outputs.any_modified }}
 
     steps:
-      - name: Checkout source code                   # Checkout source code
+      - name: Checkout source code 
         uses: 'actions/checkout@v2'
         with:
           ref: ${{ github.ref }}
           fetch-depth: 0
 
-      - name: Get specific changed files                  # To check if any files changed in charts/ansible-runner directory
+      - name: Get specific changed files   
         id: changed-files-specific
         uses: tj-actions/changed-files@v22.2
         with:
+          files: ./charts/*
+      
+      - name: generate file list
+        if: steps.changed-files-specific.outputs.any_modified == 'true'
+        id: file-list
+        uses: tj-actions/changed-files@v22.2
+        with:
           path: ./charts/
-          files: ./charts/**
 
       - name: List all changed files
         run: |
           echo "files were changed:${{ steps.changed-files-specific.outputs.any_modified }}"
-          for file in ${{ steps.changed-files-specific.all_changed_and_modified_files }}; do
+          for file in ${{ steps.file-list.all_changed_and_modified_files }}; do
             echo "$file was changed"
           done
 
@@ -37,11 +43,11 @@ jobs:
         if: steps.changed-files-specific.outputs.any_modified == 'true'
         run: | 
           declare var
-          # for file in ${{ steps.changed-files.outputs.all_changed_and_modified_files }}; do
+          # for file in ${{ steps.file-list.all_changed_and_modified_files }}; do
           #   $var="${var}\n${dirname $file | sed -E 's|/charts/(.*)|\1|'}"
           # done
           first_loop=1
-          for file in ${{ steps.changed-files.outputs.all_changed_and_modified_files }}; do
+          for file in ${{ steps.file-list.outputs.all_changed_and_modified_files }}; do
             value=$(dirname $file | sed -E 's|.*/charts/(.*)|\1|')
             (( $first_loop )) &&
             var=$value ||
@@ -54,7 +60,7 @@ jobs:
   release:
     needs: prep
     runs-on: self-hosted
-    if: ${{ needs.prep.outputs.changes }}
+    if: needs.prep.outputs.changes == 'true'
     strategy:
       matrix:
         manifest: ${{ fromJson(needs.prep.outputs.matrix) }}
