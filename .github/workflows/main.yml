@@ -30,6 +30,8 @@ jobs:
           for file in ${{ steps.changed-files.outputs.all_changed_and_modified_files }}; do
             $var="${var}\n${dirname $file | sed -E 's|/charts/(.*)|\1|'}"
           done
+          $var= $var | sort | uniq
+          echo $var
           echo "::set-output name=matrix::$($var | sort | uniq)"
   
   release:
@@ -39,6 +41,12 @@ jobs:
       matrix:
         manifest: ${{ needs.prep.outputs.matrix }}
     steps:
+      - name: Checkout source code                   # Checkout source code
+        uses: 'actions/checkout@v2'
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+          
       - name: Automated Version Bump                      # Bump version in package.json
         if: steps.changed-files-specific.outputs.any_modified == 'true'
         id: version-bump
