@@ -63,17 +63,9 @@ jobs:
               package=find $(dirname $chart) -type f -name package.json
               if [ -z "$package" ]
                 then
-                  cat << HERE > $(dirname $chart)/package.json
-                    {
-                      "name": "$(basename $(dirname $chart))",                                         
-                      "version": "0.0.0", 
-                      "repository": {
-                        "type": "git",
-                        "url": "${{ github.repositoryUrl }}"
-                      },
-                      "homepage": "${{ github.server_url }}/${{ github.repository }}"
-                    }
-                    HERE
+                  cat <<- EOF > $(dirname $chart)/package.json
+                    {"name":"$(basename $(dirname $chart))","version":"0.0.0","repository":{"type":"git","url":"${{ github.repositoryUrl }}"},"homepage":"${{ github.server_url }}/${{ github.repository }}"} 
+                    EOF
               fi
 
             done
