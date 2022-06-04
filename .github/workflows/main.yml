@@ -61,8 +61,9 @@ jobs:
             for chart in $charts; do
             charthome=dirname $chart
             declare package
-            package=find $(dirname $chart) -type f -name package.json
-            if [ ! -f ${charthome}/package.json ] && [ ! -s -f ${charthome}/package.json ]; then 
+            package=find $charthome -type f -name package.json
+            if [ ! -f $(charthome)/package.json ] && [ ! -s -f $(charthome)/package.json ]; then 
+            echo "$(charthome)/package.json does not exist"
             cat <<- EOF > $(dirname $chart)/package.json 
             {"name":"$(basename $(dirname $chart))","version":"0.0.0","repository":{"type":"git","url":"${{ github.repositoryUrl }}"},"homepage":"${{ github.server_url }}/${{ github.repository }}"} 
             EOF
