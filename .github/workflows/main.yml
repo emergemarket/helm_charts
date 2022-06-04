@@ -23,7 +23,7 @@ jobs:
         id: changed-files-specific
         uses: tj-actions/changed-files@v14.7
         with:
-          path: charts
+          path: ./charts/
       
       - id: set-matrix
         if: steps.changed-files-specific.outputs.any_modified == 'true'
