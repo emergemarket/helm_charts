@@ -38,7 +38,8 @@ jobs:
             var="$var\n$value"
             unset first_loop
           done
-          $var=$($var | sort | uniq)
+          var=$($var | sort | uniq)
+          echo "$var"
           echo "::set-output name=matrix::$($var)"
   
   release:
