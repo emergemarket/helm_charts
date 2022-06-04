@@ -61,9 +61,9 @@ jobs:
             for chart in $charts; do
             charthome="$(dirname $chart)"
             declare package
-            if [ ! -f $(charthome)/package.json ] && [ ! -s -f $(charthome)/package.json ]; then 
-            echo "$(charthome)/package.json does not exist or is empty"
-            cat <<- EOF > $(charthome)/package.json 
+            if [ ! -f ${charthome}/package.json ] && [ ! -s -f ${charthome}/package.json ]; then 
+            echo "${charthome}/package.json does not exist or is empty"
+            cat <<- EOF > ${charthome}/package.json 
             {"name":"$(basename $charthome)","version":"0.0.0","repository":{"type":"git","url":"${{ github.repositoryUrl }}"},"homepage":"${{ github.server_url }}/${{ github.repository }}"} 
             EOF
             fi
