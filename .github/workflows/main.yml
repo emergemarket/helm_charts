@@ -68,10 +68,10 @@ jobs:
           commit-message: 'CI: Bump Helm chart version to {{version}}'
 
       - name: update Chart.yaml                              # Update chart.yaml with new version and other fields
-        working-directory: charts/ansible-runner
+        working-directory: charts/${{ matrix.manifest }}
         run: |
           cat <<EOF > Chart.yaml
-          name: ${{ matrix.manifest}}
+          name: ${{ matrix.manifest }}
           apiVersion: v2
           version: ${{ steps.version-bump.outputs.newTag }}
           appVersion: ${{ steps.package-version.outputs.current-version}}
