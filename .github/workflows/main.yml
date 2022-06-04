@@ -10,6 +10,7 @@ jobs:
     runs-on: self-hosted
     outputs: 
         matrix: ${{ steps.set-matrix.outputs.matrix }}
+        changes: steps.changed-files-specific.outputs.any_modified
 
     steps:
       - name: Checkout source code                   # Checkout source code
@@ -45,7 +46,7 @@ jobs:
   
   release:
     needs: prep
-    if: ${{ needs.prep.outputs.matrix }} != ''
+    if: ${{ needs.prep.outputs.changes }}
     runs-on: self-hosted
     strategy:
       matrix:
