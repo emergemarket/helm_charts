@@ -10,7 +10,7 @@ jobs:
     runs-on: self-hosted
     outputs: 
         matrix: ${{ steps.set-matrix.outputs.matrix }}
-        changes: steps.changed-files-specific.outputs.any_modified
+        changes: ${{ steps.changed-files-specific.outputs.any_modified }}
 
     steps:
       - name: Checkout source code                   # Checkout source code
@@ -45,11 +45,11 @@ jobs:
   
   release:
     needs: prep
-    if: ${{ needs.prep.outputs.changes }}
     runs-on: self-hosted
+    if: ${{ needs.prep.outputs.changes }}
     strategy:
       matrix:
-        manifest: ${{ needs.prep.outputs.matrix }}
+        manifest: ${{ fromJson(needs.prep.outputs.matrix) }}
     steps:
       - name: Checkout source code                   # Checkout source code
         uses: 'actions/checkout@v2'
