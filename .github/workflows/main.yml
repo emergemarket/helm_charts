@@ -65,9 +65,22 @@ jobs:
             echo "${charthome}/package.json does not exist or is empty"
             cat <<- EOF > ${charthome}/package.json 
             {"name":"$(basename $charthome)","version":"0.0.0","repository":{"type":"git","url":"${{ github.repositoryUrl }}"},"homepage":"${{ github.server_url }}/${{ github.repository }}"} 
+            echo "::set-output name=commitpackages::$('true')"
             EOF
+            else
             fi
             done
+      - name: Get packages changed files   
+        id: changed-files-packages
+        uses: tj-actions/changed-files@v22.2
+        with:
+          files: ./charts/*/package.json
+
+      - name: commit the new package.json
+        if: steps.changed-files-packages.outputs.commitpackages == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Automated Change-- Generated package.json for charts that were missing it.
   release:
     needs: prep
     runs-on: self-hosted
