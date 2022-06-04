@@ -45,6 +45,7 @@ jobs:
   
   release:
     needs: prep
+    if: ${{ needs.prep.outputs.matrix }} != ''
     runs-on: self-hosted
     strategy:
       matrix:
