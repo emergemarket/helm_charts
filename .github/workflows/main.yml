@@ -23,12 +23,12 @@ jobs:
         id: changed-files-specific
         uses: tj-actions/changed-files@v22.2
         with:
-          path: ./charts/
+          files: ./charts/**
 
       - name: List all changed files
         run: |
           echo "files were changed:${{ steps.changed-files-specific.outputs.any_modified }}"
-          for file in ${{ steps.changed-files-specific.outputs.all_changed_files }}; do
+          for file in ${{ steps.changed-files-specific.all_changed_and_modified_files }}; do
             echo "$file was changed"
           done
 
