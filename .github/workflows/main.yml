@@ -27,12 +27,20 @@ jobs:
       - id: set-matrix
         run: | 
           declare var
+          # for file in ${{ steps.changed-files.outputs.all_changed_and_modified_files }}; do
+          #   $var="${var}\n${dirname $file | sed -E 's|/charts/(.*)|\1|'}"
+          # done
+          first_loop=1
           for file in ${{ steps.changed-files.outputs.all_changed_and_modified_files }}; do
-            $var="${var}\n${dirname $file | sed -E 's|/charts/(.*)|\1|'}"
+            value=$(dirname $file | sed -E 's|.*/charts/(.*)|\1|')
+            (( $first_loop )) &&
+            var=$value ||
+            var="$var\n$value"
+            unset first_loop
           done
-          $var= $var | sort | uniq
+          $var= $($var | sort | uniq)
           echo $var
-          echo "::set-output name=matrix::$($var | sort | uniq)"
+          echo "::set-output name=matrix::$($var)"
   
   release:
     needs: prep
@@ -46,7 +54,7 @@ jobs:
         with:
           ref: ${{ github.ref }}
           fetch-depth: 0
-          
+
       - name: Automated Version Bump                      # Bump version in package.json
         if: steps.changed-files-specific.outputs.any_modified == 'true'
         id: version-bump
