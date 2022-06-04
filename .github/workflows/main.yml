@@ -40,9 +40,8 @@ jobs:
             var="$var\n$value"
             unset first_loop
           done
-          var=$($var | sort | uniq)
-          echo "$var"
-          echo "::set-output name=matrix::$($var)"
+          echo "$(printf "%s" "$var" | jq -Rrsc 'split("\\n") | unique')"
+          echo "::set-output name=matrix::$(printf "%s" "$var" | jq -Rrsc 'split("\\n") | unique')"
   
   release:
     needs: prep
