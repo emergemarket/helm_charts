@@ -21,10 +21,17 @@ jobs:
 
       - name: Get specific changed files                  # To check if any files changed in charts/ansible-runner directory
         id: changed-files-specific
-        uses: tj-actions/changed-files@v14.7
+        uses: tj-actions/changed-files@v22.2
         with:
           path: ./charts/
-      
+
+      - name: List all changed files
+        run: |
+          echo "files were changed:${{ steps.changed-files-specific.outputs.any_modified }}"
+          for file in ${{ steps.changed-files-specific.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
+
       - id: set-matrix
         if: steps.changed-files-specific.outputs.any_modified == 'true'
         run: | 
