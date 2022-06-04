@@ -64,9 +64,9 @@ jobs:
             package="${charthome}/package.json"
             if [ ! -f "${charthome}/package.json" ] || [ ! -s "${charthome}/package.json" ]; then 
             echo "${charthome}/package.json does not exist or is empty"
+            echo "::set-output name=commitpackages::true"
             cat <<- EOF > ${charthome}/package.json 
             {"name":"$(basename $charthome)","version":"0.0.0","repository":{"type":"git","url":"${{ github.repositoryUrl }}"},"homepage":"${{ github.server_url }}/${{ github.repository }}"} 
-            echo "::set-output name=commitpackages::true"
             EOF
             fi
             done
