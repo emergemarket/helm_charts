@@ -56,6 +56,7 @@ jobs:
 
         ## Make sure the heredoc is indented with tabs. NOT SPACES.
       - name: get all charts & create package.json if it does not exist
+        id: packages
         run: |
             charts=$(find -type f -name Chart.yaml)
             for chart in $(find -type f -name Chart.yaml); do
@@ -69,14 +70,9 @@ jobs:
             EOF
             fi
             done
-      - name: Get packages changed files   
-        id: changed-files-packages
-        uses: tj-actions/changed-files@v22.2
-        with:
-          files: ./charts/*/package.json
 
       - name: commit the new package.json
-        if: steps.changed-files-packages.outputs.commitpackages == 'true'
+        if: steps.packages.outputs.commitpackages == 'true'
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Automated Change-- Generated package.json for charts that were missing it.
