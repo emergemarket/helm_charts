@@ -53,7 +53,8 @@ jobs:
           done
           echo "$(printf "%s" "$var" | jq -Rrsc 'split("\\n") | unique')"
           echo "::set-output name=matrix::$(printf "%s" "$var" | jq -Rrsc 'split("\\n") | unique')"
-      
+
+        ## Make sure the heredoc is indented with tabs. NOT SPACES.
       - name: get all charts & create package.json if it does not exist
         run: |
             charts=$(find -type f -name Chart.yaml -print)
@@ -62,10 +63,10 @@ jobs:
               declare package
               package=find $(dirname $chart) -type f -name package.json
               if [ -z "$package" ]
-                then
-                  cat <<- EOF > $(dirname $chart)/package.json
-                    {"name":"$(basename $(dirname $chart))","version":"0.0.0","repository":{"type":"git","url":"${{ github.repositoryUrl }}"},"homepage":"${{ github.server_url }}/${{ github.repository }}"} 
-                    EOF
+                then 
+                  cat <<- EOF > $(dirname $chart)/package.json 
+                	{"name":"$(basename $(dirname $chart))","version":"0.0.0","repository":{"type":"git","url":"${{ github.repositoryUrl }}"},"homepage":"${{ github.server_url }}/${{ github.repository }}"} 
+                	EOF
               fi
 
             done
