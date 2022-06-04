@@ -71,7 +71,7 @@ jobs:
                         "type": "git",
                         "url": "${{ github.repositoryUrl }}"
                       },
-                      "homepage": "${{ github.server_url }}/{{ github.repository }}"
+                      "homepage": "${{ github.server_url }}/${{ github.repository }}"
                     }
                     EOF
               fi
