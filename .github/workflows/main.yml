@@ -57,11 +57,11 @@ jobs:
         ## Make sure the heredoc is indented with tabs. NOT SPACES.
       - name: get all charts & create package.json if it does not exist
         run: |
-            charts=$(find -type f -name Chart.yaml -print)
-            for chart in $charts; do
-            charthome="$(dirname $chart)"
-            declare package
-            if [ ! -f ${charthome}/package.json ] && [ ! -s -f ${charthome}/package.json ]; then 
+            charts=$(find -type f -name Chart.yaml)
+            for chart in $(find -type f -name Chart.yaml); do
+            charthome=$(dirname $chart)
+            package="${charthome}/package.json"
+            if [ ! -f "${charthome}/package.json" ] || [ ! -s "${charthome}/package.json" ]; then 
             echo "${charthome}/package.json does not exist or is empty"
             cat <<- EOF > ${charthome}/package.json 
             {"name":"$(basename $charthome)","version":"0.0.0","repository":{"type":"git","url":"${{ github.repositoryUrl }}"},"homepage":"${{ github.server_url }}/${{ github.repository }}"} 
