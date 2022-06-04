@@ -67,7 +67,6 @@ jobs:
             {"name":"$(basename $charthome)","version":"0.0.0","repository":{"type":"git","url":"${{ github.repositoryUrl }}"},"homepage":"${{ github.server_url }}/${{ github.repository }}"} 
             echo "::set-output name=commitpackages::$('true')"
             EOF
-            else
             fi
             done
       - name: Get packages changed files   
