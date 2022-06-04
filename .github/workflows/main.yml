@@ -60,15 +60,13 @@ jobs:
             charts=$(find -type f -name Chart.yaml -print)
             echo "::set-output name=charts::$(find -type f -name Chart.yaml -print)"
             for chart in $charts; do
-              declare package
-              package=find $(dirname $chart) -type f -name package.json
-              if [ -z "$package" ]
-                then 
-                  cat <<- EOF > $(dirname $chart)/package.json 
-                	{"name":"$(basename $(dirname $chart))","version":"0.0.0","repository":{"type":"git","url":"${{ github.repositoryUrl }}"},"homepage":"${{ github.server_url }}/${{ github.repository }}"} 
-                	EOF
-              fi
-
+            declare package
+            package=find $(dirname $chart) -type f -name package.json
+            if [ -z "$package" ]; then 
+            cat <<- EOF > $(dirname $chart)/package.json 
+            {"name":"$(basename $(dirname $chart))","version":"0.0.0","repository":{"type":"git","url":"${{ github.repositoryUrl }}"},"homepage":"${{ github.server_url }}/${{ github.repository }}"} 
+            EOF
+            fi
             done
   release:
     needs: prep
