@@ -101,32 +101,47 @@ jobs:
       - run: echo "${{ matrix.manifest }}"
       - name: 'cat package.json'
         run: cat ./charts/${{ matrix.manifest }}/package.json
-      - name: Automated Version Bump                      # Bump version in package.json
-        id: version-bump
-        uses: 'phips28/gh-action-bump-version@v9.0.20'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PACKAGEJSON_DIR: charts/${{ matrix.manifest }}
+      
+      # - name: Automated Version Bump                      # Bump version in package.json
+      #   id: version-bump
+      #   uses: 'phips28/gh-action-bump-version@v9.0.20'
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     PACKAGEJSON_DIR: charts/${{ matrix.manifest }}
+      #   with:
+      #     skip-tag:  'true'
+      #     commit-message: 'CI: Bump Helm chart version to {{version}}'
+
+      # - name: update Chart.yaml                              # Update chart.yaml with new version and other fields
+      #   working-directory: charts/${{ matrix.manifest }}
+      #   run: |
+      #     cat <<EOF > Chart.yaml
+      #     name: ${{ matrix.manifest }}
+      #     apiVersion: v2
+      #     version: ${{ steps.version-bump.outputs.newTag }}
+      #     appVersion: ${{ steps.package-version.outputs.current-version}}
+      #     EOF
+      - name: Run read-yaml action
+        id: yaml-data
+        uses: KJ002/read-yaml@main      # You may wish to replace main with a version tag such as '1.6' etc.
         with:
-          skip-tag:  'true'
-          commit-message: 'CI: Bump Helm chart version to {{version}}'
+          file: './charts/${{ matrix.manifest }}/Chart.yml'          # File to read from
+          key-path: '["appVersion"]'
+      - run: echo "${{ steps.yaml-data.outputs.data }}"
+      # - name: Bump Chart & App version
+      #   uses: ./.github/actions/chart-version-bumper
+      #   id: version-bump
+      #   with:
+      #     chart_name: ${{ matrix.manifest }}
+      #     chart_version: ""
+      #     app_version: ${{  github.event.client_payload.app_version }}
+      
+      # - name: commit the new Charts
+      #   uses: stefanzweifel/git-auto-commit-action@v4
+      #   with:
+      #     commit_message: Automated Change
 
-      - name: update Chart.yaml                              # Update chart.yaml with new version and other fields
-        working-directory: charts/${{ matrix.manifest }}
-        run: |
-          cat <<EOF > Chart.yaml
-          name: ${{ matrix.manifest }}
-          apiVersion: v2
-          version: ${{ steps.version-bump.outputs.newTag }}
-          appVersion: ${{ steps.package-version.outputs.current-version}}
-          EOF
-
-      - name: commit the new Charts                  # commit the new Chart.yaml to main branch
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Automated Change
-
-      - name: Run chart-releaser                          # Publishes the helm chart to to helm registry (default is GitHub pages)
-        uses: helm/chart-releaser-action@v1.4.0
-        env:
-          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      # - name: Run chart-releaser
+      #   uses: helm/chart-releaser-action@v1.4.0
+      #   env:
+      #     CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
