@@ -89,7 +89,7 @@ jobs:
         with:
           ref: ${{ github.ref }}
           fetch-depth: 0
-
+      - run: echo "${{ matrix.manifest }}"
       - name: Automated Version Bump                      # Bump version in package.json
         id: version-bump
         uses: 'phips28/gh-action-bump-version@master'
