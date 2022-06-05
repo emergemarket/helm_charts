@@ -94,7 +94,7 @@ jobs:
         run: cat ./charts/${{ matrix.manifest }}/package.json
       - name: Automated Version Bump                      # Bump version in package.json
         id: version-bump
-        uses: 'phips28/gh-action-bump-version@master'
+        uses: 'phips28/gh-action-bump-version@v9.0.20'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PACKAGEJSON_DIR: charts/${{ matrix.manifest }}
