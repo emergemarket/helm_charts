@@ -95,7 +95,7 @@ jobs:
         uses: 'phips28/gh-action-bump-version@master'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PACKAGEJSON_DIR: ${{ matrix.manifest }}
+          PACKAGEJSON_DIR: charts/${{ matrix.manifest }}
         with:
           skip-tag:  'true'
           commit-message: 'CI: Bump Helm chart version to {{version}}'
