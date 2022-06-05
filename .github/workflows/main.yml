@@ -127,6 +127,7 @@ jobs:
         with:
           file: './charts/${{ matrix.manifest }}/Chart.yaml'          # File to read from
           key-path: '["appVersion"]'
+          
       - run: echo "${{ steps.yaml-data.outputs.data }}"
       - name: Bump Chart & App version
         uses: ./.github/actions/chart-version-bumper
@@ -140,6 +141,16 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Automated Change
+
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - name: Install Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: v3.8.1
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.4.0
