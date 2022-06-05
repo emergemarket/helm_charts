@@ -2,8 +2,9 @@ name: Helm-Release
 
 on:
   push:
-    branches:
-      - main
+    paths:
+      - charts/**
+    
 
 jobs:
   prep:
@@ -66,7 +67,15 @@ jobs:
             echo "${charthome}/package.json does not exist or is empty"
             echo "::set-output name=commitpackages::true"
             cat <<- EOF > ${charthome}/package.json 
-            {"name":"$(basename $charthome)","version":"0.0.0","repository":{"type":"git","url":"${{ github.repositoryUrl }}"},"homepage":"${{ github.server_url }}/${{ github.repository }}"} 
+            {
+                "name": "$(basename $charthome)",
+                "version": "0.0.1",
+                "repository": {
+                    "type": "git",
+                    "url": "${{ github.repositoryUrl }}"
+                },
+                "homepage": "${{ github.server_url }}/${{ github.repository }}"
+            }
             EOF
             fi
             done
