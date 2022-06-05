@@ -2,9 +2,15 @@ name: Helm-Release
 
 on:
   push:
+    branches: 
+      - 'main'
     paths:
       - charts/**
-    
+  pull_request:
+    types:
+      - closed
+    branches:    
+      - 'main'
 
 jobs:
   prep:
