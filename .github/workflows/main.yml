@@ -95,13 +95,13 @@ jobs:
         uses: 'phips28/gh-action-bump-version@master'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PACKAGEJSON_DIR: ${{ matrix.manifest }}
+          PACKAGEJSON_DIR: charts/${{ matrix.manifest }}
         with:
           skip-tag:  'true'
           commit-message: 'CI: Bump Helm chart version to {{version}}'
 
       - name: update Chart.yaml                              # Update chart.yaml with new version and other fields
-        working-directory: ${{ matrix.manifest }}
+        working-directory: charts/${{ matrix.manifest }}
         run: |
           cat <<EOF > Chart.yaml
           name: ${{ matrix.manifest }}
