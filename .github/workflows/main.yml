@@ -128,20 +128,20 @@ jobs:
           file: './charts/${{ matrix.manifest }}/Chart.yaml'          # File to read from
           key-path: '["appVersion"]'
       - run: echo "${{ steps.yaml-data.outputs.data }}"
-      # - name: Bump Chart & App version
-      #   uses: ./.github/actions/chart-version-bumper
-      #   id: version-bump
-      #   with:
-      #     chart_name: ${{ matrix.manifest }}
-      #     chart_version: ""
-      #     app_version: ${{  github.event.client_payload.app_version }}
+      - name: Bump Chart & App version
+        uses: ./.github/actions/chart-version-bumper
+        id: version-bump
+        with:
+          chart_name: ${{ matrix.manifest }}
+          chart_version: ""
+          app_version: ${{ steps.yaml-data.outputs.data }}
       
-      # - name: commit the new Charts
-      #   uses: stefanzweifel/git-auto-commit-action@v4
-      #   with:
-      #     commit_message: Automated Change
+      - name: commit the new Charts
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Automated Change
 
-      # - name: Run chart-releaser
-      #   uses: helm/chart-releaser-action@v1.4.0
-      #   env:
-      #     CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Run chart-releaser
+        uses: helm/chart-releaser-action@v1.4.0
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
