@@ -77,7 +77,7 @@ spec:
           configMap:
             name: {{ include "backstage.fullname" . }}-app-config
         - name: node-cache
-          emptydir: {}
+          emptyDir: {}
 
       {{- if .Values.global.nodeSelector }}
       nodeSelector: {{- toYaml .Values.global.nodeSelector | nindent 8 }}
