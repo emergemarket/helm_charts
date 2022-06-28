@@ -5,8 +5,8 @@ on:
     branches: 
       - 'main'
       - 'develop'
-    paths:
-      - charts/**
+    # paths:
+    #   - charts/**
   pull_request:
     types:
       - closed
