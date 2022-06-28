@@ -19,11 +19,3 @@ dependencies:
     condition: postgresql.enabled
     version: 11.6.10
     repository: https://charts.bitnami.com/bitnami
-
-maintainers:
-  - name: Martina Iglesias Fernández
-    email: martina@roadie.io
-    url: https://roadie.io
-  - name: David Tuite
-    email: david@roadie.io
-    url: https://roadie.io
