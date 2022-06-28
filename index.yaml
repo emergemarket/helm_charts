@@ -1,5 +1,30 @@
 apiVersion: v1
 entries:
+  backstage:
+  - apiVersion: v2
+    appVersion: v0.1.1-alpha.23
+    created: "2022-06-28T18:50:14.628751767Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.6.10
+    description: A Helm chart for Backstage
+    digest: d980094fe5f1abeae50878743a0b0f2b1022261006d14883795a3e42b1554431
+    maintainers:
+    - email: martina@roadie.io
+      name: Martina Iglesias Fernández
+      url: https://roadie.io
+    - email: david@roadie.io
+      name: David Tuite
+      url: https://roadie.io
+    name: backstage
+    sources:
+    - https://github.com/spotify/lighthouse-audit-service
+    type: application
+    urls:
+    - https://github.com/emergemarket/helm_charts/releases/download/backstage-0.1.16/backstage-0.1.16.tgz
+    version: 0.1.16
   emerge-mssql:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -24,4 +49,4 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/mssql-latest-0.1.1/mssql-latest-0.1.1.tgz
     version: 0.1.1
-generated: "2022-06-05T04:49:47.979810703Z"
+generated: "2022-06-28T18:50:14.628764868Z"
