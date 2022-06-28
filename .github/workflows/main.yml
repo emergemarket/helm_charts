@@ -142,8 +142,11 @@ jobs:
         uses: azure/setup-helm@v1
         with:
           version: v3.8.1
-      - run: helm repo add bitnami https://charts.bitnami.com/bitnami
-    
+      - run: |
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo add emergemarket https://charts.emergemarket.io
+          helm repo update
+
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.4.0
         env:
