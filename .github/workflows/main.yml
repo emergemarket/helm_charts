@@ -50,6 +50,9 @@ jobs:
       - id: set-matrix
         if: steps.changed-files-specific.outputs.any_modified == 'true'
         run: | 
+          echo !!! DEBUG !!!
+          echo INCOMMIG PARAMETER = ${{ steps.file-list.outputs.all_changed_and_modified_files }}
+
           declare var
           first_loop=1
           for file in ${{ steps.file-list.outputs.all_changed_and_modified_files }}; do
