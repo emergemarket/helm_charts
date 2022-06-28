@@ -3,6 +3,23 @@ entries:
   backstage:
   - apiVersion: v2
     appVersion: v0.1.1-alpha.23
+    created: "2022-06-28T23:56:15.519070459Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.6.10
+    description: A Helm chart for Backstage
+    digest: b8153e38a6601c3987ff84e59cc735a80d0e8df5f5381b0bacaa5d1762f519b3
+    name: backstage
+    sources:
+    - https://github.com/spotify/lighthouse-audit-service
+    type: application
+    urls:
+    - https://github.com/emergemarket/helm_charts/releases/download/backstage-0.1.23/backstage-0.1.23.tgz
+    version: 0.1.23
+  - apiVersion: v2
+    appVersion: v0.1.1-alpha.23
     created: "2022-06-28T23:53:46.374626311Z"
     dependencies:
     - condition: postgresql.enabled
@@ -165,4 +182,4 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/mssql-latest-0.1.1/mssql-latest-0.1.1.tgz
     version: 0.1.1
-generated: "2022-06-28T23:53:46.374660712Z"
+generated: "2022-06-28T23:56:15.51910876Z"
