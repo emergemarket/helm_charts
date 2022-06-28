@@ -53,7 +53,7 @@ spec:
                   key: postgresql-password
           volumeMounts:
             - name: node-cache
-              moutPath: /home/node/.cache
+              mountPath: /home/node/.cache
           {{- if .Values.lighthouse.postgresCertMountEnabled }}
             - name: postgres-ca
               mountPath: {{ include "backstage.lighthouse.postgresCaDir" . }}
