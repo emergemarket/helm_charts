@@ -42,13 +42,7 @@ jobs:
 
       - name: List all changed files
         run: |
-          echo ">>> START of DEBUG!"        
-          echo "Show ./charts folder:"
-          ls -lh ./charts
-          echo "Show ./charts/files/ folder:"
-          ls -lh ./charts/files/
-          echo ">>> END of DEBUG!"
-          cat: ./charts/files/package.json were changed:${{ steps.changed-files-specific.outputs.any_modified }}"
+          # cat: charts/files/package.json were changed:${{ steps.changed-files-specific.outputs.any_modified }}"
           for file in ${{ steps.file-list.all_changed_and_modified_files }}; do
             echo "$file was changed"
           done
@@ -72,7 +66,7 @@ jobs:
       - name: get all charts & create package.json if it does not exist
         id: packages
         run: |
-            charts=$(find -type f -name Chart.yaml)
+            charts=$(find . -type f -name Chart.yaml)
             for chart in $(find -type f -name Chart.yaml); do
             charthome=$(dirname $chart)
             package="${charthome}/package.json"
