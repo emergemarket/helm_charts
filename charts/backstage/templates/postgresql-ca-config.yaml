@@ -1,4 +1,5 @@
 {{- if .Values.postgresql.enabled }}
+{{- if not .Values.postgresql.external }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -17,5 +18,6 @@ data:
 {{- $caConfig := printf "%s-postgres-ca"  (include "backstage.fullname" .) }}
 {{- if not ( lookup "v1" "ConfigMap" .Release.Namespace $caConfig ) }}
 {{- fail (printf "\n\nPlease create the '%s' configmap with the CA certificate for your existing postgresql: kubectl create configmap %s --from-file=ca.crt" $caConfig $caConfig) }}
+{{- end }}
 {{- end }}
 {{- end }}

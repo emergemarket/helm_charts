@@ -78,6 +78,8 @@ global:
 
 postgresql:
   enabled: false
+  plaintext_pw: false
+  external: true
   nameOverride: postgresql
   tls:
     enabled: true
@@ -92,7 +94,7 @@ appConfig:
   app:
     baseUrl: https://demo.example.com
     title: Backstage
-    googleAnalyticsTrackingId:
+    googleAnalyticsTrackingId: 
   backend:
     baseUrl: https://demo.example.com
     listen:
