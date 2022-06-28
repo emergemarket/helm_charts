@@ -77,7 +77,7 @@ global:
   nodeSelector: {}
 
 postgresql:
-  enabled: true
+  enabled: false
   nameOverride: postgresql
   tls:
     enabled: true
