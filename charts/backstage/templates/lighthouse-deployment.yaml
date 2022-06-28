@@ -59,8 +59,8 @@ spec:
               mountPath: {{ include "backstage.lighthouse.postgresCaDir" . }}
           {{- end }}
           {{ include "helm.containerSecurityContext " . | indent 10 | trim }}
-      {{- if .Values.lighthouse.postgresCertMountEnabled }}
       volumes:
+      {{- if .Values.lighthouse.postgresCertMountEnabled }}
         - name: postgres-ca
           configMap:
             name: {{ include "backstage.fullname" . }}-postgres-ca
