@@ -51,11 +51,10 @@ jobs:
         run: | 
           declare -g var
           first_loop=1
-          charts=$(find * -type f -name Chart.yaml | xargs dirname)
-          files=$(find * -type f)
+          dir=$(pwd)
+          charts=$(find $dir -type f -name Chart.yaml | xargs dirname | xargs basename)
           for chart in $charts; do
-              for file in $files; do
-              #for file in ${{ steps.file-list.outputs.all_changed_and_modified_files }}; do
+              for file in ${{ steps.file-list.outputs.all_changed_and_modified_files }}; do
               if ( echo $file | grep $chart ); then
                   [[ $first_loop ]] && var=$chart || var="$var\n$chart"
                   unset first_loop
