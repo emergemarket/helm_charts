@@ -4,6 +4,7 @@ on:
   push:
     branches: 
       - 'main'
+      - 'develop'
     paths:
       - charts/**
   pull_request:
@@ -41,7 +42,13 @@ jobs:
 
       - name: List all changed files
         run: |
-          echo "files were changed:${{ steps.changed-files-specific.outputs.any_modified }}"
+          echo ">>> START of DEBUG!"        
+          echo "Show ./charts folder:"
+          ls -lh ./charts
+          echo "Show ./charts/files/ folder:"
+          ls -lh ./charts/files/
+          echo ">>> END of DEBUG!"
+          cat: ./charts/files/package.json were changed:${{ steps.changed-files-specific.outputs.any_modified }}"
           for file in ${{ steps.file-list.all_changed_and_modified_files }}; do
             echo "$file was changed"
           done
