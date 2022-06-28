@@ -51,9 +51,10 @@ spec:
                 secretKeyRef:
                   name: {{ include "lighthouse.postgresql.passwordSecret" . }}
                   key: postgresql-password
-
-          {{- if .Values.lighthouse.postgresCertMountEnabled }}
           volumeMounts:
+            - name: node-cache
+              moutPath: /home/node/.cache
+          {{- if .Values.lighthouse.postgresCertMountEnabled }}
             - name: postgres-ca
               mountPath: {{ include "backstage.lighthouse.postgresCaDir" . }}
           {{- end }}
@@ -64,7 +65,8 @@ spec:
           configMap:
             name: {{ include "backstage.fullname" . }}-postgres-ca
       {{- end }}
-
+        - name: node-cache
+          emptydir: {}
       {{- if .Values.global.nodeSelector }}
       nodeSelector: {{- toYaml .Values.global.nodeSelector | nindent 8 }}
       {{- end }}

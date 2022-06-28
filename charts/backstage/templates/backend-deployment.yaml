@@ -64,6 +64,8 @@ spec:
             - name: app-config
               mountPath: {{ printf "/usr/src/app/%s" (include "backstage.appConfigFilename" .) }}
               subPath: {{ include "backstage.appConfigFilename" . }}
+            - name: node-cache
+              mountPath: /home/node/.cache
 
       volumes:
         {{- if .Values.backend.postgresCertMountEnabled }}
@@ -74,6 +76,8 @@ spec:
         - name: app-config
           configMap:
             name: {{ include "backstage.fullname" . }}-app-config
+        - name: node-cache
+          emptydir: {}
 
       {{- if .Values.global.nodeSelector }}
       nodeSelector: {{- toYaml .Values.global.nodeSelector | nindent 8 }}
