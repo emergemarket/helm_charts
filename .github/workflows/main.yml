@@ -49,23 +49,27 @@ jobs:
       - id: set-matrix
         if: steps.changed-files-specific.outputs.any_modified == 'true'
         run: | 
-          declare var
+          declare -g var
           first_loop=1
-          for file in ${{ steps.file-list.outputs.all_changed_and_modified_files }}; do
-            value=$(basename $(dirname $file | sed -E 's|.*/charts/charts/(.*)|\1|'))
-            (( $first_loop )) &&
-            var=$value ||
-            var="$var\n$value"
-            unset first_loop
+          charts=$(find * -type f -name Chart.yaml | xargs dirname)
+          files=$(find * -type f)
+          for chart in $charts; do
+              for file in $files; do
+              #for file in ${{ steps.file-list.outputs.all_changed_and_modified_files }}; do
+              if ( echo $file | grep $chart ); then
+                  [[ $first_loop ]] && var=$chart || var="$var\n$chart"
+                  unset first_loop
+                  break
+              fi
+              done
           done
-          echo "$(printf "%s" "$var" | jq -Rrsc 'split("\\n") | unique')"
           echo "::set-output name=matrix::$(printf "%s" "$var" | jq -Rrsc 'split("\\n") | unique')"
 
         ## Make sure the heredoc is indented with tabs. NOT SPACES.
       - name: get all charts & create package.json if it does not exist
         id: packages
         run: |
-            charts=$(find -type f -name Chart.yaml)
+            charts=$(find . -type f -name Chart.yaml)
             for chart in $(find -type f -name Chart.yaml); do
             charthome=$(dirname $chart)
             package="${charthome}/package.json"
