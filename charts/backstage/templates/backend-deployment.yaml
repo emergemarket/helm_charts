@@ -66,6 +66,8 @@ spec:
               subPath: {{ include "backstage.appConfigFilename" . }}
             - name: node-cache
               mountPath: /home/node/.cache
+            - name: usr
+              mountPath: /usr
 
       volumes:
         {{- if .Values.backend.postgresCertMountEnabled }}
@@ -77,6 +79,8 @@ spec:
           configMap:
             name: {{ include "backstage.fullname" . }}-app-config
         - name: node-cache
+          emptyDir: {}
+        - name: usr
           emptyDir: {}
 
       {{- if .Values.global.nodeSelector }}
