@@ -54,6 +54,12 @@ spec:
           volumeMounts:
             - name: node-cache
               mountPath: /home/node/.cache
+            - name: global
+              mountPath: /usr/local
+            - name: global
+              mountPath: /home/node
+            - name: app
+              mountPath: /app
           {{- if .Values.lighthouse.postgresCertMountEnabled }}
             - name: postgres-ca
               mountPath: {{ include "backstage.lighthouse.postgresCaDir" . }}
@@ -66,6 +72,10 @@ spec:
             name: {{ include "backstage.fullname" . }}-postgres-ca
       {{- end }}
         - name: node-cache
+          emptyDir: {}
+        - name: global
+          emptyDir: {}
+        - name: app
           emptyDir: {}
       {{- if .Values.global.nodeSelector }}
       nodeSelector: {{- toYaml .Values.global.nodeSelector | nindent 8 }}
