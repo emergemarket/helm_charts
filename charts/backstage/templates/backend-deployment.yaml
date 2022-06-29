@@ -67,7 +67,7 @@ spec:
             - name: node-cache
               mountPath: /home/node/.cache
             - name: usr
-              mountPath: /usr
+              mountPath: /usr/src/app/packages/app/dist
 
       volumes:
         {{- if .Values.backend.postgresCertMountEnabled }}
