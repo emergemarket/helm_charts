@@ -80,6 +80,8 @@ postgresql:
   enabled: false
   plaintext_pw: false
   external: true
+  POSTGRES_HOST: localhost
+  POSTGRES_USER: pguser
   nameOverride: postgresql
   tls:
     enabled: true

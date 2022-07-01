@@ -51,6 +51,17 @@ spec:
           env:
             - name: NODE_ENV
               value: {{ .Values.backend.nodeEnv | default "development" }}
+            - name: POSTGRES_HOST
+              value: {{ .Values.postgresql.POSTGRES_HOST | default "localhost" }}
+            - name: POSTGRES_PORT
+              value: {{ .Values.postgresql.POSTGRES_PORT | default "5432" }}
+            - name: POSTGRES_USER
+              value: {{ .Values.postgresql.POSTGRES_USER | default "pguser" }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "backend.postgresql.passwordSecret" .}}
+                  key: postgresql-password
             - name: APP_CONFIG_backend_database_connection_password
               valueFrom:
                 secretKeyRef:
