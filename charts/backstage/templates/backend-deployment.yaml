@@ -52,11 +52,11 @@ spec:
             - name: NODE_ENV
               value: {{ .Values.backend.nodeEnv | default "development" }}
             - name: POSTGRES_HOST
-              value: {{ .Values.postgresql.POSTGRES_HOST | default "localhost" }}
+              value: {{ .Values.postgresql.host | default "localhost" }}
             - name: POSTGRES_PORT
-              value: {{ .Values.postgresql.POSTGRES_PORT | default 5432 }}
+              value: {{ .Values.postgresql.port | default 5432 }}
             - name: POSTGRES_USER
-              value: {{ .Values.postgresql.POSTGRES_USER | default "pguser" }}
+              value: {{ .Values.postgresql.user| default "pguser" }}
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
