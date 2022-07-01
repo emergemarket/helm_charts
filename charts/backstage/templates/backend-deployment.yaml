@@ -20,7 +20,7 @@ spec:
         component: backend
 
     spec:
-
+      {{ include "helm.podSecurityContext " . | indent 6 | trim }}
       {{- if .Values.dockerRegistrySecretName }}
       imagePullSecrets:
         - name: {{ .Values.dockerRegistrySecretName }}
@@ -40,10 +40,14 @@ spec:
             - containerPort: {{ .Values.backend.containerPort }}
           resources:
           {{- toYaml .Values.backend.resources | nindent 12 }}
-
+          {{ include "helm.containerSecurityContext " . | indent 10 | trim }}
           envFrom:
             - secretRef:
                 name: {{ include "backstage.fullname" . }}-backend
+            - secretRef:
+                name: {{ .Values.auth.microsoft.clientSecret }}
+            - secretRef:
+                name: {{ .Values.auth.gitlabTokenSecret }}
             - configMapRef:
                 name: {{ include "backstage.fullname" . }}-app-env
             - configMapRef:

@@ -216,7 +216,8 @@ auth:
   circleciAuthToken: r
   # Used by the scaffolder to create GitHub repos. Must have 'repo' scope.
   githubToken: g
-  gitlabToken: g
+  # use a secret for gitlab tokens
+  gitlabTokenSecret: gitlabtoken
   newRelicRestApiKey: r
   travisciAuthToken: fake-travis-ci-auth-token
   pagerdutyToken: h
