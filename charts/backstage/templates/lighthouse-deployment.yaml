@@ -21,7 +21,7 @@ spec:
         component: lighthouse-audit-service
 
     spec:
-      {{ include "helm.podSecurityContext " . | indent 6 | trim }}
+
       {{- if .Values.dockerRegistrySecretName }}
       imagePullSecrets:
         - name: {{ .Values.dockerRegistrySecretName }}
@@ -64,7 +64,7 @@ spec:
             - name: postgres-ca
               mountPath: {{ include "backstage.lighthouse.postgresCaDir" . }}
           {{- end }}
-          {{ include "helm.containerSecurityContext " . | indent 10 | trim }}
+
       volumes:
       {{- if .Values.lighthouse.postgresCertMountEnabled }}
         - name: postgres-ca

@@ -20,7 +20,7 @@ spec:
         component: backend
 
     spec:
-      {{ include "helm.podSecurityContext " . | indent 6 | trim }}
+
       {{- if .Values.dockerRegistrySecretName }}
       imagePullSecrets:
         - name: {{ .Values.dockerRegistrySecretName }}
@@ -40,7 +40,7 @@ spec:
             - containerPort: {{ .Values.backend.containerPort }}
           resources:
           {{- toYaml .Values.backend.resources | nindent 12 }}
-          {{ include "helm.containerSecurityContext " . | indent 10 | trim }}
+
           envFrom:
             - secretRef:
                 name: {{ include "backstage.fullname" . }}-backend
@@ -54,7 +54,7 @@ spec:
             - name: POSTGRES_HOST
               value: {{ .Values.postgresql.host | default "localhost" }}
             - name: POSTGRES_PORT
-              value: {{ .Values.postgresql.port | toString | default "5432"  }}
+              value: "{{ .Values.postgresql.port | default 5432 | toString }}"
             - name: POSTGRES_USER
               value: {{ .Values.postgresql.user| default "pguser" }}
             - name: POSTGRES_PASSWORD
