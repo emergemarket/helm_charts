@@ -1,60 +1,66 @@
+{{- if not (contains .Values.globalEnv.env "prod") }}
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
-     name: azure-disk
-provisioner: kubernetes.io/azure-disk
-parameters:
-  storageaccounttype: Standard_LRS
-  kind: Managed
+  name: node-disk
+  namespace: {{ .Values.globalEnv.env }}
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: mssql-data
+  name: {{ include "mssql-latest.fullname" . }}-data
+  namespace: {{ .Values.globalEnv.env }}
   annotations:
-    volume.beta.kubernetes.io/storage-class: {{ .Values.pvc.StorageClass | quote }}
+    volume.beta.kubernetes.io/storage-class: "node-disk"
 spec:
   accessModes:
-  - {{ .Values.pvc.mssqldataaccessMode | quote}}
+  - "ReadWriteOnce"
   resources:
     requests:
-      storage: {{ .Values.pvc.mssqldbsize}}
+      storage: 5Gi
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: mssql-userdb
+  name: {{ include "mssql-latest.fullname" . }}-userdb
+  namespace: {{ .Values.globalEnv.env }}
   annotations:
-    volume.beta.kubernetes.io/storage-class: {{ .Values.pvc.StorageClass}}
+    volume.beta.kubernetes.io/storage-class: "node-disk"
 spec:
   accessModes:
-  - {{ .Values.pvc.userdbaccessMode | quote}}
+  - "ReadWriteOnce"
   resources:
     requests:
-      storage: {{ .Values.pvc.userdbsize}}
+      storage: 5Gi
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: mssql-log
+  name: {{ include "mssql-latest.fullname" . }}-log
+  namespace: {{ .Values.globalEnv.env }}
   annotations:
-    volume.beta.kubernetes.io/storage-class: {{ .Values.pvc.StorageClass}}
+    volume.beta.kubernetes.io/storage-class: "node-disk"
 spec:
   accessModes:
-   - {{ .Values.pvc.userlogaccessMode | quote}}
+   - "ReadWriteOnce"
   resources:
     requests:
-      storage: {{ .Values.pvc.userlogsize}}
+      storage: 5Gi
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: mssql-temp
+  name: {{ include "mssql-latest.fullname" . }}-temp
+  namespace: {{ .Values.globalEnv.env }}
   annotations:
-    volume.beta.kubernetes.io/storage-class: {{ .Values.pvc.StorageClass}}
+    volume.beta.kubernetes.io/storage-class: "node-disk"
 spec:
   accessModes:
-   - {{ .Values.pvc.tempdbaccessMode | quote}}
+   - "ReadWriteOnce"
   resources:
     requests:
-      storage: {{ .Values.pvc.tempsize}}
+      storage: 5Gi
+{{- end }}

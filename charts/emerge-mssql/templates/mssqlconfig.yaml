@@ -1,3 +1,4 @@
+{{- if not (contains .Values.globalEnv.env "prod") }}
 kind: ConfigMap 
 apiVersion: v1 
 metadata:
@@ -21,3 +22,4 @@ data:
     [filelocation]
     defaultdatadir = /var/opt/mssql/userdata
     defaultlogdir = /var/opt/mssql/userlog
+{{- end }}
