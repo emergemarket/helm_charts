@@ -49,3 +49,15 @@ sentry:
 techdocs:
   generator: 
     runIn: 'local'
+
+kubernetes:
+  serviceLocatorMethod:
+    type: 'multiTenant'
+  clusterLocatorMethods:
+    - type: 'config'
+      clusters:
+        - url: https://emerge-672e4056.hcp.northeurope.azmk8s.io:443
+          name: Dev
+          authProvider: 'azure'
+          dashboardUrl: https://portal.azure.com/#resource/subscriptions/ad6e4f22-d39f-4a58-8edc-07929e15dde7/resourceGroups/RG-Dev-AKS/providers/Microsoft.ContainerService/managedClusters/Dev/workloads
+          dashboardApp: 'aks'
