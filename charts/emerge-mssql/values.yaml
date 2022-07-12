@@ -32,7 +32,7 @@ podSecurityContext:
 service:
   type: ClusterIP
   port: 1433
-
+ 
 pvc:
  StorageClass: "azure-disk"
  userdbaccessMode: ReadWriteOnce
