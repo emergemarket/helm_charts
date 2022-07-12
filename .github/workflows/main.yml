@@ -53,7 +53,7 @@ jobs:
           declare -g var
           first_loop=1
           dir=$(pwd)
-          charts=$(find $dir/charts -type f -name Chart.yaml | xargs dirname | xargs basename)
+          charts=$(find $dir/charts -type f -name Chart.yaml | xargs dirname | while read i; do basename $i; done)
           for chart in $charts; do
               for file in ${{ steps.file-list.outputs.all_changed_and_modified_files }}; do
               if ( echo $file | grep $chart ); then
