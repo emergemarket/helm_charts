@@ -98,7 +98,7 @@ jobs:
   release:
     needs: prep
     runs-on: self-hosted
-    if: needs.prep.outputs.changes == 'true'
+    if: ${{ needs.prep.outputs.matrix != '[]' && needs.prep.outputs.matrix != '' && needs.prep.outputs.changes == 'true' }}
     strategy:
       matrix:
         manifest: ${{ fromJson(needs.prep.outputs.matrix) }}
