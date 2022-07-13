@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "mssql-latest.fullname" . }}
+  namespace: {{ include "mssql.env" . }}
   labels:
     {{- include "mssql-latest.labels" . | nindent 4 }}
 spec:

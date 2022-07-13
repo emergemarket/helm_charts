@@ -66,3 +66,6 @@ Create the name for the SA password secret key.
 {{- define "mssql.env" -}}
 {{- default "default" ((.Values.global).env) }}
 {{- end -}}
+{{- define "mssql.hostname" -}}
+{{- regexReplaceAll "=.*:(.*)," (regexFind "=.*:(.*)," ((.Values.global).dependencies.database.mssql.connectionString)) "${1}"   }}
+{{- end -}}
