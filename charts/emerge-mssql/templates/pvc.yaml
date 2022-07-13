@@ -1,9 +1,9 @@
-{{- if not (contains .Values.globalEnv.env "prod") }}
+{{- if not (contains (include "mssql.env" .) "prod") }}
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
   name: node-disk
-  namespace: {{ .Values.globalEnv.env }}
+  namespace: {{ include "mssql.env" . }}
 provisioner: kubernetes.io/no-provisioner
 volumeBindingMode: WaitForFirstConsumer
 
@@ -12,7 +12,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: {{ include "mssql-latest.fullname" . }}-data
-  namespace: {{ .Values.globalEnv.env }}
+  namespace: {{ include "mssql.env" . }}
   annotations:
     volume.beta.kubernetes.io/storage-class: "node-disk"
 spec:
@@ -26,7 +26,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: {{ include "mssql-latest.fullname" . }}-userdb
-  namespace: {{ .Values.globalEnv.env }}
+  namespace: {{ include "mssql.env" . }}
   annotations:
     volume.beta.kubernetes.io/storage-class: "node-disk"
 spec:
@@ -40,7 +40,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: {{ include "mssql-latest.fullname" . }}-log
-  namespace: {{ .Values.globalEnv.env }}
+  namespace: {{ include "mssql.env" . }}
   annotations:
     volume.beta.kubernetes.io/storage-class: "node-disk"
 spec:
@@ -54,7 +54,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: {{ include "mssql-latest.fullname" . }}-temp
-  namespace: {{ .Values.globalEnv.env }}
+  namespace: {{ include "mssql.env" . }}
   annotations:
     volume.beta.kubernetes.io/storage-class: "node-disk"
 spec:

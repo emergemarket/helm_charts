@@ -1,4 +1,4 @@
-{{- if not (contains .Values.globalEnv.env "prod") }}
+{{- if not (contains (include "mssql.env" .) "prod") }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
