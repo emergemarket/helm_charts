@@ -13,10 +13,8 @@ spec:
       {{- include "mssql-latest.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
       annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{ include "mssql.pod_annotations" . | indent 8 | trim }}
       labels:
         {{- include "mssql-latest.selectorLabels" . | nindent 8 }}
     spec:

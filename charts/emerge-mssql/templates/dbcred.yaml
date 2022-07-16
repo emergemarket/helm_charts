@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ include "mssql-latest.fullname" . }}-db-credentials-job"
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  backoffLimit: 4
+  template:
+    metadata:
+      name: "{{ include "mssql-latest.fullname" . }}-db-credentials"
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: dbcreds
+          image: registry.gitlab.com/emergetech/core/devops/secret_helper:0.1.0-37572167
+          command: ["bash",  "eecreds.sh", "-e", {{ include "mssql.env" . | quote }}, "-t", "azsql"]
+      imagePullSecrets:
+        - name: {{ .Values.deployment.pullSecret | default "gitlab"}}

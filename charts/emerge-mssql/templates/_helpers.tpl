@@ -69,3 +69,15 @@ Create the name for the SA password secret key.
 {{- define "mssql.hostname" -}}
 {{- regexReplaceAll "=.*:(.*)," (regexFind "=.*:(.*)," ((.Values.global).dependencies.database.mssql.connectionString)) "${1}"   }}
 {{- end -}}
+
+{{- define "mssql.pod_annotations" -}}
+    {{- if .Values.global.subchart }}
+      {{- include "helm.annotations.vault" .  }}
+      {{- include "helm.annotations.istio" . }}
+      {{- include "helm.annotations.gitlab" . }}
+      {{- include "helm.otel.annotations" . }}
+    {{- end }}
+    {{- with .Values.podAnnotations }}
+      {{- toYaml . }}
+    {{- end }}
+{{- end -}}

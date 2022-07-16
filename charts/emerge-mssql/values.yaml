@@ -3,12 +3,14 @@
 # Declare variables to be passed into your templates.
 global:
   env: test2
+  subchart: false
   dependencies:
     database:
       mssql: 
         required: true
         connectionString: "connectionstring"
-
+deployment:
+  pullSecret:
 replicas: 1
 
 image:
