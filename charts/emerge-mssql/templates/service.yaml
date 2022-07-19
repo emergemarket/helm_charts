@@ -3,6 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "mssql-latest.fullname" . }}
+  namespace: {{ include "mssql.env" . }}
   labels:
     {{- include "mssql-latest.labels" . | nindent 4 }}
 spec:
