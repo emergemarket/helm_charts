@@ -74,8 +74,6 @@ Create the name for the SA password secret key.
     {{- if .Values.global.subchart }}
       {{- include "helm.annotations.vault" .  }}
       {{- include "helm.annotations.istio" . }}
-      {{- include "helm.annotations.gitlab" . }}
-      {{- include "helm.otel.annotations" . }}
     {{- end }}
     {{- with .Values.podAnnotations }}
       {{- toYaml . }}
