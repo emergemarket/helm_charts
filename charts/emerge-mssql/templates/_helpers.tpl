@@ -34,7 +34,7 @@ helm.sh/chart: {{ include "mssql-latest.chart" . }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
-sidecar.istio.io/inject: "true"
+
 {{- end }}
 
 {{/*
@@ -87,4 +87,18 @@ vault.security.banzaicloud.io/vault-role: application
 {{- with .Values.podAnnotations }}
 {{- toYaml . }}
 {{- end }}
+{{- end -}}
+{{- define "helm.podDefaultToleration" -}}
+tolerations:
+  - key: "node.kubernetes.io/unreachable"
+    operator: "Exists"
+    effect: "NoExecute"
+    tolerationSeconds: 30
+  - key: "node.kubernetes.io/not-ready"
+    operator: "Exists"
+    effect: "NoExecute"
+    tolerationSeconds: 30
+  {{- with (dig "tolerations" "" (default .Values.deployment .Values.statefulset)) }}
+  {{ toYaml . |  indent 2 | trim }}
+  {{- end }}
 {{- end -}}
