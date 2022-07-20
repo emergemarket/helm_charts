@@ -70,6 +70,11 @@ Create the name for the SA password secret key.
 {{- regexReplaceAll "=.*:(.*)," (regexFind "=.*:(.*)," ((.Values.global).dependencies.database.mssql.connectionString)) "${1}"   }}
 {{- end -}}
 
+{{- define "mssql.shorthostname" -}}
+  {{- $ShortName := split "." (include "mssql.hostname" .) }}
+    {{ $ShortName._0 }}
+{{- end -}}
+
 {{- define "mssql.pod_annotations" -}}
     {{- if .Values.global.subchart }}
       {{- include "helm.annotations.vault" .  }}
