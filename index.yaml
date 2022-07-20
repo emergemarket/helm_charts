@@ -416,6 +416,16 @@ entries:
   emerge-mssql:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2022-07-20T13:23:27.217541307Z"
+    description: A Helm chart for Kubernetes
+    digest: 807b89f66dd3d6b1759fb9159ea4fa985fca71691e13be71c4d78fe78e08f26b
+    name: emerge-mssql
+    type: application
+    urls:
+    - https://github.com/emergemarket/helm_charts/releases/download/emerge-mssql-0.0.23/emerge-mssql-0.0.23.tgz
+    version: 0.0.23
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2022-07-20T13:01:27.690033291Z"
     description: A Helm chart for Kubernetes
     digest: c160c1a34e13975eb8b50b81bb0d792bb8709f3929c253073f58ea24e8b9d209
@@ -627,4 +637,4 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/mssql-latest-0.1.1/mssql-latest-0.1.1.tgz
     version: 0.1.1
-generated: "2022-07-20T13:01:27.690507803Z"
+generated: "2022-07-20T13:23:27.217813216Z"
