@@ -18,7 +18,7 @@ spec:
       labels:
         {{- include "mssql-latest.selectorLabels" . | nindent 8 }}
     spec:
-      hostname: {{ .Values.hostname}}
+      hostname: {{ include "mssql.hostname" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -39,10 +39,7 @@ spec:
            - name: MSSQL_AGENT_ENABLED
              value: "{{ .Values.MSSQL_AGENT_ENABLED.value}}"
            - name: SA_PASSWORD
-             valueFrom:
-              secretKeyRef:
-               name: mssql-secret
-               key: {{  template "mssql.sapassword" . }}
+             value: "vault:secrets/EphemeralEnvironment/{{ include "mssql.env" . }}/azsql#password"
           volumeMounts:
            - name: mssqldb
              mountPath: /var/opt/mssql
