@@ -17,11 +17,23 @@ spec:
         {{ include "mssql.pod_annotations" . | indent 8 | trim }}
       labels:
         {{- include "mssql-latest.selectorLabels" . | nindent 8 }}
+        sidecar.istio.io/inject: "true"
     spec:
       {{ include "helm.podDefaultToleration" . | indent 6 | trim }}
       hostname: {{ include "mssql.shorthostname"  . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      imagePullSecrets:
+        - name: {{ .Values.deployment.pullSecret | default "gitlab"}}
+      initContainers:
+        - name: dbcreds
+          image: registry.gitlab.com/emergetech/core/devops/secret_helper:0.1.0
+          args: 
+            - -e
+            - {{ include "mssql.env" . | quote }}
+            - -t
+            - azsql
+          imagePullPolicy: Always
       containers:
         - name: {{ .Chart.Name }}
           command:
@@ -52,19 +64,26 @@ spec:
              mountPath: /var/opt/mssql/tempdb
            - name: mssql-config-volume
              mountPath: /var/opt/config
+          resources:
+            limits:
+              memory: "5Gi"
+              cpu: "4"
+            requests:
+              memory: "2.5Gi"
+              cpu: "4"
       volumes:
        - name: mssqldb
          persistentVolumeClaim:
-          claimName: mssql-data
+          claimName: {{ include "mssql-latest.fullname" . }}-data
        - name: mssqluserdb
          persistentVolumeClaim:
-          claimName: mssql-userdb
+          claimName: {{ include "mssql-latest.fullname" . }}-userdb
        - name: mssqllog
          persistentVolumeClaim:
-          claimName: mssql-log
+          claimName: {{ include "mssql-latest.fullname" . }}-log
        - name: mssqltemp
          persistentVolumeClaim:
-          claimName: mssql-temp          
+          claimName: {{ include "mssql-latest.fullname" . }}-temp          
        - name: mssql-config-volume
          configMap:
           name: mssql-config
