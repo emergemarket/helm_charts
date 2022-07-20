@@ -18,6 +18,7 @@ spec:
       labels:
         {{- include "mssql-latest.selectorLabels" . | nindent 8 }}
     spec:
+      {{ include "helm.podDefaultToleration" . | indent 6 | trim }}
       hostname: {{ include "mssql.shorthostname"  . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
