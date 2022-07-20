@@ -18,7 +18,7 @@ spec:
       labels:
         {{- include "mssql-latest.selectorLabels" . | nindent 8 }}
     spec:
-      hostname: {{ include "mssql.hostname" . }}
+      hostname: {{ split "." (include "mssql.hostname")._0 . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
