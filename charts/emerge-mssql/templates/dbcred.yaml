@@ -1,3 +1,4 @@
+{{- if not (contains (include "mssql.env" .) "prod") }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -16,7 +17,12 @@ spec:
       containers:
         - name: dbcreds
           image: registry.gitlab.com/emergetech/core/devops/secret_helper:0.1.0
-          command: ["bash",  "eecreds.sh", "-e", {{ include "mssql.env" . | quote }}, "-t", "azsql"]
+          args: 
+            - -e
+            - {{ include "mssql.env" . | quote }}
+            - -t
+            - azsql
           imagePullPolicy: Always
       imagePullSecrets:
         - name: {{ .Values.deployment.pullSecret | default "gitlab"}}
+{{- end }}
