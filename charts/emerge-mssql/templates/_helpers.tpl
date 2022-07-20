@@ -71,16 +71,15 @@ Create the name for the SA password secret key.
 {{- end -}}
 
 {{- define "mssql.shorthostname" -}}
-  {{- $ShortName := split "." (include "mssql.hostname" .) }}
-    {{ $ShortName._0 }}
+{{- (split "." (include "mssql.hostname" .))._0 }}
 {{- end -}}
 
 {{- define "mssql.pod_annotations" -}}
-    {{- if .Values.global.subchart }}
-      {{- include "helm.annotations.vault" .  }}
-      {{- include "helm.annotations.istio" . }}
-    {{- end }}
-    {{- with .Values.podAnnotations }}
-      {{- toYaml . }}
-    {{- end }}
+{{- if .Values.global.subchart }}
+{{- include "helm.annotations.vault" .  }}
+{{- include "helm.annotations.istio" . }}
+{{- end }}
+{{- with .Values.podAnnotations }}
+{{- toYaml . }}
+{{- end }}
 {{- end -}}
