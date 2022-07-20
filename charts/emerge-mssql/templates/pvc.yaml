@@ -2,11 +2,17 @@
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
-  name: node-disk
+  name: azure-files
   namespace: {{ include "mssql.env" . }}
-provisioner: kubernetes.io/no-provisioner
-volumeBindingMode: WaitForFirstConsumer
-
+provisioner: file.csi.azure.com
+volumeBindingMode: Immediate
+reclaimPolicy: Delete
+allowVolumeExpansion: true
+mountOptions:
+  - mfsymlinks
+  - actimeo=30
+parameters:
+  skuName: Standard_LRS
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -14,10 +20,10 @@ metadata:
   name: {{ include "mssql-latest.fullname" . }}-data
   namespace: {{ include "mssql.env" . }}
   annotations:
-    volume.beta.kubernetes.io/storage-class: "node-disk"
+    volume.beta.kubernetes.io/storage-class: "azure-files"
 spec:
   accessModes:
-  - "ReadWriteOnce"
+  - "ReadWriteMany"
   resources:
     requests:
       storage: 5Gi
@@ -28,10 +34,10 @@ metadata:
   name: {{ include "mssql-latest.fullname" . }}-userdb
   namespace: {{ include "mssql.env" . }}
   annotations:
-    volume.beta.kubernetes.io/storage-class: "node-disk"
+    volume.beta.kubernetes.io/storage-class: "azure-files"
 spec:
   accessModes:
-  - "ReadWriteOnce"
+  - "ReadWriteMany"
   resources:
     requests:
       storage: 5Gi
@@ -42,10 +48,10 @@ metadata:
   name: {{ include "mssql-latest.fullname" . }}-log
   namespace: {{ include "mssql.env" . }}
   annotations:
-    volume.beta.kubernetes.io/storage-class: "node-disk"
+    volume.beta.kubernetes.io/storage-class: "azure-files"
 spec:
   accessModes:
-   - "ReadWriteOnce"
+   - "ReadWriteMany"
   resources:
     requests:
       storage: 5Gi
@@ -56,10 +62,10 @@ metadata:
   name: {{ include "mssql-latest.fullname" . }}-temp
   namespace: {{ include "mssql.env" . }}
   annotations:
-    volume.beta.kubernetes.io/storage-class: "node-disk"
+    volume.beta.kubernetes.io/storage-class: "azure-files"
 spec:
   accessModes:
-   - "ReadWriteOnce"
+   - "ReadWriteMany"
   resources:
     requests:
       storage: 5Gi
