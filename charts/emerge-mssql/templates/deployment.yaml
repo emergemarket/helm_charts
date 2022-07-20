@@ -39,7 +39,7 @@ spec:
            - name: MSSQL_AGENT_ENABLED
              value: "{{ .Values.MSSQL_AGENT_ENABLED.value}}"
            - name: SA_PASSWORD
-             value: "vault:secrets/EphemeralEnvironment/{{ include "mssql.env" . }}/azsql#password"
+             value: "vault:secrets/data/EphemeralEnvironment/{{ include "mssql.env" . }}/azsql/password#value"
           volumeMounts:
            - name: mssqldb
              mountPath: /var/opt/mssql
