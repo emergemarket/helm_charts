@@ -2,13 +2,14 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 global:
-  env: test2
   subchart: false
-  dependencies:
-    database:
-      mssql: 
-        required: true
-        connectionString: "connectionstring"
+  environment: 
+    name: test2
+    dependencies:
+      database:
+        mssql: 
+          required: true
+          connectionString: "connectionstring"
 deployment:
   pullSecret:
 replicas: 1
