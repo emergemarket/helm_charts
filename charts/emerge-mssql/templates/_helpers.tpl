@@ -5,7 +5,7 @@ Expand the name of the chart.
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 {{- define "mssql-latest.name" -}}
-{{ (list (include "helm.fullname" .) ((.Values.global).environment.name "mssql" | join "-") }}
+{{ list (include "helm.fullname" .) (.Values.global.environment.name) "mssql" | join "-" }}
 {{- end }}
 
 {{/*
@@ -67,6 +67,7 @@ Create the name for the SA password secret key.
 {{- define "mssql.env" -}}
 {{- default "default" .Values.global.environment.name }}
 {{- end -}}
+
 {{- define "mssql.hostname" -}}
 {{- regexReplaceAll "=.*:(.*)," (regexFind "=.*:(.*)," ((.Values.global).environment.dependencies.database.mssql.connectionString)) "${1}"   }}
 {{- end -}}

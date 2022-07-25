@@ -1,0 +1,53 @@
+{{- if .Values.resource.tls.enabled }}
+# cert-manager resources
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: tls-selfsigned-issuer
+  namespace: {{ .Values.global.environment.name }}
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: tls-selfsigned-ca
+  namespace: {{ .Values.global.environment.name }}
+spec:
+  isCA: true
+  commonName: "*.{{ .Values.resource.name }}-svc.{{ .Values.global.environment.name }}.svc.cluster.local"
+  dnsNames:
+    - "*.{{ .Values.resource.name }}-svc.{{ .Values.global.environment.name }}.svc.cluster.local"
+  secretName: {{ .Values.resource.tls.caCertificateSecretRef }}
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: tls-selfsigned-issuer
+    kind: Issuer
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: tls-ca-issuer
+  namespace: {{ .Values.global.environment.name }}
+spec:
+  ca:
+    secretName: {{ .Values.resource.tls.caCertificateSecretRef }}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cert-manager-tls-certificate
+  namespace: {{ .Values.global.environment.name }}
+spec:
+  secretName: {{ .Values.resource.tls.certificateKeySecretRef }}
+  issuerRef:
+    name: tls-ca-issuer
+    kind: Issuer
+  duration: 8760h   # 365 days
+  renewBefore: 720h # 30 days
+  commonName: "*.{{ .Values.resource.name }}-svc.{{ .Values.global.environment.name }}.svc.cluster.local"
+  dnsNames:
+    - "*.{{ .Values.resource.name }}-svc.{{ .Values.global.environment.name }}.svc.cluster.local"
+{{- end }}

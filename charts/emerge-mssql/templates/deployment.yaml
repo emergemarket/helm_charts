@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "mssql-latest.fullname" . }}
-  namespace: {{ include "mssql.env" . }}
+  namespace: {{ .Values.global.environment.name }}
   labels:
     {{- include "mssql-latest.labels" . | nindent 4 }}
 spec:
@@ -52,7 +52,7 @@ spec:
            - name: MSSQL_AGENT_ENABLED
              value: "{{ .Values.MSSQL_AGENT_ENABLED.value}}"
            - name: SA_PASSWORD
-             value: "vault:secrets/data/EphemeralEnvironment/{{ include "mssql.env" . }}/azsql/password#value"
+             value: "vault:secrets/data/EphemeralEnvironment/{{ .Values.global.environment.name }}/azsql/password#value"
           volumeMounts:
            - name: mssqldb
              mountPath: /var/opt/mssql

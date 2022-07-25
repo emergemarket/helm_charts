@@ -3,7 +3,7 @@ kind: ConfigMap
 apiVersion: v1 
 metadata:
   name: mssql-config
-  namespace: {{ include "mssql.env" . }}
+  namespace: {{ .Values.global.environment.name }}
 data:
   mssql.conf: |
     [EULA]

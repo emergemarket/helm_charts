@@ -10,6 +10,7 @@ global:
         mssql: 
           required: true
           connectionString: "connectionstring"
+
 deployment:
   pullSecret:
 replicas: 1

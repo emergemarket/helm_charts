@@ -3,7 +3,7 @@ kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
   name: azure-files
-  namespace: {{ include "mssql.env" . }}
+  namespace: {{ .Values.global.environment.name }}
 provisioner: file.csi.azure.com
 volumeBindingMode: Immediate
 reclaimPolicy: Delete
@@ -18,7 +18,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: {{ include "mssql-latest.fullname" . }}-data
-  namespace: {{ include "mssql.env" . }}
+  namespace: {{ .Values.global.environment.name }}
   annotations:
     volume.beta.kubernetes.io/storage-class: "azure-files"
 spec:
@@ -32,7 +32,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: {{ include "mssql-latest.fullname" . }}-userdb
-  namespace: {{ include "mssql.env" . }}
+  namespace: {{ .Values.global.environment.name }}
   annotations:
     volume.beta.kubernetes.io/storage-class: "azure-files"
 spec:
@@ -46,7 +46,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: {{ include "mssql-latest.fullname" . }}-log
-  namespace: {{ include "mssql.env" . }}
+  namespace: {{ .Values.global.environment.name }}
   annotations:
     volume.beta.kubernetes.io/storage-class: "azure-files"
 spec:
@@ -60,7 +60,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: {{ include "mssql-latest.fullname" . }}-temp
-  namespace: {{ include "mssql.env" . }}
+  namespace: {{ .Values.global.environment.name }}
   annotations:
     volume.beta.kubernetes.io/storage-class: "azure-files"
 spec:

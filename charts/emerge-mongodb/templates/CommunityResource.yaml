@@ -1,0 +1,80 @@
+{{- if .Values.createResource }}
+# mongodb resources
+---
+apiVersion: mongodbcommunity.mongodb.com/v1
+kind: MongoDBCommunity
+metadata:
+  name: {{ include "mongodb.database.name" . }}
+  namespace: {{ .Values.global.environment.name }}
+spec:
+  members: {{ .Values.resource.members }}
+  type: ReplicaSet
+  version: {{ .Values.resource.version }}
+  security:
+    tls:
+      enabled: {{ .Values.resource.tls.enabled }}
+      {{- if .Values.resource.tls.enabled }}
+      certificateKeySecretRef:
+        name: {{ .Values.resource.tls.certificateKeySecretRef }}
+      caCertificateSecretRef:
+        name: {{ .Values.resource.tls.caCertificateSecretRef }}
+      {{- end }}
+    authentication:
+      modes: ["SCRAM"]
+  users:
+    - name: vault:secrets/data/EphemeralEnvironment/{{ .Values.global.environment.name }}/mongodb/username#value
+      db: admin
+      passwordSecretRef: # a reference to the secret that will be used to generate the user's password
+        name: mongo-admin-secret
+      roles:
+        - name: clusterAdmin
+          db: admin
+        - name: userAdminAnyDatabase
+          db: admin
+      scramCredentialsSecretName: my-scram
+  statefulSet:
+    spec:
+      imagePullSecrets:
+      - name: {{ default "gitlab" ((.Values.deployment).pullSecret) }}
+      replicas: {{ .Values.resource.members }}
+      serviceName: "{{ include "mongodb.database.name" . }}-svc"
+      selector:
+        matchLabels:
+          app: "{{ include "mongodb.database.name" . }}-svc"
+      template:
+        initContainers:
+          - command:
+              - chown
+              - -R
+              - "2000"
+              - /data
+            image: busybox
+            volumeMounts:
+            - mountPath: /data
+              name: data-volume
+            securityContext:
+              runAsNonRoot: false
+              runAsUser: 0
+              runAsGroup: 0
+            name: change-dir-permissions
+          - name: dbcreds
+            image: registry.gitlab.com/emergetech/core/devops/secret_helper:0.1.0
+            args: 
+              - -e
+              - {{ .Values.global.environment.name | quote }}
+              - -t
+              - mongodb
+            imagePullPolicy: Always
+        metadata:
+          labels:
+            app: "{{ include "mongodb.database.name" . }}-svc"
+            sidecar.istio.io/inject: "true"
+        spec:
+          containers:
+            - name: mongodb-agent
+              readinessProbe:
+                failureThreshold: 60
+                initialDelaySeconds: 5
+                periodSeconds: 20
+                timeout: 30
+{{- end }}

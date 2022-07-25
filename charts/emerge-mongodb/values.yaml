@@ -1,0 +1,74 @@
+global:
+  subchart: false
+  environment: 
+    name: test2
+    dependencies:
+      database:
+        mongodb: 
+          required: true
+          connectionString: "connectionstring"
+
+## Operator
+operator:
+  # Version of mongodb-kubernetes-operator
+  version: 0.7.4
+
+  # Resources allocated to Operator Pod
+  resources:
+    limits:
+      cpu: 1100m
+      memory: 1Gi
+    requests:
+      cpu: 500m
+      memory: 200Mi
+
+  # Additional environment variables
+  extraEnvs: []
+  # environment:
+  # - name: CLUSTER_DOMAIN
+  #   value: my-cluster.domain
+
+## Operator's database
+database:
+  # represents both the db name and the service account name.
+  name: mongodb-database
+
+agent:
+  name: mongodb-agent
+  version: 12.0.4.7554-1
+versionUpgradeHook:
+  name: mongodb-kubernetes-operator-version-upgrade-post-start-hook
+  version: 1.0.4
+readinessProbe:
+  name: mongodb-kubernetes-readinessprobe
+  version: 1.0.9
+mongodb:
+  name: mongo
+  repo: docker.io
+
+registry:
+  agent: quay.io/mongodb
+  versionUpgradeHook: quay.io/mongodb
+  readinessProbe: quay.io/mongodb
+  operator: quay.io/mongodb
+  pullPolicy: Always
+
+# Set to false if CRDs have been installed already. The CRDs can be installed
+# manually from the code repo: github.com/mongodb/mongodb-kubernetes-operator or
+# using the `community-operator-crds` Helm chart.
+community-operator-crds:
+  enabled: true
+
+# Deploys MongoDB with `resource` attributes.
+createResource: true
+resource:
+  name: mongodb
+  version: 5.0.9
+  members: 1
+  tls:
+    enabled: false
+    certificateKeySecretRef: tls-certificate
+    caCertificateSecretRef: tls-ca-key-pair
+    certManager:
+      certDuration: 8760h   # 365 days
+      renewCertBefore: 720h   # 30 days

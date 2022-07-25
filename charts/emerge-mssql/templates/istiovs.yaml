@@ -3,7 +3,7 @@ apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: {{ include "mssql-latest.fullname" . }}
-  namespace: {{ include "mssql.env" . }}
+  namespace: {{ .Values.global.environment.name }}
   labels:
   {{- include "mssql-latest.labels" . | nindent 4 }}
 spec:
