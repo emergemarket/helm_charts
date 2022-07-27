@@ -413,6 +413,28 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/backstage-0.1.16/backstage-0.1.16.tgz
     version: 0.1.16
+  emerge-mongodb:
+  - apiVersion: v2
+    appVersion: 0.7.4
+    created: "2022-07-27T03:14:16.987174536Z"
+    dependencies:
+    - name: community-operator-crds
+      repository: https://mongodb.github.io/helm-charts
+      version: 0.7.4
+    description: Emerge MongoDB Kubernetes Community Operator
+    digest: f01693f0c1cffd7b6aafc7cf406856118b2b1e3947485d39570c1836bea574f4
+    home: https://github.com/mongodb/mongodb-kubernetes-operator
+    icon: https://mongodb-images-new.s3.eu-west-1.amazonaws.com/leaf-green-dark.png
+    keywords:
+    - mongodb
+    - database
+    - nosql
+    kubeVersion: '>=1.16-0'
+    name: emerge-mongodb
+    type: application
+    urls:
+    - https://github.com/emergemarket/helm_charts/releases/download/emerge-mongodb-0.0.1/emerge-mongodb-0.0.1.tgz
+    version: 0.0.1
   emerge-mssql:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -697,4 +719,4 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/mssql-latest-0.1.1/mssql-latest-0.1.1.tgz
     version: 0.1.1
-generated: "2022-07-27T03:13:50.024247777Z"
+generated: "2022-07-27T03:14:16.987458537Z"
