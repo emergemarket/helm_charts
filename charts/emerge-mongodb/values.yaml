@@ -6,13 +6,17 @@ global:
       database:
         mongodb: 
           required: true
-          connectionString: "connectionstring"
+
+createResource: true
+createOperator: true
+nameOverride:
 
 ## Operator
 operator:
   # Version of mongodb-kubernetes-operator
   version: 0.7.4
-
+  # Uncomment this line to watch all namespaces
+  # watchNamespace: "*"
   # Resources allocated to Operator Pod
   resources:
     limits:
@@ -60,7 +64,6 @@ community-operator-crds:
   enabled: true
 
 # Deploys MongoDB with `resource` attributes.
-createResource: true
 resource:
   name: mongodb
   version: 5.0.9

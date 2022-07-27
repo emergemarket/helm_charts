@@ -22,7 +22,7 @@ spec:
     authentication:
       modes: ["SCRAM"]
   users:
-    - name: vault:secrets/data/EphemeralEnvironment/{{ .Values.global.environment.name }}/mongodb/username#value
+    - name: admin
       db: admin
       passwordSecretRef: # a reference to the secret that will be used to generate the user's password
         name: mongo-admin-secret
@@ -34,47 +34,63 @@ spec:
       scramCredentialsSecretName: my-scram
   statefulSet:
     spec:
-      imagePullSecrets:
-      - name: {{ default "gitlab" ((.Values.deployment).pullSecret) }}
       replicas: {{ .Values.resource.members }}
       serviceName: "{{ include "mongodb.database.name" . }}-svc"
-      selector:
-        matchLabels:
-          app: "{{ include "mongodb.database.name" . }}-svc"
       template:
-        initContainers:
-          - command:
-              - chown
-              - -R
-              - "2000"
-              - /data
-            image: busybox
-            volumeMounts:
-            - mountPath: /data
-              name: data-volume
-            securityContext:
-              runAsNonRoot: false
-              runAsUser: 0
-              runAsGroup: 0
-            name: change-dir-permissions
-          - name: dbcreds
-            image: registry.gitlab.com/emergetech/core/devops/secret_helper:0.1.0
-            args: 
-              - -e
-              - {{ .Values.global.environment.name | quote }}
-              - -t
-              - mongodb
-            imagePullPolicy: Always
         metadata:
+          annotations:
+            agent.mongodb.com/version: "1"
           labels:
-            app: "{{ include "mongodb.database.name" . }}-svc"
-            sidecar.istio.io/inject: "true"
+            vault.security.banzaicloud.io/vault-skip-verify: "true"
+            vault.security.banzaicloud.io/vault-env-daemon: "true"
+            vault.security.banzaicloud.io/enable-json-log: "true"
+            vault.security.banzaicloud.io/mutate-configmap: "true"
+            vault.security.banzaicloud.io/vault-max-retries: "10"
+            vault.security.banzaicloud.io/vault-client-timeout: "2m"
+            vault.security.banzaicloud.io/vault-role: application
         spec:
+          imagePullSecrets:
+            - name: {{ default "gitlab" ((.Values.deployment).pullSecret) }}
           containers:
             - name: mongodb-agent
               readinessProbe:
+                exec:
+                  command:
+                    - grep
+                    - -q
+                    - "Agent has reached goal state"
+                    - /var/log/mongodb-mms-automation/readiness.log
                 failureThreshold: 60
-                initialDelaySeconds: 5
-                periodSeconds: 20
+                initialDelaySeconds: 15
+                periodSeconds: 5
                 timeout: 30
+          initContainers:
+            - command:
+                - chown
+                - -R
+                - "2000"
+                - /data
+              image: busybox
+              volumeMounts:
+              - mountPath: /data
+                name: data-volume
+              securityContext:
+                runAsNonRoot: false
+                runAsUser: 0
+                runAsGroup: 0
+              name: change-datadir-permissions
+            - command:
+                - chown
+                - -R
+                - "2000"
+                - /var/log/mongodb-mms-automation
+              image: busybox
+              volumeMounts:
+              - mountPath: /var/log/mongodb-mms-automation
+                name: logs-volume
+              securityContext:
+                runAsNonRoot: false
+                runAsUser: 0
+                runAsGroup: 0
+              name: change-logdir-permissions
 {{- end }}

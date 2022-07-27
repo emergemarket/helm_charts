@@ -1,3 +1,4 @@
+{{- if .Values.createOperator }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -74,3 +75,4 @@ spec:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
       serviceAccountName: {{ include "mongodb.operator.name" . }}
+{{- end -}}

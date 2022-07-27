@@ -28,3 +28,20 @@ vault.security.banzaicloud.io/vault-max-retries: "10"
 vault.security.banzaicloud.io/vault-client-timeout: 2m
 vault.security.banzaicloud.io/vault-role: application
 {{- end }}
+
+{{- define "mongodb.dbaddresses" -}}
+{{- $thisrange := until (.Values.resource.members | int) -}}
+{{- $servicename := (include "mongodb.database.name" .) -}}
+{{- $environmentname := .Values.global.environment.name -}}
+{{- range $i, $e := $thisrange -}}
+mongodb-database-{{ $e }}.{{ $servicename }}-svc.{{ $environmentname }}.svc.cluster.local:27017,
+{{- end }}
+{{- end }}
+
+{{- define "mongodb.serviceaddress" -}}
+{{- $servicename := (include "mongodb.database.name" .) -}}
+{{- $environmentname := .Values.global.environment.name -}}
+{{ $servicename }}-svc.{{ $environmentname }}.svc.cluster.local:27017
+{{- end }}
+
+

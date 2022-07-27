@@ -1,3 +1,4 @@
+{{- if .Values.createResource }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -25,3 +26,4 @@ spec:
           imagePullPolicy: Always
       imagePullSecrets:
         - name: {{ default "gitlab" ((.Values.deployment).pullSecret) }}
+{{- end -}}
