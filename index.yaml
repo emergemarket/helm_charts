@@ -416,6 +416,27 @@ entries:
   emerge-mongodb:
   - apiVersion: v2
     appVersion: 0.7.4
+    created: "2022-07-28T14:35:08.895842637Z"
+    dependencies:
+    - name: community-operator-crds
+      repository: https://mongodb.github.io/helm-charts
+      version: 0.7.4
+    description: Emerge MongoDB Kubernetes Community Operator
+    digest: 7e7ed4883fa15105a3267b2071bdece50b5002a9c5f924a8c0016126f0e19747
+    home: https://github.com/mongodb/mongodb-kubernetes-operator
+    icon: https://mongodb-images-new.s3.eu-west-1.amazonaws.com/leaf-green-dark.png
+    keywords:
+    - mongodb
+    - database
+    - nosql
+    kubeVersion: '>=1.16-0'
+    name: emerge-mongodb
+    type: application
+    urls:
+    - https://github.com/emergemarket/helm_charts/releases/download/emerge-mongodb-0.0.2/emerge-mongodb-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v2
+    appVersion: 0.7.4
     created: "2022-07-27T03:14:16.987174536Z"
     dependencies:
     - name: community-operator-crds
@@ -719,4 +740,4 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/mssql-latest-0.1.1/mssql-latest-0.1.1.tgz
     version: 0.1.1
-generated: "2022-07-27T03:14:16.987458537Z"
+generated: "2022-07-28T14:35:08.896250037Z"
