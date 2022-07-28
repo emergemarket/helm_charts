@@ -49,6 +49,11 @@ spec:
             vault.security.banzaicloud.io/vault-client-timeout: "2m"
             vault.security.banzaicloud.io/vault-role: application
         spec:
+          volumes:
+            - name: db
+              emptyDir: {}
+            - name: configdb
+              emptyDir: {}
           imagePullSecrets:
             - name: {{ default "gitlab" ((.Values.deployment).pullSecret) }}
           containers:
@@ -64,6 +69,12 @@ spec:
                 initialDelaySeconds: 15
                 periodSeconds: 5
                 timeout: 30
+            - name: mongod
+              volumeMounts:
+                - name: db
+                  mountPath: /data/db/
+                - name: configdb
+                  mountPath: /data/configdb/
           initContainers:
             - command:
                 - chown
