@@ -1,7 +1,6 @@
 global:
-  subchart: false
   environment: 
-    name: test2
+    name: test
     dependencies:
       database:
         mongodb: 

@@ -1,0 +1,36 @@
+{{- if .Values.esConfig }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "elasticsearch.uname" . }}-config
+  namespace: {{ .Values.global.environment.name }}
+  labels:
+    heritage: "{{ template "elasticsearch.serviceAccount" . }}"
+    release: elasticsearch-{{ .Values.global.environment.name }}
+    chart: "{{ .Chart.Name }}"
+    app: "{{ template "elasticsearch.uname" . }}"
+data:
+{{- range $path, $config := .Values.esConfig }}
+  {{ $path }}: |
+{{ $config | indent 4 -}}
+{{- end -}}
+{{- end -}}
+{{- if .Values.esJvmOptions }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "elasticsearch.uname" . }}-jvm-options
+  namespace: {{ .Values.global.environment.name }}
+  labels:
+    heritage: "{{ template "elasticsearch.serviceAccount" . }}"
+    release: elasticsearch-{{ .Values.global.environment.name }}
+    chart: "{{ .Chart.Name }}"
+    app: "{{ template "elasticsearch.uname" . }}"
+data:
+{{- range $path, $config := .Values.esJvmOptions }}
+  {{ $path }}: |
+{{ $config | indent 4 -}}
+{{- end -}}
+{{- end -}}

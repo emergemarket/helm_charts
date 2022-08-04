@@ -63,8 +63,8 @@ spec:
                   command:
                     - grep
                     - -q
-                    - "Agent has reached goal state"
-                    - /var/log/mongodb-mms-automation/readiness.log
+                    - '"IsInGoalState":true'
+                    - /var/log/mongodb-mms-automation/healthstatus/agent-health-status.json
                 failureThreshold: 60
                 initialDelaySeconds: 15
                 periodSeconds: 5

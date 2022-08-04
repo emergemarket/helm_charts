@@ -1,0 +1,32 @@
+{{- if false }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: vault-elastic-credentials-gen
+  namespace: {{ .Values.global.environment.name }}
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  ttlSecondsAfterFinished: 60
+  backoffLimit: 4
+  template:
+    metadata:
+      name: "vault-elastic-credentials-gen"
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: dbcreds
+          image: registry.gitlab.com/emergetech/core/devops/secret_helper:0.1.0
+          args: 
+            - -e
+            - {{ .Values.global.environment.name | quote }}
+            - -t
+            - elastic
+          imagePullPolicy: Always
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | indent 8 }}
+      {{- end }}
+{{- end }}
