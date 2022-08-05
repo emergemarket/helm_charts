@@ -413,6 +413,20 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/backstage-0.1.16/backstage-0.1.16.tgz
     version: 0.1.16
+  emerge-elasticsearch:
+  - apiVersion: v2
+    created: "2022-08-05T02:07:16.233829975Z"
+    dependencies:
+    - name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    description: A Helm chart for Kubernetes
+    digest: 5fa5434463c93aba43b44154daa1c690db5854108ae9f723e2426cbb1f48e50b
+    name: emerge-elasticsearch
+    type: application
+    urls:
+    - https://github.com/emergemarket/helm_charts/releases/download/emerge-elasticsearch-0.0.1/emerge-elasticsearch-0.0.1.tgz
+    version: 0.0.1
   emerge-mongodb:
   - apiVersion: v2
     appVersion: 0.7.4
@@ -740,4 +754,4 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/mssql-latest-0.1.1/mssql-latest-0.1.1.tgz
     version: 0.1.1
-generated: "2022-07-28T14:35:08.896250037Z"
+generated: "2022-08-05T02:07:16.234480677Z"
