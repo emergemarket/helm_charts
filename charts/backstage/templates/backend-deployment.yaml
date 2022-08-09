@@ -71,6 +71,16 @@ spec:
                 secretKeyRef:
                   name: {{ include "backend.postgresql.passwordSecret" .}}
                   key: postgresql-password
+            - name: grafana-api-token
+              valueFrom:
+                secretKeyRef:
+                  name: grafana-api-token
+                  key: grafana-api-token
+            - name: argoapi
+              valueFrom:
+                secretKeyRef:
+                  name: argoapi
+                  key: argoapi
           volumeMounts:
             {{- if .Values.backend.postgresCertMountEnabled }}
             - name: postgres-ca
