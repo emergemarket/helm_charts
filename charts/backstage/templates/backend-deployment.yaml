@@ -81,6 +81,11 @@ spec:
                 secretKeyRef:
                   name: argoapi
                   key: argoapi
+            - name: sonarqube-api
+              valueFrom:
+                secretKeyRef:
+                  name: sonarqube-api
+                  key: sonarqube-api
           volumeMounts:
             {{- if .Values.backend.postgresCertMountEnabled }}
             - name: postgres-ca
