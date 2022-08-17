@@ -86,6 +86,11 @@ spec:
                 secretKeyRef:
                   name: sonarqube-api
                   key: sonarqube-api
+            - name: opsgenie-api
+              valueFrom:
+                secretKeyRef:
+                  name: opsgenie-api
+                  key: opsgenie-api
           volumeMounts:
             {{- if .Values.backend.postgresCertMountEnabled }}
             - name: postgres-ca
