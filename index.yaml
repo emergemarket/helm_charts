@@ -857,6 +857,33 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/emerge-mssql-0.0.3/emerge-mssql-0.0.3.tgz
     version: 0.0.3
+  environment-template:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2022-08-24T13:27:20.372856028Z"
+    dependencies:
+    - condition: global.environment.dependencies.database.mongodb.required
+      name: community-operator-crds
+      repository: https://mongodb.github.io/helm-charts
+      version: 0.7.4
+    - condition: global.environment.dependencies.database.mssql.required
+      name: emerge-mssql
+      repository: https://charts.emergemarket.io
+      version: 1.0.5
+    - condition: global.environment.dependencies.database.mongodb.required
+      name: emerge-mongodb
+      repository: https://charts.emergemarket.io
+      version: 0.0.3
+    - condition: global.environment.dependencies.database.elasticsearch.required
+      name: emerge-elasticsearch
+      repository: https://charts.emergemarket.io
+      version: 0.0.1
+    description: A Helm chart for Kubernetes
+    digest: 492637c4492ea644fd141443eb608e40477b94b639045f3570ea3f743b58e1db
+    name: environment-template
+    urls:
+    - https://github.com/emergemarket/helm_charts/releases/download/environment-template-0.0.1/environment-template-0.0.1.tgz
+    version: 0.0.1
   mssql-latest:
   - annotations:
       catalog.cattle.io/hidden: "true"
@@ -870,4 +897,4 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/mssql-latest-0.1.1/mssql-latest-0.1.1.tgz
     version: 0.1.1
-generated: "2022-08-24T12:32:59.572955843Z"
+generated: "2022-08-24T13:27:20.373236531Z"
