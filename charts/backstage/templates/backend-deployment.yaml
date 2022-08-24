@@ -91,6 +91,21 @@ spec:
                 secretKeyRef:
                   name: opsgenie-api
                   key: opsgenie-api
+            - name: github-client-id
+              valueFrom:
+                secretKeyRef:
+                  name: github-client-id
+                  key: github-client-id
+            - name: github-client-secret
+              valueFrom:
+                secretKeyRef:
+                  name: github-client-secret
+                  key: github-client-secret
+            - name: backstage-vault-token
+              valueFrom:
+                secretKeyRef:
+                  name: backstage-vault-token
+                  key: backstage-vault-token
           volumeMounts:
             {{- if .Values.backend.postgresCertMountEnabled }}
             - name: postgres-ca
