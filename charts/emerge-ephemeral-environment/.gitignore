@@ -1,0 +1,6 @@
+.DS_Store
+**/helm
+charts
+staging/*
+demo/*
+production/*

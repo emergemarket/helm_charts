@@ -1,0 +1,14 @@
+{{ if ((.Values.global).environment.name) }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.global.environment.name }}
+  labels:
+    istio-injection: enabled
+    kubernetes.io/metadata.name: {{ .Values.global.environment.name }}
+    ephemeral: "true"
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+{{ end }}

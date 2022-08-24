@@ -1,0 +1,24 @@
+apiVersion: v2
+appVersion: "latest"
+description: A Helm chart for Kubernetes
+name: environment-template
+version: 0.0.0
+
+
+dependencies:
+  - name: community-operator-crds
+    version: 0.7.4
+    repository: https://mongodb.github.io/helm-charts
+    condition: global.environment.dependencies.database.mongodb.required
+  - name: emerge-mssql
+    version: "1.0.5"
+    repository: https://charts.emergemarket.io
+    condition: global.environment.dependencies.database.mssql.required
+  - name: emerge-mongodb
+    version: "0.0.3"
+    repository: https://charts.emergemarket.io
+    condition: global.environment.dependencies.database.mongodb.required
+  - name: emerge-elasticsearch
+    version: "0.0.1"
+    repository: https://charts.emergemarket.io
+    condition: global.environment.dependencies.database.elasticsearch.required

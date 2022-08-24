@@ -1,0 +1,12 @@
+global:
+  environment: 
+    name: devopstest
+    dependencies:
+      database:
+        mssql: 
+          required: false
+          connectionString: "connectionstring"
+        mongodb:
+          required: false
+        elasticsearch: 
+          required: false
