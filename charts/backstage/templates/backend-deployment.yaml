@@ -106,6 +106,16 @@ spec:
                 secretKeyRef:
                   name: backstage-vault-token
                   key: backstage-vault-token
+            - name: gitlab-client-id
+              valueFrom:
+                secretKeyRef:
+                  name: gitlab-client-id
+                  key: gitlab-client-id
+            - name: gitlab-client-secret
+              valueFrom:
+                secretKeyRef:
+                  name: gitlab-client-secret
+                  key: gitlab-client-secret
           volumeMounts:
             {{- if .Values.backend.postgresCertMountEnabled }}
             - name: postgres-ca
