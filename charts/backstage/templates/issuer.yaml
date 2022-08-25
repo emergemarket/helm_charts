@@ -5,6 +5,8 @@ apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
 metadata:
   name: {{ .Values.issuer.clusterIssuer }}
+  labels:
+    app: backstage
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory

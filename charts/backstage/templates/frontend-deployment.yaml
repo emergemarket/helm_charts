@@ -3,6 +3,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "backstage.fullname" . }}-frontend
+  labels:
+    app: backstage
 
 spec:
   replicas: {{ .Values.frontend.replicaCount }}
@@ -19,6 +21,7 @@ spec:
       labels:
         app: backstage
         component: frontend
+      
 
     spec:
       {{ include "helm.podSecurityContext " . | indent 6 | trim }}
@@ -54,6 +57,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "frontend.serviceName" . }}
+  labels:
+    app: backstage
 
 spec:
   ports:
