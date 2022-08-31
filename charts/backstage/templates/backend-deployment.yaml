@@ -83,6 +83,21 @@ spec:
                 secretKeyRef:
                   name: argoapi
                   key: argoapi
+            - name: argoapi-dev
+              valueFrom:
+                secretKeyRef:
+                  name: argoapi-dev
+                  key: argoapi-dev
+            - name: argoapi-demo
+              valueFrom:
+                secretKeyRef:
+                  name: argoapi-demo
+                  key: argoapi-demo
+            - name: argoapi-prod
+              valueFrom:
+                secretKeyRef:
+                  name: argoapi-prod
+                  key: argoapi-prod
             - name: sonarqube-api
               valueFrom:
                 secretKeyRef:
