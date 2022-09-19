@@ -904,6 +904,32 @@ entries:
   environment-template:
   - apiVersion: v2
     appVersion: latest
+    created: "2022-09-19T22:00:57.19137038Z"
+    dependencies:
+    - condition: global.environment.dependencies.database.mongodb.required
+      name: community-operator-crds
+      repository: https://mongodb.github.io/helm-charts
+      version: 0.7.4
+    - condition: global.environment.dependencies.database.mssql.required
+      name: emerge-mssql
+      repository: https://charts.emergemarket.io
+      version: 1.0.6
+    - condition: global.environment.dependencies.database.mongodb.required
+      name: emerge-mongodb
+      repository: https://charts.emergemarket.io
+      version: 0.0.3
+    - condition: global.environment.dependencies.database.elasticsearch.required
+      name: emerge-elasticsearch
+      repository: https://charts.emergemarket.io
+      version: 0.0.1
+    description: A Helm chart for Kubernetes
+    digest: aa92cfd68ee2423d4cf7fe86816a7fd56b8da4ef0aa2f1083347d95777101b75
+    name: environment-template
+    urls:
+    - https://github.com/emergemarket/helm_charts/releases/download/environment-template-0.0.5/environment-template-0.0.5.tgz
+    version: 0.0.5
+  - apiVersion: v2
+    appVersion: latest
     created: "2022-09-19T21:52:46.923695094Z"
     dependencies:
     - condition: global.environment.dependencies.database.mongodb.required
@@ -967,4 +993,4 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/mssql-latest-0.1.1/mssql-latest-0.1.1.tgz
     version: 0.1.1
-generated: "2022-09-19T21:55:27.396987649Z"
+generated: "2022-09-19T22:00:57.191707285Z"
