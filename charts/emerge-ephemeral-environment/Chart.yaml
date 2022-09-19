@@ -2,7 +2,7 @@ apiVersion: v2
 appVersion: "latest"
 description: A Helm chart for Kubernetes
 name: environment-template
-version: 0.0.4
+version: 0.0.5
 
 dependencies:
   - name: community-operator-crds
