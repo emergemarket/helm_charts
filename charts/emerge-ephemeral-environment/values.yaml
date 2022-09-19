@@ -5,8 +5,10 @@ global:
       database:
         mssql: 
           required: false
-          connectionString: "connectionstring"
         mongodb:
           required: false
         elasticsearch: 
           required: false
+
+vault:
+    secrets: {}

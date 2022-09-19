@@ -1,3 +1,4 @@
+{{- if .Values.global.environment.dependencies.database.mssql.required }}
 {{- if not (contains (include "mssql.env" .) "prod") }}
 apiVersion: networking.istio.io/v1beta1
 kind: ServiceEntry
@@ -8,10 +9,11 @@ metadata:
   {{- include "mssql-latest.labels" . | nindent 4 }}
 spec:
   hosts:
-  - {{ include "mssql.hostname" . }}
+  {{- include "mssql.hostnames" . | nindent 4 }}
   location: MESH_INTERNAL
   ports:
-  - number: {{ .Values.containers.ports.containerPort}}
+  - number: 1433
     name: TCP
   resolution: DNS
+{{- end }}
 {{- end }}

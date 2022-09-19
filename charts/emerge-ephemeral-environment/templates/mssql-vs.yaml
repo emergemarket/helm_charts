@@ -1,4 +1,4 @@
-{{- if not (contains (include "mssql.env" .) "prod") }}
+{{- if .Values.global.environment.dependencies.database.mssql.required }}
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
@@ -8,12 +8,13 @@ metadata:
   {{- include "mssql-latest.labels" . | nindent 4 }}
 spec:
   hosts:
-  - {{ include "mssql.hostname" . }}
+  {{- include "mssql.hostnames" . | nindent 4 }}
+
   tcp:
   - match:
-    - port: {{ .Values.containers.ports.containerPort}}
+    - port: 1433
     route:
     - destination:
-        host: {{ (list (include "mssql-latest.fullname" .) (include "mssql.env" .) ("svc.cluster.local")) | join "." }}
+        host: {{ (list (include "mssql-latest.fullname" .) (.Values.global.environment.name) ("svc.cluster.local")) | join "." }}
 {{- end }}
 

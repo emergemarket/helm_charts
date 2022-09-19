@@ -1,0 +1,21 @@
+global:
+  environment: 
+    name: devopstest
+    dependencies:
+      database:
+        mssql: 
+          required: true
+          sqlservername: "db-emergetec-demo.database.windows.net"
+        mongodb:
+          required: false
+        elasticsearch: 
+          required: false
+
+vault:
+    roleName: rfp
+    secrets:
+        RabbitMqHost__Username: "rabbitmq#${.username}"
+        RabbitMqHost__Password: "rabbitmq#${.password}"
+        Orleans__MembershipConnectionString: vault:azuresql/creds/{{ .Values.global.environment.name }}-rfp-lanes#Server=tcp:db-emergetec-demo.database.windows.net,1433;Initial Catalog={{ .Values.global.environment.name }}-rfp-lanes;Persist Security Info=False;User ID=${.username};Password=${.password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;
+        ConnectionStrings__EventFlow: vault:azuresql/creds/{{ .Values.global.environment.name }}-rfp-lanes#Server=tcp:db-emergetec-demo.database.windows.net,1433;Initial Catalog={{ .Values.global.environment.name }}-rfp-lanes;Persist Security Info=False;User ID=${.username};Password=${.password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;
+        ConnectionStrings__DataWarehouse: vault:azuresql/creds/{{ .Values.global.environment.name }}-rfp-mini-dw#Server=tcp:db-emergetec-demo.database.windows.net,1433;Initial Catalog={{ .Values.global.environment.name }}-rfp-mini-dw;Persist Security Info=False;User ID=${.username};Password=${.password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;
