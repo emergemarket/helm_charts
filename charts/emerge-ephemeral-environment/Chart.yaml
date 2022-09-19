@@ -10,7 +10,7 @@ dependencies:
     repository: https://mongodb.github.io/helm-charts
     condition: global.environment.dependencies.database.mongodb.required
   - name: emerge-mssql
-    version: "1.0.6"
+    version: "1.0.5"
     repository: https://charts.emergemarket.io
     condition: global.environment.dependencies.database.mssql.required
   - name: emerge-mongodb
