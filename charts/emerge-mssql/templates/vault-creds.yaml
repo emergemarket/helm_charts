@@ -11,7 +11,7 @@ spec:
   backoffLimit: 4
   template:
     metadata:
-      name: "vault-mongodb-credentials-gen"
+      name: "vault-mssql-credentials-gen"
     spec:
       restartPolicy: Never
       containers:
