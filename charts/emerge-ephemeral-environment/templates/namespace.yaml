@@ -1,3 +1,4 @@
+{{- if not (contains .Values.global.environment.name "prod")}}
 {{ if ((.Values.global).environment.name) }}
 apiVersion: v1
 kind: Namespace
@@ -11,4 +12,5 @@ metadata:
     "helm.sh/hook": pre-install
     "helm.sh/hook-weight": "-5"
     "helm.sh/hook-delete-policy": hook-succeeded
+{{ end }}
 {{ end }}

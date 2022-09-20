@@ -1,15 +1,15 @@
 {{- if not (contains .Values.global.environment.name "prod")}}
-{{- if .Values.global.environment.dependencies.database.mssql.required }}
+{{- if .Values.global.environment.dependencies.database.elasticsearch.required }}
 apiVersion: networking.istio.io/v1beta1
 kind: ServiceEntry
 metadata:
-  name: {{ include "mssql-latest.fullname" . }}
+  name: elastic-se
   namespace: {{ .Values.global.environment.name }}
-  labels:
-  {{- include "mssql-latest.labels" . | nindent 4 }}
 spec:
   hosts:
-  {{- include "mssql.hostnames" . | nindent 4 }}
+    {{- range .Values.elasticsearch.overrideHosts }}
+    - {{.}}
+    {{- end }}
   location: MESH_INTERNAL
   ports:
   - number: 1433

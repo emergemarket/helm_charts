@@ -1,3 +1,4 @@
+{{- if not (contains .Values.global.environment.name "prod")}}
 {{- if .Values.global.environment.dependencies.database.mssql.required }}
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
@@ -17,4 +18,4 @@ spec:
     - destination:
         host: {{ (list (include "mssql-latest.fullname" .) (.Values.global.environment.name) ("svc.cluster.local")) | join "." }}
 {{- end }}
-
+{{- end }}

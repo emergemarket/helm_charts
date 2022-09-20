@@ -1,0 +1,32 @@
+{{- if not (contains .Values.global.environment.name "prod")}}
+{{- if .Values.global.environment.dependencies.database.mongodb.required }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: vault-mongodb-credentials-gen
+  namespace: {{ .Values.global.environment.name }}
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  ttlSecondsAfterFinished: 60
+  backoffLimit: 4
+  template:
+    metadata:
+      name: "vault-mongodb-credentials-gen"
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: dbcreds
+          image: registry.gitlab.com/emergetech/core/devops/secret_helper:0.1.0
+          args: 
+            - -e
+            - {{ .Values.global.environment.name | quote }}
+            - -t
+            - mongodb
+          imagePullPolicy: Always
+      imagePullSecrets:
+        - name: {{ default "gitlab" ((.Values).pullSecret) }}
+{{- end -}}
+{{- end }}

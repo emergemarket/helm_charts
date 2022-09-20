@@ -1,0 +1,20 @@
+{{- if not (contains .Values.global.environment.name "prod")}}
+{{- if .Values.global.environment.dependencies.database.elasticsearch.required }}
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: elastic-vs
+  namespace: {{ .Values.global.environment.name }}
+spec:
+  hosts:
+    {{- range .Values.elasticsearch.overrideHosts }}
+    - {{.}}
+    {{- end }}
+  tcp:
+  - match:
+    - port: 1433
+    route:
+    - destination:
+        host: elasticsearch-master
+{{- end }}
+{{- end }}

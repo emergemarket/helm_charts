@@ -5,12 +5,35 @@ global:
       database:
         mssql: 
           required: true
-          sqlservername: "db-emergetec-demo.database.windows.net"
         mongodb:
-          required: false
+          required: true
         elasticsearch: 
-          required: false
+          required: true
+mongodb:
+  resource:
+    name: mongodb
+    version: 5.0.9
+    members: 1
+    tls:
+      enabled: false
+      certificateKeySecretRef: tls-certificate
+      caCertificateSecretRef: tls-ca-key-pair
+      certManager:
+        certDuration: 8760h   # 365 days
+        renewCertBefore: 720h   # 30 days
 
+elasticsearch:
+  persistence:
+    enabled: false
+  secret:
+    enabled: false
+  protocol: http
+  maxUnavailable: 0
+  overrideHosts:
+  - host1.com
+  - host2.com
+  - host3.com
+  - host4.com
 vault:
     roleName: rfp
     secrets:

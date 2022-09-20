@@ -5,19 +5,11 @@ name: environment-template
 version: 0.0.5
 
 dependencies:
-  - name: community-operator-crds
-    version: 0.7.4
-    repository: https://mongodb.github.io/helm-charts
-    condition: global.environment.dependencies.database.mongodb.required
   - name: emerge-mssql
     version: "1.0.6"
     repository: https://charts.emergemarket.io
     condition: global.environment.dependencies.database.mssql.required
-  - name: emerge-mongodb
-    version: "0.0.3"
-    repository: https://charts.emergemarket.io
-    condition: global.environment.dependencies.database.mongodb.required
-  - name: emerge-elasticsearch
-    version: "0.0.1"
-    repository: https://charts.emergemarket.io
+  - name: elasticsearch 
+    version: "7.17.3"
+    repository: https://helm.elastic.co
     condition: global.environment.dependencies.database.elasticsearch.required

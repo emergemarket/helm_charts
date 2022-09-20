@@ -1,0 +1,107 @@
+{{- if not (contains .Values.global.environment.name "prod")}}
+{{- if .Values.global.environment.dependencies.database.mongodb.required }}
+apiVersion: mongodbcommunity.mongodb.com/v1
+kind: MongoDBCommunity
+metadata:
+  name: {{ list .Values.global.environment.name .Values.mongodb.resource.name | join "-" }}
+  namespace: {{ .Values.global.environment.name }}
+spec:
+  members: {{ .Values.mongodb.resource.members }}
+  type: ReplicaSet
+  version: {{ .Values.mongodb.resource.version }}
+  security:
+    tls:
+      enabled: {{ .Values.mongodb.resource.tls.enabled }}
+      {{- if .Values.mongodb.resource.tls.enabled }}
+      certificateKeySecretRef:
+        name: {{ .Values.mongodb.resource.tls.certificateKeySecretRef }}
+      caCertificateSecretRef:
+        name: {{ .Values.mongodb.resource.tls.caCertificateSecretRef }}
+      {{- end }}
+    authentication:
+      modes: ["SCRAM"]
+  users:
+    - name: admin
+      db: admin
+      passwordSecretRef: # a reference to the secret that will be used to generate the user's password
+        name: mongo-admin-secret
+      roles:
+        - name: clusterAdmin
+          db: admin
+        - name: userAdminAnyDatabase
+          db: admin
+      scramCredentialsSecretName: my-scram
+  statefulSet:
+    spec:
+      replicas: {{ .Values.mongodb.resource.members }}
+      serviceName: "{{ include "mongodb.database.name" . }}-svc"
+      template:
+        metadata:
+          annotations:
+            agent.mongodb.com/version: "1"
+          labels:
+            vault.security.banzaicloud.io/vault-skip-verify: "true"
+            vault.security.banzaicloud.io/vault-env-daemon: "true"
+            vault.security.banzaicloud.io/enable-json-log: "true"
+            vault.security.banzaicloud.io/mutate-configmap: "true"
+            vault.security.banzaicloud.io/vault-max-retries: "10"
+            vault.security.banzaicloud.io/vault-client-timeout: "2m"
+            vault.security.banzaicloud.io/vault-role: application
+        spec:
+          volumes:
+            - name: db
+              emptyDir: {}
+            - name: configdb
+              emptyDir: {}
+          imagePullSecrets:
+            - name: {{ default "gitlab" ((.Values).pullSecret) }}
+          containers:
+            - name: mongodb-agent
+              readinessProbe:
+                exec:
+                  command:
+                    - grep
+                    - -q
+                    - '"IsInGoalState":true'
+                    - /var/log/mongodb-mms-automation/healthstatus/agent-health-status.json
+                failureThreshold: 60
+                initialDelaySeconds: 15
+                periodSeconds: 5
+                timeout: 30
+            - name: mongod
+              volumeMounts:
+                - name: db
+                  mountPath: /data/db/
+                - name: configdb
+                  mountPath: /data/configdb/
+          initContainers:
+            - command:
+                - chown
+                - -R
+                - "2000"
+                - /data
+              image: busybox
+              volumeMounts:
+              - mountPath: /data
+                name: data-volume
+              securityContext:
+                runAsNonRoot: false
+                runAsUser: 0
+                runAsGroup: 0
+              name: change-datadir-permissions
+            - command:
+                - chown
+                - -R
+                - "2000"
+                - /var/log/mongodb-mms-automation
+              image: busybox
+              volumeMounts:
+              - mountPath: /var/log/mongodb-mms-automation
+                name: logs-volume
+              securityContext:
+                runAsNonRoot: false
+                runAsUser: 0
+                runAsGroup: 0
+              name: change-logdir-permissions
+{{- end }}
+{{- end }}

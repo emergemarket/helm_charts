@@ -1,0 +1,39 @@
+{{- if not (contains .Values.global.environment.name "prod")}}
+{{- if .Values.global.environment.dependencies.database.mssql.required }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb1
+  namespace: {{ .Values.global.environment.name }}
+spec:
+  type: ExternalName
+  sessionAffinity: None
+  externalName: "{{ include "mongodb.database.name" . }}-svc"
+  internalTrafficPolicy: Cluster
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb2
+  namespace: {{ .Values.global.environment.name }}
+spec:
+  type: ExternalName
+  sessionAffinity: None
+  externalName: "{{ include "mongodb.database.name" . }}-svc"
+  internalTrafficPolicy: Cluster
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb3
+  namespace: {{ .Values.global.environment.name }}
+spec:
+  type: ExternalName
+  sessionAffinity: None
+  externalName: "{{ include "mongodb.database.name" . }}-svc"
+  internalTrafficPolicy: Cluster
+
+{{- end }}
+{{- end }}
+
+
