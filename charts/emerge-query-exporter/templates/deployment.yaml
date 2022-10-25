@@ -5,6 +5,8 @@ metadata:
   name: {{ include "query-exporter.fullname" . }}
   labels:
     {{- include "query-exporter.labels" . | nindent 4 }}
+  annotations:
+    configmap.reloader.stakater.com/reload: {{ include "query-exporter.fullname" . }}
 spec:
   progressDeadlineSeconds: 600
   revisionHistoryLimit: 10
