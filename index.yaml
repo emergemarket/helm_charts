@@ -1014,6 +1014,20 @@ entries:
   query-exporter:
   - apiVersion: v1
     appVersion: 2.7.0
+    created: "2022-10-25T17:32:27.139416826Z"
+    description: A Helm chart for Kubernetes to run query-exporter
+    digest: 3552ca975fca06c38589f0dd1f17d7697022a76b6fb857917fb32900aa9f8d56
+    home: https://github.com/albertodonato/query-exporter
+    icon: https://helm.sh/img/helm-logo.svg
+    keywords:
+    - exporter
+    - prometheus
+    name: query-exporter
+    urls:
+    - https://github.com/emergemarket/helm_charts/releases/download/query-exporter-0.0.5/query-exporter-0.0.5.tgz
+    version: 0.0.5
+  - apiVersion: v1
+    appVersion: 2.7.0
     created: "2022-10-25T17:19:22.331355066Z"
     description: A Helm chart for Kubernetes to run query-exporter
     digest: 72d83cf000edeab0a01b2f2c59a8ca34023cdaa81b2f04e65096fcabdf413f03
@@ -1054,4 +1068,4 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/query-exporter-0.0.2/query-exporter-0.0.2.tgz
     version: 0.0.2
-generated: "2022-10-25T17:19:22.331766697Z"
+generated: "2022-10-25T17:32:27.139780353Z"
