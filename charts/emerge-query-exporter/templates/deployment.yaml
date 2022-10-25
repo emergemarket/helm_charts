@@ -75,6 +75,10 @@ spec:
             - mountPath: /config
               readOnly: true
               name: {{ include "query-exporter.fullname" . }}
+            - mountPath: /tmp
+              name: tmp-vol
+            - mountPath: /.cache/pip
+              name: pip-cache
         {{- with .Values.extraVolumeMounts }}
             {{- toYaml . | nindent 12 }}
         {{- end }}
@@ -99,6 +103,10 @@ spec:
             items:
               - key: config.yaml
                 path: config.yaml
+        - name: tmp-vol
+          emptyDir: {}
+        - name: pip-cache
+          emptyDir: {}
     {{- with .Values.extraVolumes }}
         {{- toYaml . | nindent 8 }}
     {{- end }}
