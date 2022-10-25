@@ -1011,4 +1011,19 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/mssql-latest-0.1.1/mssql-latest-0.1.1.tgz
     version: 0.1.1
-generated: "2022-09-20T23:32:22.074033949Z"
+  query-exporter:
+  - apiVersion: v1
+    appVersion: 2.7.0
+    created: "2022-10-25T16:33:13.553507356Z"
+    description: A Helm chart for Kubernetes to run query-exporter
+    digest: 5adad593077944d3bfefaaa7ba71a0b70513ae8bbc79d9d455d13062aaaa1df5
+    home: https://github.com/albertodonato/query-exporter
+    icon: https://helm.sh/img/helm-logo.svg
+    keywords:
+    - exporter
+    - prometheus
+    name: query-exporter
+    urls:
+    - https://github.com/emergemarket/helm_charts/releases/download/query-exporter-0.0.2/query-exporter-0.0.2.tgz
+    version: 0.0.2
+generated: "2022-10-25T16:33:13.553890661Z"
