@@ -16,7 +16,10 @@
 {{- if ((.Values.vault).secrets.ConnectionStrings__Market) -}}
 {{ $Market = (regexReplaceAll "=.*:(.*)," (regexFind "=.*:(.*)," ((.Values.vault).secrets.ConnectionStrings__Market) ) "${1}") }}
 {{- end -}}
-{{- list $EventFlow $Orleans $DataWarehouse $Market | compact | uniq | toYaml -}}
+{{- if ((.Values.vault).secrets.Quartz__QuartzDataSourceQuartzDSConnectionString) -}}
+{{ $Quartz = (regexReplaceAll "=.*:(.*)," (regexFind "=.*:(.*)," ((.Values.vault).secrets.Quartz__QuartzDataSourceQuartzDSConnectionString) ) "${1}") }}
+{{- end -}}
+{{- list $EventFlow $Orleans $DataWarehouse $Market $Quartz | compact | uniq | toYaml -}}
 {{- end -}}
 
 {{- define "mssql-latest.name" -}}
