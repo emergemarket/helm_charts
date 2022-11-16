@@ -4,6 +4,7 @@
 {{- $Orleans := "" -}}
 {{- $DataWarehouse := "" -}}
 {{- $Market := "" -}}
+{{- $Quartz := "" -}}
 {{- if (((.Values.vault).secrets).ConnectionStrings__EventFlow) -}}
 {{ $EventFlow = (regexReplaceAll "=.*:(.*)," (regexFind "=.*:(.*)," ((.Values.vault).secrets.ConnectionStrings__EventFlow) ) "${1}" )}}
 {{- end -}}
