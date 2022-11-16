@@ -45,25 +45,25 @@ spec:
           ports:
             - containerPort: {{ .Values.containers.ports.containerPort}}
           env:
-           - name: MSSQL_PID
-             value: "{{ .Values.MSSQL_PID.value}}"
-           - name: ACCEPT_EULA
-             value: "{{ .Values.ACCEPT_EULA.value | upper}}"
-           - name: MSSQL_AGENT_ENABLED
-             value: "{{ .Values.MSSQL_AGENT_ENABLED.value}}"
-           - name: SA_PASSWORD
-             value: "vault:secrets/data/EphemeralEnvironment/{{ .Values.global.environment.name }}/azsql/password#value"
+            - name: MSSQL_PID
+              value: "{{ .Values.MSSQL_PID.value}}"
+            - name: ACCEPT_EULA
+              value: "{{ .Values.ACCEPT_EULA.value | upper}}"
+            - name: MSSQL_AGENT_ENABLED
+              value: "{{ .Values.MSSQL_AGENT_ENABLED.value}}"
+            - name: SA_PASSWORD
+              value: "vault:secrets/data/EphemeralEnvironment/{{ .Values.global.environment.name }}/azsql/password#value"
           volumeMounts:
-           - name: mssqldb
-             mountPath: /var/opt/mssql
-           - name: mssqluserdb
-             mountPath: /var/opt/mssql/userdata
-           - name: mssqllog
-             mountPath: /var/opt/mssql/userlog
-           - name: mssqltemp
-             mountPath: /var/opt/mssql/tempdb
-           - name: mssql-config-volume
-             mountPath: /var/opt/config
+            - name: mssqldb
+              mountPath: /var/opt/mssql
+            - name: mssqluserdb
+              mountPath: /var/opt/mssql/userdata
+            - name: mssqllog
+              mountPath: /var/opt/mssql/userlog
+            - name: mssqltemp
+              mountPath: /var/opt/mssql/tempdb
+            - name: mssql-config-volume
+              mountPath: /var/opt/config
           resources:
             limits:
               memory: "5Gi"
@@ -72,19 +72,19 @@ spec:
               memory: "2.5Gi"
               cpu: "4"
       volumes:
-       - name: mssqldb
-         persistentVolumeClaim:
-          claimName: {{ include "mssql-latest.fullname" . }}-data
-       - name: mssqluserdb
-         persistentVolumeClaim:
-          claimName: {{ include "mssql-latest.fullname" . }}-userdb
-       - name: mssqllog
-         persistentVolumeClaim:
-          claimName: {{ include "mssql-latest.fullname" . }}-log
-       - name: mssqltemp
-         persistentVolumeClaim:
-          claimName: {{ include "mssql-latest.fullname" . }}-temp          
-       - name: mssql-config-volume
-         configMap:
-          name: mssql-config
+        - name: mssqldb
+          persistentVolumeClaim:
+            claimName: {{ include "mssql-latest.fullname" . }}-data
+        - name: mssqluserdb
+          persistentVolumeClaim:
+            claimName: {{ include "mssql-latest.fullname" . }}-userdb
+        - name: mssqllog
+          persistentVolumeClaim:
+            claimName: {{ include "mssql-latest.fullname" . }}-log
+        - name: mssqltemp
+          persistentVolumeClaim:
+            claimName: {{ include "mssql-latest.fullname" . }}-temp          
+        - name: mssql-config-volume
+          configMap:
+            name: mssql-config
 {{- end }}

@@ -10,8 +10,9 @@ metadata:
     ephemeral: "true"
     envType: "ephemeral"
   annotations:
-    # "helm.sh/hook": pre-install
-    "helm.sh/hook-weight": "-5"
-    # "helm.sh/hook-delete-policy": before-hook-creation # hook-succeeded
+    helm.sh/hook: pre-install
+    helm.sh/hook-weight: "-6"
+    helm.sh/hook-delete-policy: before-hook-creation # hook-succeeded
+    argocd.argoproj.io/sync-wave: "-6"
 {{ end }}
 {{ end }}

@@ -23,7 +23,7 @@ metadata:
     volume.beta.kubernetes.io/storage-class: "azure-files"
 spec:
   accessModes:
-  - "ReadWriteMany"
+    - "ReadWriteMany"
   resources:
     requests:
       storage: 5Gi
@@ -37,7 +37,7 @@ metadata:
     volume.beta.kubernetes.io/storage-class: "azure-files"
 spec:
   accessModes:
-  - "ReadWriteMany"
+    - "ReadWriteMany"
   resources:
     requests:
       storage: 5Gi
@@ -51,7 +51,7 @@ metadata:
     volume.beta.kubernetes.io/storage-class: "azure-files"
 spec:
   accessModes:
-   - "ReadWriteMany"
+    - "ReadWriteMany"
   resources:
     requests:
       storage: 5Gi
@@ -65,7 +65,7 @@ metadata:
     volume.beta.kubernetes.io/storage-class: "azure-files"
 spec:
   accessModes:
-   - "ReadWriteMany"
+    - "ReadWriteMany"
   resources:
     requests:
       storage: 5Gi
