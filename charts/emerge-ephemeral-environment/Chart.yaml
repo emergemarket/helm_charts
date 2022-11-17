@@ -6,7 +6,7 @@ version: 0.0.12
 
 dependencies:
   - name: emerge-mssql
-    version: "1.0.6"
+    version: "1.0.8"
     repository: https://charts.emergemarket.io
     condition: global.environment.dependencies.database.mssql.required
   - name: elasticsearch
