@@ -934,6 +934,24 @@ entries:
   environment-template:
   - apiVersion: v2
     appVersion: latest
+    created: "2022-11-17T13:44:32.139494033Z"
+    dependencies:
+    - condition: global.environment.dependencies.database.mssql.required
+      name: emerge-mssql
+      repository: https://charts.emergemarket.io
+      version: 1.0.10
+    - condition: global.environment.dependencies.database.elasticsearch.required
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    description: A Helm chart for Kubernetes
+    digest: e095fca2d67e74da0fe6cb01061a4b2f71036b17515e56361282883f2fd6182b
+    name: environment-template
+    urls:
+    - https://github.com/emergemarket/helm_charts/releases/download/environment-template-0.0.17/environment-template-0.0.17.tgz
+    version: 0.0.17
+  - apiVersion: v2
+    appVersion: latest
     created: "2022-11-17T13:40:08.211122105Z"
     dependencies:
     - condition: global.environment.dependencies.database.mssql.required
@@ -1274,4 +1292,4 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/query-exporter-0.0.2/query-exporter-0.0.2.tgz
     version: 0.0.2
-generated: "2022-11-17T13:42:18.244390345Z"
+generated: "2022-11-17T13:44:32.139923339Z"
