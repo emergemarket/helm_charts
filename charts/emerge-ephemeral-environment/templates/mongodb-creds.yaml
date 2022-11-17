@@ -4,7 +4,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: vault-mongodb-credentials-gen
-  namespace: {{ .Values.global.environment.name }}
+  namespace: gitlab # {{ .Values.global.environment.name }}
   annotations:
     # "helm.sh/hook": pre-install
     "helm.sh/hook-weight": "-4"
