@@ -2,7 +2,7 @@ apiVersion: v2
 appVersion: "latest"
 description: A Helm chart for Kubernetes
 name: environment-template
-version: 0.0.16
+version: 0.0.17
 
 dependencies:
   - name: emerge-mssql
