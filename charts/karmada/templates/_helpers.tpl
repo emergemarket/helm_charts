@@ -10,7 +10,7 @@
 
 {{- define "karmada.apiserver.labels" -}}
 {{- if .Values.apiServer.labels }}
-{{- range $key, $value := .Values.apiServer.labels}}
+{{- range $key, $value := .Values.apiServer.labels -}}
 {{ $key }}: {{ $value }}
 {{- end }}
 {{- else}}
@@ -20,7 +20,7 @@ app: {{- include "karmada.name" .}}-apiserver
 
 {{- define "karmada.apiserver.service.labels" -}}
 {{- if .Values.apiServer.service.labels }}
-{{- range $key, $value := .Values.apiServer.service.labels -}}
+{{- range $key, $value := .Values.apiServer.service.labels }}
 {{ $key }}: {{ $value }}
 {{- end }}
 {{- else}}
@@ -29,10 +29,10 @@ app: {{- include "karmada.name" .}}-apiserver
 {{- end -}}
 
 {{- define "karmada.apiserver.service.annotations" -}}
-{{- if .Values.apiServer.service.annotations }}
-{{- range $key, $value := .Values.apiServer.service.annotations -}}
+{{- if .Values.apiServer.service.annotations -}}
+{{- range $key, $value := .Values.apiServer.service.annotations }}
 {{ $key }}: {{ $value }}
-{{- end }}
+{{- end -}}
 {{- end -}}
 {{- end -}}
 

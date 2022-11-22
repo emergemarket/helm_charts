@@ -101,7 +101,7 @@ scheduler:
   imagePullSecrets: [ ]
   image:
     ## @param scheduler.image.repository image of the scheduler
-    repository: swr.ap-southeast-1.myhuaweicloud.com/karmada/karmada-scheduler
+    repository: docker.io/karmada/karmada-scheduler
     ## @param scheduler.image.pullPolicy pull policy of image
     pullPolicy: IfNotPresent
     ## @param scheduler.image.tag overrides the image tag whose default is the latest
@@ -145,7 +145,7 @@ webhook:
   imagePullSecrets: [ ]
   image:
     ## @param webhook.image.repository image of the webhook
-    repository: swr.ap-southeast-1.myhuaweicloud.com/karmada/karmada-webhook
+    repository: docker.io/karmada/karmada-webhook
     ## @param webhook.image.pullPolicy pull policy of image
     pullPolicy: IfNotPresent
     ## @param webhook.image.tag overrides the image tag whose default is the latest
@@ -189,7 +189,7 @@ controllerManager:
   imagePullSecrets: [ ]
   image:
     ## @param controllerManager.image.repository image of the controller manager
-    repository: swr.ap-southeast-1.myhuaweicloud.com/karmada/karmada-controller-manager
+    repository: docker.io/karmada/karmada-controller-manager
     ## @param controllerManager.image.pullPolicy pull policy of image
     pullPolicy: IfNotPresent
     ## @param controllerManager.image.tag overrides the image tag whose default is the latest
@@ -305,7 +305,7 @@ aggregatedApiServer:
   imagePullSecrets: []
   image:
     ## @param aggregatedApiServer.image.repository image of the apiserver
-    repository: swr.ap-southeast-1.myhuaweicloud.com/karmada/karmada-aggregated-apiserver
+    repository: docker.io/karmada/karmada-aggregated-apiserver
     ## @param aggregatedApiServer.image.pullPolicy pull policy of image
     pullPolicy: IfNotPresent
     ## @param aggregatedApiServer.image.tag overrides the image tag whose default is the latest
@@ -474,7 +474,7 @@ agent:
   imagePullSecrets: [ ]
   image:
     ## @param agent.image.repository image of the agent
-    repository: swr.ap-southeast-1.myhuaweicloud.com/karmada/karmada-agent
+    repository: docker.io/karmada/karmada-agent
     ## @param agent.image.pullPolicy pull policy of image
     pullPolicy: IfNotPresent
     ## @param agent.image.tag overrides the image tag whose default is the latest
@@ -538,7 +538,7 @@ schedulerEstimator:
   imagePullSecrets: [ ]
   image:
     ## @param schedulerEstimator.image.repository image of the apiserver
-    repository: swr.ap-southeast-1.myhuaweicloud.com/karmada/karmada-scheduler-estimator
+    repository: docker.io/karmada/karmada-scheduler-estimator
     ## @param schedulerEstimator.image.pullPolicy pull policy of image
     pullPolicy: IfNotPresent
     ## @param schedulerEstimator.image.tag overrides the image tag whose default is the latest
@@ -582,7 +582,7 @@ descheduler:
   imagePullSecrets: [ ]
   image:
     ## @param descheduler.image.repository image of the descheduler
-    repository: swr.ap-southeast-1.myhuaweicloud.com/karmada/karmada-descheduler
+    repository: docker.io/karmada/karmada-descheduler
     ## @param descheduler.image.pullPolicy pull policy of image
     pullPolicy: IfNotPresent
     ## @param descheduler.image.tag overrides the image tag whose default is the latest
@@ -627,7 +627,7 @@ search:
   imagePullSecrets: [ ]
   image:
     ## @param search.image.repository image of the descheduler
-    repository: swr.ap-southeast-1.myhuaweicloud.com/karmada/karmada-search
+    repository: docker.io/karmada/karmada-search
     ## @param search.image.pullPolicy pull policy of image
     pullPolicy: IfNotPresent
     ## @param search.image.tag overrides the image tag whose default is the latest
