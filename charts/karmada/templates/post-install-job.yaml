@@ -12,8 +12,6 @@ data:
     {{- include "karmada.webhook.configuration" . | nindent 4 }}
   {{- print "system-namespace.yaml: " | nindent 2 }} |-
     {{- include "karmada.systemNamespace" . | nindent 4 }}
-  {{- print "karmada-aggregated-apiserver-apiservice.yaml: " | nindent 6 }} |-
-    {{- include "karmada.apiservice" . | nindent 8 }}
   {{- print "cluster-proxy-admin-rbac.yaml: " | nindent 2 }} |-
     {{- include "karmada.proxyRbac" . | nindent 4 }}
 ---
@@ -84,14 +82,14 @@ spec:
       containers:
       - name: post-install
         image: {{ .Values.postInstallJob.postInstallContainerImage }}
-        imagePullPolicy: {{ .Values.kubectl.image.pullPolicy }}
+        imagePullPolicy: IfNotPresent
         command:
         - /bin/sh
         - -c
         - |
           bash <<'EOF'
           set -ex
-          kubectl apply -k /crds --kubeconfig /etc/kubeconfig
+          kubectl kustomize /crds | kubectl apply --kubeconfig /etc/kubeconfig -f -
           kubectl apply -f /static-resources --kubeconfig /etc/kubeconfig
           EOF
         volumeMounts:

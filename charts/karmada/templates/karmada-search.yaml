@@ -7,23 +7,26 @@ metadata:
   name: {{ $name }}-search
   namespace: {{ include "karmada.namespace" . }}
   labels:
-  {{- include "karmada.search.labels" . | nindent 4 }}
+  {{- include "karmada.search.labels" . | nindent 4}}
 spec:
   selector:
     matchLabels:
-    {{- include "karmada.search.labels" . | nindent 6 }}
+    {{- include "karmada.search.labels" . | nindent 6}}
   replicas: {{ .Values.search.replicaCount }}
   template:
     metadata:
-      {{- with .Values.search.podAnnotations }}
+      {{- with .Values.search.podAnnotations}}
       annotations:
       {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-      {{- include "karmada.search.labels" . | nindent 8 }}
-      {{- include "karmada.search.podLabels" . | indent 8 }}
+      {{- include "karmada.search.labels" . | nindent 8}}
+      {{- include "karmada.search.podLabels" . | indent 8}}
     spec:
-      {{- include "karmada.search.imagePullSecrets" . | nindent 6 }}
+      {{- with .Values.search.imagePullSecrets }}
+      imagePullSecrets:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- with .Values.search.nodeSelector }}
       nodeSelector:
       {{- toYaml . | nindent 8 }}
@@ -32,7 +35,7 @@ spec:
       affinity:
       {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.search.tolerations }}
+      {{- with .Values.search.tolerations}}
       tolerations:
       {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -63,15 +66,6 @@ spec:
             - --feature-gates=APIPriorityAndFairness=false
             - --audit-log-maxage=0
             - --audit-log-maxbackup=0
-          livenessProbe:
-            httpGet:
-              path: /livez
-              port: 443
-              scheme: HTTPS
-            failureThreshold: 3
-            initialDelaySeconds: 15
-            periodSeconds: 15
-            timeoutSeconds: 5
           resources:
           {{- toYaml .Values.apiServer.resources | nindent 12 }}
       volumes:
@@ -88,13 +82,13 @@ metadata:
   name: {{ $name }}-search
   namespace: {{ include "karmada.namespace" . }}
   labels:
-    {{- include "karmada.search.labels" . | nindent 4 }}
+    {{- include "karmada.search.labels" . | nindent 4}}
 spec:
   ports:
     - port: 443
       protocol: TCP
       targetPort: 443
   selector:
-    {{- include "karmada.search.labels" . | nindent 4 }}
+    {{- include "karmada.search.labels" . | nindent 4}}
 
 {{- end }}

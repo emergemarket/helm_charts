@@ -12,12 +12,12 @@ metadata:
   name: {{ $name }}-controller-manager
   namespace: {{ include "karmada.namespace" . }}
   labels:
-  {{- include "karmada.cm.labels" . | nindent 4 }}
+  {{- include "karmada.cm.labels" . | nindent 4}}
 spec:
   replicas: {{  .Values.controllerManager.replicaCount }}
   selector:
     matchLabels:
-      {{- include "karmada.cm.labels" . | nindent 6 }}
+      {{- include "karmada.cm.labels" . | nindent 6}}
   {{- with .Values.controllerManager.strategy }}
   strategy:
   {{- toYaml . | nindent 8 }}
@@ -29,10 +29,13 @@ spec:
       {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "karmada.cm.labels" . | nindent 8 }}
-        {{- include "karmada.cm.podLabels" . | nindent 8 }}
+        {{- include "karmada.cm.labels" . | nindent 8}}
+        {{- include "karmada.cm.podLabels" . | nindent 8}}
     spec:
-      {{- include "karmada.controllerManager.imagePullSecrets" . | nindent 6 }}
+      {{- with .Values.controllerManager.imagePullSecrets }}
+      imagePullSecrets:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
       serviceAccountName: {{ $name }}-controller-manager
       {{- with .Values.controllerManager.nodeSelector }}
       nodeSelector:
@@ -47,7 +50,7 @@ spec:
       {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
-      {{- include "karmada.kubeconfig.volume" . | nindent 8 }}
+      {{- include "karmada.kubeconfig.volume" . | nindent 8}}
       containers:
         - name: {{ $name }}-controller-manager
           image: "{{ .Values.controllerManager.image.repository }}:{{ .Values.controllerManager.image.tag | default "latest" }}"
@@ -58,19 +61,9 @@ spec:
             - --bind-address=0.0.0.0
             - --cluster-status-update-frequency=10s
             - --secure-port=10357
-            - --leader-elect-resource-namespace={{ include "karmada.namespace" . }}
             - --v=2
-          livenessProbe:
-            httpGet:
-              path: /healthz
-              port: 10357
-              scheme: HTTP
-            failureThreshold: 3
-            initialDelaySeconds: 15
-            periodSeconds: 15
-            timeoutSeconds: 5
           volumeMounts:
-          {{- include "karmada.kubeconfig.volumeMount" . | nindent 12 }}
+          {{- include "karmada.kubeconfig.volumeMount" . | nindent 12}}
           resources:
           {{- toYaml .Values.controllerManager.resources | nindent 12 }}
 ---

@@ -28,7 +28,7 @@ spec:
       containers:
         - name: post-delete
           image: {{ .Values.postDeleteJob.postDeleteContainerImage }}
-          imagePullPolicy: {{ .Values.kubectl.image.pullPolicy }}
+          imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
             - -c

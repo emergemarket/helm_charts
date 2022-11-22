@@ -6,12 +6,12 @@ metadata:
   name: {{ $name }}-apiserver
   namespace: {{ include "karmada.namespace" . }}
   labels:
-  {{- include "karmada.apiserver.labels" . | nindent 4 }}
+  {{- include "karmada.apiserver.labels" . | nindent 4}}
 spec:
   replicas: {{ .Values.apiServer.replicaCount }}
   selector:
     matchLabels:
-      {{- include "karmada.apiserver.labels" . | nindent 6 }}
+      {{- include "karmada.apiserver.labels" . | nindent 6}}
   {{- with .Values.apiServer.strategy }}
   strategy:
   {{- toYaml . | nindent 8 }}
@@ -23,10 +23,13 @@ spec:
       {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "karmada.apiserver.labels" . | nindent 8 }}
-        {{- include "karmada.apiserver.podLabels" . | nindent 8 }}
+        {{- include "karmada.apiserver.labels" . | nindent 8}}
+        {{- include "karmada.apiserver.podLabels" . | nindent 8}}
     spec:
-      {{- include "karmada.apiServer.imagePullSecrets" . | nindent 6 }}
+      {{- with .Values.apiServer.imagePullSecrets }}
+      imagePullSecrets:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ $name }}-apiserver
           image: "{{ .Values.apiServer.image.repository }}:{{ .Values.apiServer.image.tag | default "latest" }}"
@@ -36,7 +39,6 @@ spec:
             - --allow-privileged=true
             - --authorization-mode=Node,RBAC
             - --client-ca-file=/etc/kubernetes/pki/server-ca.crt
-            - --disable-admission-plugins=StorageObjectInUseProtection,ServiceAccount
             - --enable-admission-plugins=NodeRestriction
             - --enable-bootstrap-token-auth=true
             {{- if eq .Values.etcd.mode "external" }}
@@ -45,14 +47,15 @@ spec:
             - --etcd-keyfile=/etc/etcd/pki/tls.key
             - --etcd-servers={{ .Values.etcd.external.servers }}
             - --etcd-prefix={{ .Values.etcd.external.registryPrefix }}
-            {{- end }}
+            {{- end  }}
             {{- if eq .Values.etcd.mode "internal" }}
             - --etcd-cafile=/etc/etcd/pki/server-ca.crt
             - --etcd-certfile=/etc/etcd/pki/karmada.crt
             - --etcd-keyfile=/etc/etcd/pki/karmada.key
             - --etcd-servers=https://etcd-client.{{ include "karmada.namespace" . }}.svc.{{ .Values.clusterDomain }}:2379
-            {{- end }}
+            {{- end  }}
             - --bind-address=0.0.0.0
+            - --insecure-port=0
             - --kubelet-client-certificate=/etc/kubernetes/pki/karmada.crt
             - --kubelet-client-key=/etc/kubernetes/pki/karmada.key
             - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
@@ -151,9 +154,9 @@ metadata:
   name: {{ $name }}-apiserver
   namespace: {{ include "karmada.namespace" . }}
   labels:
-  {{- include "karmada.apiserver.service.labels" . | nindent 4 }}
-  annotations: 
-  # {{- include "karmada.apiserver.service.annotations" . | nindent 4 }}
+  {{- include "karmada.apiserver.service.labels" . | nindent 4}}
+  annotations:
+  {{- include "karmada.apiserver.service.annotations" . | nindent 4}}
 spec:
   type: {{ .Values.apiServer.serviceType }}
   ports:

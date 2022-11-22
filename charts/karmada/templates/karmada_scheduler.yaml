@@ -13,27 +13,30 @@ metadata:
   name: {{ $name }}-scheduler
   namespace: {{ include "karmada.namespace" . }}
   labels:
-  {{- include "karmada.scheduler.labels" . | nindent 4 }}
+  {{- include "karmada.scheduler.labels" . | nindent 4}}
 spec:
   replicas: {{ .Values.scheduler.replicaCount }}
   selector:
     matchLabels:
-      {{- include "karmada.scheduler.labels" . | nindent 6 }}
+      {{- include "karmada.scheduler.labels" . | nindent 6}}
   {{- with .Values.scheduler.strategy }}
   strategy:
   {{- toYaml . | nindent 8 }}
   {{- end }}
   template:
     metadata:
-      {{- with .Values.scheduler.podAnnotations }}
+      {{- with .Values.scheduler.podAnnotations}}
       annotations:
       {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "karmada.scheduler.labels" . | nindent 8 }}
-        {{- include "karmada.scheduler.podLabels" . | nindent 8 }}
+        {{- include "karmada.scheduler.labels" . | nindent 8}}
+        {{- include "karmada.scheduler.podLabels" . | nindent 8}}
     spec:
-      {{- include "karmada.scheduler.imagePullSecrets" . | nindent 6 }}
+      {{- with .Values.scheduler.imagePullSecrets }}
+      imagePullSecrets:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- with .Values.scheduler.nodeSelector }}
       nodeSelector:
       {{- toYaml . | nindent 8 }}
@@ -57,22 +60,12 @@ spec:
             - --bind-address=0.0.0.0
             - --secure-port=10351
             - --feature-gates=Failover=true
-            - --leader-elect-resource-namespace={{ include "karmada.namespace" . }}
-          livenessProbe:
-            httpGet:
-              path: /healthz
-              port: 10351
-              scheme: HTTP
-            failureThreshold: 3
-            initialDelaySeconds: 15
-            periodSeconds: 15
-            timeoutSeconds: 5
           volumeMounts:
           {{- include "karmada.kubeconfig.volumeMount" . | nindent 12 }}
           resources:
           {{- toYaml .Values.scheduler.resources | nindent 12 }}
       volumes:
-      {{- include "karmada.kubeconfig.volume" . | nindent 8 }}
+      {{- include "karmada.kubeconfig.volume" . | nindent 8}}
 ---
 
 {{- end }}
