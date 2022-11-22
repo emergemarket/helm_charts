@@ -4,7 +4,7 @@ description: A Helm chart for karmada
 type: application
 kubeVersion: ">= 1.16.0-0"
 
-version: 0.0.1
+version: 0.0.2
 
 appVersion: v1.3.1
 
