@@ -19,19 +19,21 @@ app: {{- include "karmada.name" .}}-apiserver
 {{- end -}}
 
 {{- define "karmada.apiserver.service.labels" -}}
+labels:
 {{- if .Values.apiServer.service.labels }}
 {{- range $key, $value := .Values.apiServer.service.labels }}
-{{ $key }}: {{ $value }}
+  {{ $key }}: {{ $value }}
 {{- end }}
 {{- else}}
-app: {{- include "karmada.name" .}}-apiserver
+  app: {{- include "karmada.name" .}}-apiserver
 {{- end }}
 {{- end -}}
 
 {{- define "karmada.apiserver.service.annotations" -}}
 {{- if .Values.apiServer.service.annotations -}}
+annotations:
 {{- range $key, $value := .Values.apiServer.service.annotations }}
-{{ $key }}: {{ $value }}
+  {{ $key }}: {{ $value }}
 {{- end -}}
 {{- end -}}
 {{- end -}}

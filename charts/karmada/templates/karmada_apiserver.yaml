@@ -153,10 +153,8 @@ kind: Service
 metadata:
   name: {{ $name }}-apiserver
   namespace: {{ include "karmada.namespace" . }}
-  labels:
-  {{- include "karmada.apiserver.service.labels" . | nindent 4}}
-  annotations:
-  {{- include "karmada.apiserver.service.annotations" . | nindent 4}}
+  {{- include "karmada.apiserver.service.labels" . | nindent 2}}
+  {{- include "karmada.apiserver.service.annotations" . | nindent 2}}
 spec:
   type: {{ .Values.apiServer.serviceType }}
   ports:
