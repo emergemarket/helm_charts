@@ -1236,6 +1236,27 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/environment-template-0.0.1/environment-template-0.0.1.tgz
     version: 0.0.1
+  karmada:
+  - apiVersion: v2
+    appVersion: v1.3.1
+    created: "2022-11-22T01:46:39.282459518Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      version: 1.x.x
+    description: A Helm chart for karmada
+    digest: d065db8ff4da17a0272db86e9510914d194f453905aac932793d6b1d988e17c8
+    kubeVersion: '>= 1.16.0-0'
+    maintainers:
+    - email: jrkeen@hotmail.com
+      name: jrkeen
+    - email: jackson.cloudnative@gmail.com
+      name: pidb
+    name: karmada
+    type: application
+    urls:
+    - https://github.com/emergemarket/helm_charts/releases/download/karmada-0.0.2/karmada-0.0.2.tgz
+    version: 0.0.2
   mssql-latest:
   - annotations:
       catalog.cattle.io/hidden: "true"
@@ -1320,4 +1341,4 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/query-exporter-0.0.2/query-exporter-0.0.2.tgz
     version: 0.0.2
-generated: "2022-11-17T14:21:45.228704267Z"
+generated: "2022-11-22T01:46:39.28304943Z"
