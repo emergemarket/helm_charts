@@ -1,0 +1,21 @@
+apiVersion: v2
+name: karmada
+description: A Helm chart for karmada
+type: application
+kubeVersion: ">= 1.16.0-0"
+
+version: 0.0.1
+
+appVersion: v1.3.1
+
+dependencies:
+  - name: common
+    repository: https://charts.bitnami.com/bitnami
+    version: 1.x.x
+
+# This is karmada maintainers
+maintainers:
+  - name: jrkeen
+    email: jrkeen@hotmail.com
+  - name: pidb
+    email: jackson.cloudnative@gmail.com
