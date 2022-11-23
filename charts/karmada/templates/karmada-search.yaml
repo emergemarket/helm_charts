@@ -1,6 +1,6 @@
 {{- $name := include "karmada.name" . -}}
 
-{{- if and (eq .Values.installMode "component") (has "search" .Values.components) }}
+{{- if and (or (eq .Values.installMode "host") (eq .Values.installMode "component")) (has "search" .Values.components) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
