@@ -1239,6 +1239,17 @@ entries:
   karmada:
   - apiVersion: v2
     appVersion: v1.2.0
+    created: "2022-11-23T14:38:59.72621634Z"
+    description: A Helm chart for karmada
+    digest: ab9f96f71a4ee56518da00b9f48369fd6bce9f7388a8e4a0d11059c6b6af38c3
+    kubeVersion: '>= 1.16.0-0'
+    name: karmada
+    type: application
+    urls:
+    - https://github.com/emergemarket/helm_charts/releases/download/karmada-0.0.12/karmada-0.0.12.tgz
+    version: 0.0.12
+  - apiVersion: v2
+    appVersion: v1.2.0
     created: "2022-11-23T06:11:21.330541994Z"
     description: A Helm chart for karmada
     digest: f8c891d37ee0aaa8a574a561cb0238d965e1af59712f3dd67cb4ee08bb63f82e
@@ -1440,4 +1451,4 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/query-exporter-0.0.2/query-exporter-0.0.2.tgz
     version: 0.0.2
-generated: "2022-11-23T06:11:21.331097694Z"
+generated: "2022-11-23T14:38:59.726950546Z"
