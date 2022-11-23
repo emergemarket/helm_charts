@@ -17,7 +17,7 @@ type: application
 # runs an unsupported Kubernetes version.
 kubeVersion: ">= 1.16.0-0"
 
-version: 0.0.12
+version: 0.0.13
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
