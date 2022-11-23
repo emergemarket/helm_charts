@@ -8,6 +8,7 @@
 ## "component" means install selected components in the control-cluster
 installMode: "host"
 
+namespace: karmada-system
 ## @param clusterDomain default domain for karmada
 clusterDomain: "cluster.local"
 

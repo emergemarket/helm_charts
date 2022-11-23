@@ -17,7 +17,7 @@ webhooks:
         resources: ["propagationpolicies"]
         scope: "Namespaced"
     clientConfig:
-      url: https://{{ $name }}-webhook.{{ $namespace }}.svc:443/mutate-propagationpolicy
+      url: https://{{- include "karmada.name" .}}-webhook.{{ include "karmada.namespace" . }}.svc:443/mutate-propagationpolicy
       {{- include "karmada.webhook.caBundle" . | nindent 6 }}
     failurePolicy: Fail
     sideEffects: None
@@ -31,7 +31,7 @@ webhooks:
         resources: ["clusterpropagationpolicies"]
         scope: "Cluster"
     clientConfig:
-      url: https://{{ $name }}-webhook.{{ $namespace }}.svc:443/mutate-clusterpropagationpolicy
+      url: https://{{- include "karmada.name" .}}-webhook.{{ include "karmada.namespace" . }}.svc:443/mutate-clusterpropagationpolicy
       {{- include "karmada.webhook.caBundle" . | nindent 6 }}
     failurePolicy: Fail
     sideEffects: None
@@ -45,7 +45,7 @@ webhooks:
         resources: ["overridepolicies"]
         scope: "Namespaced"
     clientConfig:
-      url: https://{{ $name }}-webhook.{{ $namespace }}.svc:443/mutate-overridepolicy
+      url: https://{{- include "karmada.name" .}}-webhook.{{ include "karmada.namespace" . }}.svc:443/mutate-overridepolicy
       {{- include "karmada.webhook.caBundle" . | nindent 6 }}
     failurePolicy: Fail
     sideEffects: None
@@ -59,7 +59,7 @@ webhooks:
         resources: ["clusteroverridepolicies"]
         scope: "Cluster"
     clientConfig:
-      url: https://{{ $name }}.{{ $namespace }}.svc:443/validate-clusteroverridepolicy
+      url: https://{{- include "karmada.name" .}}.{{ include "karmada.namespace" . }}.svc:443/validate-clusteroverridepolicy
       {{- include "karmada.webhook.caBundle" . | nindent 6 }}
     failurePolicy: Fail
     sideEffects: None
@@ -73,7 +73,7 @@ webhooks:
         resources: ["works"]
         scope: "Namespaced"
     clientConfig:
-      url: https://{{ $name }}-webhook.{{ $namespace }}.svc:443/mutate-work
+      url: https://{{- include "karmada.name" .}}-webhook.{{ include "karmada.namespace" . }}.svc:443/mutate-work
       {{- include "karmada.webhook.caBundle" . | nindent 6 }}
     failurePolicy: Fail
     sideEffects: None
@@ -95,7 +95,7 @@ webhooks:
         resources: ["propagationpolicies"]
         scope: "Namespaced"
     clientConfig:
-      url: https://{{ $name }}-webhook.{{ $namespace }}.svc:443/validate-propagationpolicy
+      url: https://{{- include "karmada.name" .}}-webhook.{{ include "karmada.namespace" . }}.svc:443/validate-propagationpolicy
       {{- include "karmada.webhook.caBundle" . | nindent 6 }}
     failurePolicy: Fail
     sideEffects: None
@@ -109,7 +109,7 @@ webhooks:
         resources: ["clusterpropagationpolicies"]
         scope: "Cluster"
     clientConfig:
-      url: https://{{ $name }}-webhook.{{ $namespace }}.svc:443/validate-clusterpropagationpolicy
+      url: https://{{- include "karmada.name" .}}-webhook.{{ include "karmada.namespace" . }}.svc:443/validate-clusterpropagationpolicy
       {{- include "karmada.webhook.caBundle" . | nindent 6 }}
     failurePolicy: Fail
     sideEffects: None
@@ -123,7 +123,7 @@ webhooks:
         resources: ["overridepolicies"]
         scope: "Namespaced"
     clientConfig:
-      url: https://{{ $name }}-webhook.{{ $namespace }}.svc:443/validate-overridepolicy
+      url: https://{{- include "karmada.name" .}}-webhook.{{ include "karmada.namespace" . }}.svc:443/validate-overridepolicy
       {{- include "karmada.webhook.caBundle" . | nindent 6 }}
     failurePolicy: Fail
     sideEffects: None
@@ -137,7 +137,7 @@ webhooks:
         resources: ["resourceinterpreterwebhookconfigurations"]
         scope: "Cluster"
     clientConfig:
-      url: https://{{ $name }}-webhook.{{ $namespace }}.svc:443/validate-resourceinterpreterwebhookconfiguration
+      url: https://{{- include "karmada.name" .}}-webhook.{{- include "karmada.namespace" . }}.svc:443/validate-resourceinterpreterwebhookconfiguration
       {{- include "karmada.webhook.caBundle" . | nindent 6 }}
     failurePolicy: Fail
     sideEffects: None

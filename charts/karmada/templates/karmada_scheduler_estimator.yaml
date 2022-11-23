@@ -1,6 +1,6 @@
 {{- if and (or (eq .Values.installMode "agent") (eq .Values.installMode "component")) (has "schedulerEstimator" .Values.components) }}
 {{ $namespace := include "karmada.namespace" .}}
-{{ $clusterName := .Values.schedulerEstimator.clusterName }}
+{{ $clusterName := .Values.agent.clusterName }}
 ---
 apiVersion: apps/v1
 kind: Deployment

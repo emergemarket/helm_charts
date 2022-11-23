@@ -6,7 +6,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ $name }}-static-resources
-  namespace: {{ $namespace }}
+  namespace: {{ include "karmada.namespace" . }}
 data:
   {{- print "webhook-configuration.yaml: " | nindent 2 }} |-
     {{- include "karmada.webhook.configuration" . | nindent 4 }}
@@ -19,7 +19,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ $name }}-crds
-  namespace: {{ $namespace }}
+  namespace: {{ include "karmada.namespace" . }}
 data:
   {{ range $path, $bytes := .Files.Glob (printf "_crds/**")}}
   {{ $name := base $path }}
@@ -31,7 +31,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ $name }}-crds-bases
-  namespace: {{ $namespace }}
+  namespace: {{ include "karmada.namespace" . }}
 data:
   {{ range $path, $bytes := .Files.Glob (printf "_crds/bases/**")}}
   {{ $name := base $path }}
@@ -43,7 +43,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ $name }}-crds-patches
-  namespace: {{ $namespace }}
+  namespace: {{ include "karmada.namespace" . }}
 data:
   {{- print "webhook_in_clusterresourcebindings.yaml: " | nindent 2 }} |-
     {{- include "karmada.crd.patch.webhook.clusterresourcebinding" . | nindent 4 }}
@@ -55,7 +55,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: "{{ $name }}-post-install"
-  namespace: {{ $namespace }}
+  namespace: {{ include "karmada.namespace" . }}
   labels:
     app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
     app.kubernetes.io/instance: {{ $name | quote }}

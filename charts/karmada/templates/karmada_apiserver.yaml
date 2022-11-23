@@ -6,7 +6,7 @@ metadata:
   name: {{ $name }}-apiserver
   namespace: {{ include "karmada.namespace" . }}
   labels:
-  {{- include "karmada.apiserver.labels" . | nindent 4}}
+  {{ include "karmada.apiserver.labels" . | nindent 4}}
 spec:
   replicas: {{ .Values.apiServer.replicaCount }}
   selector:

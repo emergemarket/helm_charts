@@ -5,7 +5,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ $name }}-config
-  namespace: {{ $namespace }}
+  namespace: {{ include "karmada.namespace" . }}
   annotations:
     "helm.sh/hook": pre-install
     "helm.sh/hook-weight": "2"
@@ -15,7 +15,7 @@ data:
     kind: Secret
     metadata:
       name: {{ $name }}-cert
-      namespace: {{ $namespace }}
+      namespace: {{ include "karmada.namespace" . }}
     type: Opaque
     data:
       server-ca.crt: |-
@@ -35,7 +35,7 @@ data:
     kind: Secret
     metadata:
       name: {{ $name }}-webhook-cert
-      namespace: {{ $namespace }}
+      namespace: {{ include "karmada.namespace" . }}
     type: kubernetes.io/tls
     data:
       tls.crt: |-
@@ -47,7 +47,7 @@ data:
     kind: Secret
     metadata:
       name: {{ $name }}-kubeconfig
-      namespace: {{ $namespace }}
+      namespace: {{ include "karmada.namespace" . }}
     stringData:
       kubeconfig: |-
         apiVersion: v1
@@ -56,7 +56,7 @@ data:
           - cluster:
               certificate-authority-data: {{ print "{{ ca_crt }}" }}
               insecure-skip-tls-verify: false
-              server: https://{{ $name }}-apiserver.{{ $namespace }}.svc.{{ .Values.clusterDomain }}:5443
+              server: https://{{ $name }}-apiserver.{{ include "karmada.namespace" . }}.svc.{{ .Values.clusterDomain }}:5443
             name: {{ $name }}-apiserver
         users:
           - user:
@@ -74,7 +74,7 @@ data:
     kind: ConfigMap
     metadata:
       name: {{ $name }}-static-resources
-      namespace: {{ $namespace }}
+      namespace: {{ include "karmada.namespace" . }}
     data:
       {{- print "webhook-configuration.yaml: " | nindent 6 }} |-
         {{- include "karmada.webhook.configuration" . | nindent 8 }}
@@ -89,7 +89,7 @@ data:
     kind: ConfigMap
     metadata:
       name: {{ $name }}-crds
-      namespace: {{ $namespace }}
+      namespace: {{ include "karmada.namespace" . }}
     data:
       {{ range $path, $bytes := .Files.Glob (printf "_crds/**")}}
       {{ $name := base $path }}
@@ -101,7 +101,7 @@ data:
     kind: ConfigMap
     metadata:
       name: {{ $name }}-crds-bases
-      namespace: {{ $namespace }}
+      namespace: {{ include "karmada.namespace" . }}
     data:
       {{ range $path, $bytes := .Files.Glob (printf "_crds/bases/**")}}
       {{ $name := base $path }}
@@ -113,7 +113,7 @@ data:
     kind: ConfigMap
     metadata:
       name: {{ $name }}-crds-patches
-      namespace: {{ $namespace }}
+      namespace: {{ include "karmada.namespace" . }}
     data:
       {{- print "webhook_in_clusterresourcebindings.yaml: " | nindent 6 }} |-
         {{- include "karmada.crd.patch.webhook.clusterresourcebinding" . | nindent 8 }}
@@ -125,7 +125,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: "{{ $name }}-pre-install"
-  namespace: {{ $namespace }}
+  namespace: {{ include "karmada.namespace" . }}
   annotations:
     # This is what defines this resource as a hook. Without this line, the
     # job is considered part of the release.
@@ -220,7 +220,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: {{ $name }}-pre-job
-  namespace: {{ $namespace }}
+  namespace: {{ include "karmada.namespace" . }}
   annotations:
     "helm.sh/hook": pre-install
     "helm.sh/hook-weight": "1"
@@ -253,6 +253,6 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: {{ $name }}-pre-job
-    namespace: {{ $namespace }}
+    namespace: {{ include "karmada.namespace" . }}
 ---
 {{- end }}

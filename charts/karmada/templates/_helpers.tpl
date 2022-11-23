@@ -1,20 +1,20 @@
 {{/* vim: set filetype=mustache: */}}
 
 {{- define "karmada.name" -}}
-{{- default .Release.Name -}}
+{{- "karmada" | default .Release.Name -}}
 {{- end -}}
 
 {{- define "karmada.namespace" -}}
-{{- default .Release.Namespace -}}
+{{- .Values.namespace | default .Release.Namespace -}}
 {{- end -}}
 
 {{- define "karmada.apiserver.labels" -}}
 {{- if .Values.apiServer.labels }}
 {{- range $key, $value := .Values.apiServer.labels -}}
-{{ $key }}: {{ $value }}
+{{- $key }}: {{ $value }}
 {{- end }}
 {{- else}}
-app: {{- include "karmada.name" .}}-apiserver
+app: {{ include "karmada.name" .}}-apiserver
 {{- end }}
 {{- end -}}
 
@@ -41,7 +41,7 @@ annotations:
 {{- define "karmada.apiserver.podLabels" -}}
 {{- if .Values.apiServer.podLabels }}
 {{- range $key, $value := .Values.apiServer.podLabels}}
-{{ $key }}: {{ $value }}
+{{- $key }}: {{ $value }}
 {{- end }}
 {{- end }}
 {{- end -}}
@@ -49,7 +49,7 @@ annotations:
 {{- define "karmada.aggregatedApiserver.labels" -}}
 {{- if .Values.aggregatedApiServer.labels }}
 {{- range $key, $value := .Values.aggregatedApiServer.labels}}
-{{ $key }}: {{ $value }}
+{{- $key }}: {{ $value }}
 {{- end }}
 {{- else}}
 app: {{- include "karmada.name" .}}-aggregated-apiserver
@@ -59,7 +59,7 @@ app: {{- include "karmada.name" .}}-aggregated-apiserver
 {{- define "karmada.aggregatedApiserver.podLabels" -}}
 {{- if .Values.aggregatedApiServer.podLabels }}
 {{- range $key, $value := .Values.aggregatedApiServer.podLabels}}
-{{ $key }}: {{ $value }}
+{{- $key }}: {{ $value }}
 {{- end }}
 {{- end }}
 {{- end -}}
@@ -67,7 +67,7 @@ app: {{- include "karmada.name" .}}-aggregated-apiserver
 {{- define "karmada.kube-cm.labels" -}}
 {{- if .Values.kubeControllerManager.labels }}
 {{- range $key, $value := .Values.kubeControllerManager.labels}}
-{{ $key }}: {{ $value }}
+{{- $key }}: {{ $value }}
 {{- end }}
 {{- else}}
 app: {{- include "karmada.name" .}}-kube-controller-manager
@@ -77,7 +77,7 @@ app: {{- include "karmada.name" .}}-kube-controller-manager
 {{- define "karmada.kube-cm.podLabels" -}}
 {{- if .Values.kubeControllerManager.podLabels }}
 {{- range $key, $value := .Values.kubeControllerManager.podLabels}}
-{{ $key }}: {{ $value }}
+{{- $key }}: {{ $value }}
 {{- end }}
 {{- end }}
 {{- end -}}
@@ -86,7 +86,7 @@ app: {{- include "karmada.name" .}}-kube-controller-manager
 {{- $name := include "karmada.name" . -}}
 - name: kubeconfig-secret
   secret:
-    secretName: {{ $name }}-kubeconfig
+    secretName: {{ include "karmada.name" .}}-kubeconfig
 {{- end -}}
 
 {{- define "karmada.kubeconfig.volumeMount" -}}
@@ -97,63 +97,57 @@ app: {{- include "karmada.name" .}}-kube-controller-manager
 {{- end -}}
 
 {{- define "karmada.cm.labels" -}}
-{{ $name :=  include "karmada.name" . }}
 {{- if .Values.controllerManager.labels -}}
 {{- range $key, $value := .Values.controllerManager.labels}}
-{{ $key }}: {{ $value }}
+{{- $key }}: {{ $value }}
 {{- end -}}
 {{- else -}}
-app: {{$name}}-controller-manager
+app: {{- include "karmada.name" .}}-controller-manager
 {{- end -}}
 {{- end -}}
 
 {{- define "karmada.cm.podLabels" -}}
-{{ $name :=  include "karmada.name" .}}
 {{- if .Values.controllerManager.podLabels }}
 {{- range $key, $value := .Values.controllerManager.podLabels}}
-{{ $key }}: {{ $value }}
+{{- $key }}: {{ $value }}
 {{- end }}
 {{- end }}
 {{- end -}}
 
 
 {{- define "karmada.scheduler.labels" -}}
-{{ $name :=  include "karmada.name" . }}
 {{- if .Values.scheduler.labels -}}
 {{- range $key, $value := .Values.scheduler.labels}}
-{{ $key }}: {{ $value }}
+{{- $key }}: {{ $value }}
 {{- end -}}
 {{- else -}}
-app: {{$name}}-scheduler
+app: {{- include "karmada.name" .}}-scheduler
 {{- end -}}
 {{- end -}}
 
 {{- define "karmada.scheduler.podLabels" -}}
-{{ $name :=  include "karmada.name" .}}
 {{- if .Values.scheduler.podLabels }}
 {{- range $key, $value := .Values.scheduler.podLabels}}
-{{ $key }}: {{ $value }}
+{{- $key }}: {{ $value }}
 {{- end }}
 {{- end }}
 {{- end -}}
 
 
 {{- define "karmada.descheduler.labels" -}}
-{{ $name :=  include "karmada.name" . }}
 {{- if .Values.descheduler.labels -}}
 {{- range $key, $value := .Values.descheduler.labels}}
-{{ $key }}: {{ $value }}
+{{- $key }}: {{ $value }}
 {{- end -}}
 {{- else -}}
-app: {{$name}}
+app: {{- include "karmada.name" .}}
 {{- end -}}
 {{- end -}}
 
 {{- define "karmada.descheduler.podLabels" -}}
-{{ $name :=  include "karmada.name" .}}
 {{- if .Values.descheduler.podLabels }}
 {{- range $key, $value := .Values.descheduler.podLabels}}
-{{ $key }}: {{ $value }}
+{{- $key }}: {{ $value }}
 {{- end }}
 {{- end }}
 {{- end -}}
@@ -166,42 +160,38 @@ app: {{$name}}
 
 
 {{- define "karmada.webhook.labels" -}}
-{{ $name :=  include "karmada.name" .}}
 {{- if .Values.webhook.labels }}
 {{- range $key, $value := .Values.webhook.labels}}
-{{ $key }}: {{ $value }}
+{{- $key }}: {{ $value }}
 {{- end }}
 {{- else}}
-app: {{$name}}-webhook
+app: {{- include "karmada.name" .}}-webhook
 {{- end }}
 {{- end -}}
 
 {{- define "karmada.webhook.podLabels" -}}
-{{ $name :=  include "karmada.name" .}}
 {{- if .Values.webhook.podLabels }}
 {{- range $key, $value := .Values.webhook.podLabels}}
-{{ $key }}: {{ $value }}
+{{- $key }}: {{ $value }}
 {{- end }}
 {{- end }}
 {{- end -}}
 
 
 {{- define "karmada.agent.labels" -}}
-{{ $name :=  include "karmada.name" .}}
 {{- if .Values.agent.labels }}
 {{- range $key, $value := .Values.agent.labels}}
-{{ $key }}: {{ $value }}
+{{- $key }}: {{ $value }}
 {{- end }}
 {{- else}}
-app: {{$name}}
+app: {{- include "karmada.name" .}}
 {{- end }}
 {{- end -}}
 
 {{- define "karmada.agent.podLabels" -}}
-{{ $name :=  include "karmada.name" .}}
 {{- if .Values.agent.podLabels }}
 {{- range $key, $value := .Values.agent.podLabels }}
-{{ $key }}: {{ $value }}
+{{- $key }}: {{ $value }}
 {{- end }}
 {{- end }}
 {{- end -}}
@@ -218,7 +208,7 @@ caBundle: {{ b64enc .Values.certs.custom.caCrt }}
 {{- define "karmada.schedulerEstimator.podLabels" -}}
 {{- if .Values.schedulerEstimator.podLabels }}
 {{- range $key, $value := .Values.schedulerEstimator.podLabels}}
-{{ $key }}: {{ $value }}
+{{- $key }}: {{ $value }}
 {{- end }}
 {{- end }}
 {{- end -}}
@@ -226,7 +216,7 @@ caBundle: {{ b64enc .Values.certs.custom.caCrt }}
 {{- define "karmada.schedulerEstimator.labels" -}}
 {{- if .Values.schedulerEstimator.labels }}
 {{- range $key, $value := .Values.schedulerEstimator.labels}}
-{{ $key }}: {{ $value }}
+{{- $key }}: {{ $value }}
 {{- end }}
 {{- end }}
 {{- end -}}
@@ -234,7 +224,7 @@ caBundle: {{ b64enc .Values.certs.custom.caCrt }}
 {{- define "karmada.search.labels" -}}
 {{- if .Values.search.labels }}
 {{- range $key, $value := .Values.search.labels}}
-{{ $key }}: {{ $value }}
+{{- $key }}: {{ $value }}
 {{- end }}
 {{- else}}
 app: {{- include "karmada.name" .}}-search
@@ -244,7 +234,7 @@ app: {{- include "karmada.name" .}}-search
 {{- define "karmada.search.podLabels" -}}
 {{- if .Values.search.podLabels }}
 {{- range $key, $value := .Values.search.podLabels}}
-{{ $key }}: {{ $value }}
+{{- $key }}: {{ $value }}
 {{- end }}
 {{- end }}
 {{- end -}}

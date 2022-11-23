@@ -64,12 +64,12 @@ metadata:
   name: {{ $name }}
   namespace: {{ include "karmada.namespace" . }}
   labels:
-  {{- include "karmada.agent.labels" . | indent 4}}
+  {{ include "karmada.agent.labels" . | indent 4}}
 spec:
   replicas: {{ .Values.agent.replicaCount }}
   selector:
     matchLabels:
-      {{- include "karmada.agent.labels" . | indent 6}}
+      {{ include "karmada.agent.labels" . | indent 6}}
   {{- with .Values.agent.strategy }}
   strategy:
   {{- toYaml . | nindent 8 }}
@@ -81,8 +81,8 @@ spec:
       {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "karmada.agent.labels" . | indent 8}}
-        {{- include "karmada.agent.podLabels" . | indent 8}}
+        {{ include "karmada.agent.labels" . | indent 8}}
+        {{ include "karmada.agent.podLabels" . | indent 8}}
     spec:
       {{- with .Values.agent.imagePullSecrets }}
       imagePullSecrets:
