@@ -222,13 +222,11 @@ caBundle: {{ b64enc .Values.certs.custom.caCrt }}
 {{- end -}}
 
 {{- define "karmada.search.labels" -}}
-{{- if .Values.search.labels }}
-{{- range $key, $value := .Values.search.labels}}
-{{- $key }}: {{ $value }}
-{{- end }}
-{{- else}}
-app: {{- include "karmada.name" .}}-search
-{{- end }}
+{{- if .Values.search.labels -}}
+{{ range $key, $value := .Values.search.labels }}
+{{ $key }}: {{ $value }}
+{{- end -}}
+{{- end -}}
 {{- end -}}
 
 {{- define "karmada.search.podLabels" -}}

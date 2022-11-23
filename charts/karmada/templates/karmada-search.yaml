@@ -1,13 +1,12 @@
-{{- $name := include "karmada.name" . -}}
-
 {{- if and (or (eq .Values.installMode "host") (eq .Values.installMode "component")) (has "search" .Values.components) }}
+{{- $name := include "karmada.name" . -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ $name }}-search
   namespace: {{ include "karmada.namespace" . }}
   labels:
-  {{- include "karmada.search.labels" . | nindent 4}}
+  {{- toYaml .Values.search.labels | nindent 4}}
 spec:
   selector:
     matchLabels:
@@ -75,20 +74,5 @@ spec:
         - name: kubeconfig
           secret:
             secretName: {{ $name }}-kubeconfig
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ $name }}-search
-  namespace: {{ include "karmada.namespace" . }}
-  labels:
-    {{- include "karmada.search.labels" . | nindent 4}}
-spec:
-  ports:
-    - port: 443
-      protocol: TCP
-      targetPort: 443
-  selector:
-    {{- include "karmada.search.labels" . | nindent 4}}
 
 {{- end }}
