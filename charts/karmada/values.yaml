@@ -105,7 +105,7 @@ scheduler:
     ## @param scheduler.image.pullPolicy pull policy of image
     pullPolicy: IfNotPresent
     ## @param scheduler.image.tag overrides the image tag whose default is the latest
-    tag: latest
+    tag: v1.2.0
   ## @param scheduler.resources
   resources: { }
     # If you do want to specify resources, uncomment the following
@@ -149,7 +149,7 @@ webhook:
     ## @param webhook.image.pullPolicy pull policy of image
     pullPolicy: IfNotPresent
     ## @param webhook.image.tag overrides the image tag whose default is the latest
-    tag: latest
+    tag: v1.2.0
   ## @param webhook.resources
   resources: { }
     # If you do want to specify resources, uncomment the following
@@ -193,7 +193,7 @@ controllerManager:
     ## @param controllerManager.image.pullPolicy pull policy of image
     pullPolicy: IfNotPresent
     ## @param controllerManager.image.tag overrides the image tag whose default is the latest
-    tag: latest
+    tag: v1.2.0
   ## @param controllerManager.resources
   resources: { }
     # If you do want to specify resources, uncomment the following
@@ -309,7 +309,7 @@ aggregatedApiServer:
     ## @param aggregatedApiServer.image.pullPolicy pull policy of image
     pullPolicy: IfNotPresent
     ## @param aggregatedApiServer.image.tag overrides the image tag whose default is the latest
-    tag: latest
+    tag: v1.2.0
   ## @param aggregatedApiServer.resources
   resources: 
     requests:
@@ -478,7 +478,7 @@ agent:
     ## @param agent.image.pullPolicy pull policy of image
     pullPolicy: IfNotPresent
     ## @param agent.image.tag overrides the image tag whose default is the latest
-    tag: latest
+    tag: v1.2.0
   ## @param agent.resources 
   resources: { }
     # If you do want to specify resources, uncomment the following
@@ -586,7 +586,7 @@ descheduler:
     ## @param descheduler.image.pullPolicy pull policy of image
     pullPolicy: IfNotPresent
     ## @param descheduler.image.tag overrides the image tag whose default is the latest
-    tag: latest
+    tag: v1.2.0
   ## @param descheduler.resources
   resources: { }
     # If you do want to specify resources, uncomment the following
@@ -631,7 +631,7 @@ search:
     ## @param search.image.pullPolicy pull policy of image
     pullPolicy: IfNotPresent
     ## @param search.image.tag overrides the image tag whose default is the latest
-    tag: latest
+    tag: v1.2.0
   ## @param search.resources
   resources: { }
     # If you do want to specify resources, uncomment the following
