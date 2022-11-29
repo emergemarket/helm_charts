@@ -60,7 +60,6 @@ spec:
             - --kubeconfig=/etc/kubeconfig
             - --bind-address=0.0.0.0
             - --cluster-status-update-frequency=10s
-            - --controllers=hpa
             - --feature-gates=PropagateDeps=true
             - --secure-port=10357
             - --v=2
