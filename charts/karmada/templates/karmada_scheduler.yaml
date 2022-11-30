@@ -59,7 +59,6 @@ spec:
             - --kubeconfig=/etc/kubeconfig
             - --bind-address=0.0.0.0
             - --secure-port=10351
-            - --enable-scheduler-estimator=true
             - --feature-gates=Failover=true
           volumeMounts:
           {{- include "karmada.kubeconfig.volumeMount" . | nindent 12 }}
