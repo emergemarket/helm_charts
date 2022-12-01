@@ -1238,6 +1238,21 @@ entries:
     version: 0.0.1
   karmada:
   - apiVersion: v2
+    appVersion: v1.3.0
+    created: "2022-12-01T19:01:26.309096447Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      version: 1.x.x
+    description: A Helm chart for karmada
+    digest: 0d14804f7477cc4b023f4bf9947d45325414a0e4ec19fef359855a7192d42d26
+    kubeVersion: '>= 1.16.0-0'
+    name: karmada
+    type: application
+    urls:
+    - https://github.com/emergemarket/helm_charts/releases/download/karmada-0.0.18/karmada-0.0.18.tgz
+    version: 0.0.18
+  - apiVersion: v2
     appVersion: v1.2.0
     created: "2022-11-30T17:57:06.487289174Z"
     description: A Helm chart for karmada
@@ -1506,4 +1521,4 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/query-exporter-0.0.2/query-exporter-0.0.2.tgz
     version: 0.0.2
-generated: "2022-11-30T17:57:06.487811584Z"
+generated: "2022-12-01T19:01:26.31012046Z"
