@@ -8,6 +8,8 @@ type: Opaque
 data:
   server-ca.crt: |
     {{ b64enc .Values.certs.custom.caCrt }}
+  server-ca.key: |
+    {{ b64enc .Values.certs.custom.caKey }}
   karmada.crt: |
     {{ b64enc .Values.certs.custom.crt }}
   karmada.key: |
@@ -33,7 +35,7 @@ data:
 ---
 {{- end }}
 
-{{- if and (eq .Values.installMode "host") (eq .Values.etcd.mode "external")}}
+{{- if and (eq .Values.installMode "host") (eq .Values.etcd.mode "external") }}
 apiVersion: v1
 kind: Secret
 metadata:

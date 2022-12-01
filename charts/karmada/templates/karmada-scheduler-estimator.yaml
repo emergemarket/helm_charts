@@ -1,6 +1,6 @@
-{{- if and (or (eq .Values.installMode "agent") (eq .Values.installMode "component")) (has "schedulerEstimator" .Values.components) }}
+{{- if and (or (eq .Values.installMode "component") (eq .Values.installMode "host")) (has "schedulerEstimator" .Values.components) }}
 {{ $namespace := include "karmada.namespace" .}}
-{{ $clusterName := .Values.agent.clusterName }}
+{{ $clusterName := .Values.schedulerEstimator.clusterName }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -9,16 +9,16 @@ metadata:
   namespace: {{ $namespace }}
   labels:
     cluster: {{ $clusterName }}
-    {{- include "karmada.schedulerEstimator.labels" . | nindent 4}}
+    {{- include "karmada.schedulerEstimator.labels" . | nindent 4 }}
 spec:
   replicas: {{  .Values.schedulerEstimator.replicaCount }}
   selector:
     matchLabels:
       app: karmada-scheduler-estimator-{{ $clusterName }}
-      {{- include "karmada.schedulerEstimator.labels" . | nindent 6}}
+      {{- include "karmada.schedulerEstimator.labels" . | nindent 6 }}
   {{- with .Values.schedulerEstimator.strategy }}
   strategy:
-  {{- toYaml . | nindent 8 }}
+  {{- toYaml . | nindent 4 }}
   {{- end }}
   template:
     metadata:
@@ -28,21 +28,32 @@ spec:
       {{- end }}
       labels:
         app: karmada-scheduler-estimator-{{ $clusterName }}
-        {{- include "karmada.schedulerEstimator.labels" . | nindent 8}}
-        {{- include "karmada.schedulerEstimator.podLabels" . | nindent 8}}
+        {{- include "karmada.schedulerEstimator.labels" . | nindent 8 }}
+        {{- include "karmada.schedulerEstimator.podLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.schedulerEstimator.tolerations}}
+      {{- include "karmada.schedulerEstimator.imagePullSecrets" . | nindent 6 }}
+      {{- with .Values.schedulerEstimator.tolerations }}
       tolerations:
       {{- toYaml . | nindent 8 }}
       {{- end }}
+      automountServiceAccountToken: false
       containers:
         - name: karmada-scheduler-estimator
-          image: "{{ .Values.schedulerEstimator.image.repository }}:{{ .Values.schedulerEstimator.image.tag | default "latest" }}"
+          image: {{ template "karmada.schedulerEstimator.image" . }}
           imagePullPolicy: {{ .Values.schedulerEstimator.image.pullPolicy }}
           command:
             - /bin/karmada-scheduler-estimator
             - --kubeconfig=/etc/{{ $clusterName }}-kubeconfig
             - --cluster-name={{ $clusterName }}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 10351
+              scheme: HTTP
+            failureThreshold: 3
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            timeoutSeconds: 5
           volumeMounts:
             - name: member-kubeconfig
               subPath: {{ $clusterName }}-kubeconfig
@@ -62,7 +73,7 @@ metadata:
 spec:
   selector:
     app: karmada-scheduler-estimator-{{ $clusterName }}
-    {{- include "karmada.schedulerEstimator.labels" . | nindent 4}}
+    {{- include "karmada.schedulerEstimator.labels" . | nindent 4 }}
   ports:
     - protocol: TCP
       port: 10352

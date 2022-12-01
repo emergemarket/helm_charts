@@ -13,7 +13,7 @@ spec:
     strategy: Webhook
     webhook:
       clientConfig:
-        url: https://{{- include "karmada.name" .}}-webhook.{{- include "karmada.namespace" . }}.svc:443/convert
+        url: https://{{ $name }}-webhook.{{ $namespace }}.svc:443/convert
         {{- include "karmada.webhook.caBundle" . | nindent 8 }}
       conversionReviewVersions: ["v1"]
 ---

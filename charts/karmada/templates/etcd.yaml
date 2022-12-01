@@ -7,7 +7,7 @@
   {{- end -}}
   {{- printf $uri | trimSuffix "," | quote -}}
 {{- end }}
-{{- if and (eq .Values.etcd.mode "internal") (eq .Values.installMode "host")}}
+{{- if and (eq .Values.etcd.mode "internal") (eq .Values.installMode "host") }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -28,6 +28,8 @@ spec:
       labels:
         app: etcd
     spec:
+      automountServiceAccountToken: false
+      {{- include "karmada.internal.etcd.imagePullSecrets" . | nindent 6 }}
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -38,11 +40,15 @@ spec:
                     values:
                       - etcd
               topologyKey: kubernetes.io/hostname
+      {{- with .Values.etcd.internal.nodeSelector }}
+      nodeSelector:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
       tolerations:
         - operator: Exists
       containers:
         - name: etcd
-          image: "{{ .Values.etcd.internal.image.repository }}:{{ .Values.etcd.internal.image.tag | default "latest" }}"
+          image: {{ template "karmada.internal.etcd.image" . }}
           imagePullPolicy: {{ .Values.etcd.internal.image.pullPolicy }}
           livenessProbe:
             exec:
@@ -61,10 +67,10 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
           ports:
-            - containerPort: 2369
+            - containerPort: 2379
               name: client
               protocol: TCP
-            - containerPort: 2370
+            - containerPort: 2380
               name: server
               protocol: TCP
           resources:
@@ -104,7 +110,7 @@ spec:
             type: DirectoryOrCreate
           name: etcd-data
         {{- end }}
-  {{- if eq .Values.etcd.internal.storageType "pvc"}}
+  {{- if eq .Values.etcd.internal.storageType "pvc" }}
   volumeClaimTemplates:
     - metadata:
         name: etcd-data
@@ -152,5 +158,4 @@ spec:
   clusterIP: None
   selector:
     app: etcd
-
 {{- end }}

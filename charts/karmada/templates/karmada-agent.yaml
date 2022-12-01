@@ -64,30 +64,27 @@ metadata:
   name: {{ $name }}
   namespace: {{ include "karmada.namespace" . }}
   labels:
-  {{ include "karmada.agent.labels" . | indent 4}}
+  {{- include "karmada.agent.labels" . | indent 4 }}
 spec:
   replicas: {{ .Values.agent.replicaCount }}
   selector:
     matchLabels:
-      {{ include "karmada.agent.labels" . | indent 6}}
+      {{- include "karmada.agent.labels" . | indent 6 }}
   {{- with .Values.agent.strategy }}
   strategy:
   {{- toYaml . | nindent 8 }}
   {{- end }}
   template:
     metadata:
-      {{- with .Values.agent.podAnnotations}}
+      {{- with .Values.agent.podAnnotations }}
       annotations:
       {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{ include "karmada.agent.labels" . | indent 8}}
-        {{ include "karmada.agent.podLabels" . | indent 8}}
+        {{- include "karmada.agent.labels" . | indent 8 }}
+        {{- include "karmada.agent.podLabels" . | indent 8 }}
     spec:
-      {{- with .Values.agent.imagePullSecrets }}
-      imagePullSecrets:
-      {{- toYaml . | nindent 8 }}
-      {{- end }}
+      {{- include "karmada.agent.imagePullSecrets" . | nindent 6 }}
       {{- with .Values.agent.nodeSelector }}
       nodeSelector:
       {{- toYaml . | nindent 8 }}
@@ -103,14 +100,29 @@ spec:
       serviceAccountName: {{ $name }}
       containers:
         - name: {{ $name }}
-          image: {{ .Values.agent.image.repository}}:{{ .Values.agent.image.tag | default "latest" }}
+          image: {{ template "karmada.agent.image" . }}
           imagePullPolicy: {{ .Values.agent.image.pullPolicy }}
           command:
             - /bin/karmada-agent
             - --karmada-kubeconfig=/etc/kubeconfig/kubeconfig
             - --cluster-name={{ .Values.agent.clusterName }}
+            {{- if .Values.agent.clusterEndpoint }}
+            - --cluster-api-endpoint={{ .Values.agent.clusterEndpoint }}
+            {{- end }}
             - --cluster-status-update-frequency=10s
+            - --leader-elect-resource-namespace={{ include "karmada.namespace" . }}
+            - --bind-address=0.0.0.0
+            - --secure-port=10357
             - --v=4
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 10357
+              scheme: HTTP
+            failureThreshold: 3
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            timeoutSeconds: 5
           volumeMounts:
             - name: kubeconfig
               mountPath: /etc/kubeconfig

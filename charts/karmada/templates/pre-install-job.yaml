@@ -5,7 +5,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ $name }}-config
-  namespace: {{ include "karmada.namespace" . }}
+  namespace: {{ $namespace }}
   annotations:
     "helm.sh/hook": pre-install
     "helm.sh/hook-weight": "2"
@@ -15,11 +15,13 @@ data:
     kind: Secret
     metadata:
       name: {{ $name }}-cert
-      namespace: {{ include "karmada.namespace" . }}
+      namespace: {{ $namespace }}
     type: Opaque
     data:
       server-ca.crt: |-
         {{ print "{{ ca_crt }}" }}
+      server-ca.key: |-
+        {{ print "{{ ca_key }}" }}
       karmada.crt: |-
         {{ print "{{ crt }}" }}
       karmada.key: |-
@@ -35,7 +37,7 @@ data:
     kind: Secret
     metadata:
       name: {{ $name }}-webhook-cert
-      namespace: {{ include "karmada.namespace" . }}
+      namespace: {{ $namespace }}
     type: kubernetes.io/tls
     data:
       tls.crt: |-
@@ -47,7 +49,7 @@ data:
     kind: Secret
     metadata:
       name: {{ $name }}-kubeconfig
-      namespace: {{ include "karmada.namespace" . }}
+      namespace: {{ $namespace }}
     stringData:
       kubeconfig: |-
         apiVersion: v1
@@ -56,7 +58,7 @@ data:
           - cluster:
               certificate-authority-data: {{ print "{{ ca_crt }}" }}
               insecure-skip-tls-verify: false
-              server: https://{{ $name }}-apiserver.{{ include "karmada.namespace" . }}.svc.{{ .Values.clusterDomain }}:5443
+              server: https://{{ $name }}-apiserver.{{ $namespace }}.svc.{{ .Values.clusterDomain }}:5443
             name: {{ $name }}-apiserver
         users:
           - user:
@@ -74,7 +76,7 @@ data:
     kind: ConfigMap
     metadata:
       name: {{ $name }}-static-resources
-      namespace: {{ include "karmada.namespace" . }}
+      namespace: {{ $namespace }}
     data:
       {{- print "webhook-configuration.yaml: " | nindent 6 }} |-
         {{- include "karmada.webhook.configuration" . | nindent 8 }}
@@ -89,7 +91,7 @@ data:
     kind: ConfigMap
     metadata:
       name: {{ $name }}-crds
-      namespace: {{ include "karmada.namespace" . }}
+      namespace: {{ $namespace }}
     data:
       {{ range $path, $bytes := .Files.Glob (printf "_crds/**")}}
       {{ $name := base $path }}
@@ -101,7 +103,7 @@ data:
     kind: ConfigMap
     metadata:
       name: {{ $name }}-crds-bases
-      namespace: {{ include "karmada.namespace" . }}
+      namespace: {{ $namespace }}
     data:
       {{ range $path, $bytes := .Files.Glob (printf "_crds/bases/**")}}
       {{ $name := base $path }}
@@ -113,19 +115,19 @@ data:
     kind: ConfigMap
     metadata:
       name: {{ $name }}-crds-patches
-      namespace: {{ include "karmada.namespace" . }}
+      namespace: {{ $namespace }}
     data:
       {{- print "webhook_in_clusterresourcebindings.yaml: " | nindent 6 }} |-
         {{- include "karmada.crd.patch.webhook.clusterresourcebinding" . | nindent 8 }}
       {{- print "webhook_in_resourcebindings.yaml: " | nindent 6 }} |-
         {{- include "karmada.crd.patch.webhook.resourcebinding" . | nindent 8 }}
-      
+
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
   name: "{{ $name }}-pre-install"
-  namespace: {{ include "karmada.namespace" . }}
+  namespace: {{ $namespace }}
   annotations:
     # This is what defines this resource as a hook. Without this line, the
     # job is considered part of the release.
@@ -147,8 +149,8 @@ spec:
       restartPolicy: Never
       initContainers:
       - name: init
-        image: {{ .Values.preInstallJob.initContainerImage }}
-        imagePullPolicy: IfNotPresent
+        image: {{ template "karmada.cfssl.image" . }}
+        imagePullPolicy: {{ .Values.cfssl.image.pullPolicy }}
         workingDir: /opt/mount
         command:
         - /bin/sh
@@ -166,12 +168,14 @@ spec:
           echo '{"signing":{"default":{"expiry":{{ printf `"%s"` .Values.certs.auto.expiry }},"usages":["signing","key encipherment","client auth","server auth"]}}}' > "/opt/certs/front-proxy-ca-config.json"
           echo '{"CN":"front-proxy-client","hosts":{{ tpl (toJson .Values.certs.auto.hosts) . }},"names":[{"O":"system:masters"}],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -ca=/opt/certs/front-proxy-ca.crt -ca-key=/opt/certs/front-proxy-ca.key -config=/opt/certs/front-proxy-ca-config.json - | cfssljson -bare /opt/certs/front-proxy-client
           karmada_ca=$(base64 /opt/certs/server-ca.crt | tr -d '\r\n')
+          karmada_ca_key=$(base64 /opt/certs/server-ca.key | tr -d '\r\n')
           karmada_crt=$(base64 /opt/certs/karmada.pem | tr -d '\r\n')
           karmada_key=$(base64 /opt/certs/karmada-key.pem | tr -d '\r\n')
           front_proxy_ca=$(base64 /opt/certs/front-proxy-ca.crt | tr -d '\r\n')
           front_proxy_client_crt=$(base64 /opt/certs/front-proxy-client.pem | tr -d '\r\n')
           front_proxy_client_key=$(base64 /opt/certs/front-proxy-client-key.pem | tr -d '\r\n')
           sed -i'' -e "s/{{ print "{{ ca_crt }}" }}/${karmada_ca}/g" /opt/configs/cert.yaml
+          sed -i'' -e "s/{{ print "{{ ca_key }}" }}/${karmada_ca_key}/g" /opt/configs/cert.yaml
           sed -i'' -e "s/{{ print "{{ crt }}" }}/${karmada_crt}/g" /opt/configs/cert.yaml
           sed -i'' -e "s/{{ print "{{ key }}" }}/${karmada_key}/g" /opt/configs/cert.yaml
           sed -i'' -e "s/{{ print "{{ front_proxy_ca_crt }}" }}/${front_proxy_ca}/g" /opt/configs/cert.yaml
@@ -192,8 +196,8 @@ spec:
           mountPath: /opt/configs
       containers:
       - name: pre-install
-        image: {{ .Values.preInstallJob.preInstallContainerImage }}
-        imagePullPolicy: IfNotPresent
+        image: {{ template "karmada.kubectl.image" . }}
+        imagePullPolicy: {{ .Values.kubectl.image.pullPolicy }}
         workingDir: /opt/mount
         command:
         - /bin/sh
@@ -220,7 +224,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: {{ $name }}-pre-job
-  namespace: {{ include "karmada.namespace" . }}
+  namespace: {{ $namespace }}
   annotations:
     "helm.sh/hook": pre-install
     "helm.sh/hook-weight": "1"
@@ -253,6 +257,6 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: {{ $name }}-pre-job
-    namespace: {{ include "karmada.namespace" . }}
+    namespace: {{ $namespace }}
 ---
 {{- end }}

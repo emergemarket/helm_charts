@@ -5,7 +5,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: "{{ $name }}-post-delete"
-  namespace: {{ include "karmada.namespace" . }}
+  namespace: {{ $namespace }}
   labels:
     helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
   annotations:
@@ -27,8 +27,8 @@ spec:
       restartPolicy: Never
       containers:
         - name: post-delete
-          image: {{ .Values.postDeleteJob.postDeleteContainerImage }}
-          imagePullPolicy: IfNotPresent
+          image: {{ template "karmada.kubectl.image" . }}
+          imagePullPolicy: {{ .Values.kubectl.image.pullPolicy }}
           command:
             - /bin/sh
             - -c
@@ -36,7 +36,7 @@ spec:
               bash <<'EOF'
               set -ex
               kubectl delete -f /opt/mount/
-              kubectl delete cm/{{ $name }}-config -n {{ include "karmada.namespace" . }}
+              kubectl delete cm/{{ $name }}-config -n {{ $namespace }}
               EOF
           volumeMounts:
             - name: mount
