@@ -1,19 +1,19 @@
-{{- if not (contains .Values.global.environment.name "prod")}}
-{{- if .Values.global.environment.dependencies.database.mssql.required }}
-apiVersion: networking.istio.io/v1beta1
-kind: ServiceEntry
-metadata:
-  name: {{ include "mssql-latest.fullname" . }}
-  namespace: {{ .Values.global.environment.name }}
-  labels:
-  {{- include "mssql-latest.labels" . | nindent 4 }}
-spec:
-  hosts:
-  {{- include "mssql.hostnames" . | nindent 4 }}
-  location: MESH_INTERNAL
-  ports:
-  - number: 1433
-    name: TCP
-  resolution: DNS
-{{- end }}
-{{- end }}
+# {{- if not (contains .Values.global.environment.name "prod")}}
+# {{- if .Values.global.environment.dependencies.database.mssql.required }}
+# apiVersion: networking.istio.io/v1beta1
+# kind: ServiceEntry
+# metadata:
+#   name: {{ include "mssql-latest.fullname" . }}
+#   namespace: {{ .Values.global.environment.name }}
+#   labels:
+#   {{- include "mssql-latest.labels" . | nindent 4 }}
+# spec:
+#   hosts:
+#   {{- include "mssql.hostnames" . | nindent 4 }}
+#   location: MESH_INTERNAL
+#   ports:
+#   - number: 1433
+#     name: TCP
+#   resolution: DNS
+# {{- end }}
+# {{- end }}
