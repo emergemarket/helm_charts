@@ -1,0 +1,34 @@
+{{- if not (contains .Values.global.environment.name "prod")}}
+{{- if .Values.global.environment.dependencies.database.elasticsearch.required }}
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: elastic-vs
+  namespace: {{ .Values.global.environment.name }}
+spec:
+  hosts:
+    - develop-v7.es.northeurope.azure.elastic-cloud.com
+    - 8878c5e719024906b4389bb61fe4be41.northeurope.azure.elastic-cloud.com
+  tcp:
+  - match:
+    - port: 80
+    route:
+      - destination:
+          host: elasticsearch-master
+  - match:
+    - port: 443
+    route:
+      - destination:
+          host: elasticsearch-master
+  - match:
+    - port: 9200
+    route:
+      - destination:
+          host: elasticsearch-master
+  - match:
+    - port: 9243
+    route:
+      - destination:
+          host: elasticsearch-master
+{{- end }}
+{{- end }}

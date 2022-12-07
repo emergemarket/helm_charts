@@ -1,0 +1,22 @@
+{{- if not (contains .Values.global.environment.name "prod")}}
+{{- if .Values.global.environment.dependencies.database.mssql.required }}
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  name: {{ include "mssql-latest.fullname" . }}
+  namespace: {{ .Values.global.environment.name }}
+  labels:
+  {{- include "mssql-latest.labels" . | nindent 4 }}
+spec:
+  hosts:
+    - db-emergetms-dev.database.windows.net
+    - db-emergetec-int.database.windows.net
+    - db-emergetec-int2.database.windows.net
+    - db-emergetec-staging.database.windows.net
+  location: MESH_INTERNAL
+  ports:
+  - number: 1433
+    name: TCP
+  resolution: DNS
+{{- end }}
+{{- end }}

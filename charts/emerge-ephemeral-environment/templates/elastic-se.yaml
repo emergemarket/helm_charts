@@ -1,0 +1,24 @@
+{{- if not (contains .Values.global.environment.name "prod")}}
+{{- if .Values.global.environment.dependencies.database.elasticsearch.required }}
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  name: elastic-se
+  namespace: {{ .Values.global.environment.name }}
+spec:
+  hosts:
+    - develop-v7.es.northeurope.azure.elastic-cloud.com
+    - 8878c5e719024906b4389bb61fe4be41.northeurope.azure.elastic-cloud.com
+  location: MESH_INTERNAL
+  ports:
+    - number: 80
+      name: TCP
+    - number: 443
+      name: TCP
+    - number: 9200
+      name: TCP
+    - number: 9243
+      name: TCP
+  resolution: DNS
+{{- end }}
+{{- end }}

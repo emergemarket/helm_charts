@@ -1,0 +1,23 @@
+{{- if not (contains .Values.global.environment.name "prod")}}
+{{- if .Values.global.environment.dependencies.database.mssql.required }}
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ include "mssql-latest.fullname" . }}
+  namespace: {{ .Values.global.environment.name }}
+  labels:
+  {{- include "mssql-latest.labels" . | nindent 4 }}
+spec:
+  hosts:
+    - db-emergetms-dev.database.windows.net
+    - db-emergetec-int.database.windows.net
+    - db-emergetec-int2.database.windows.net
+    - db-emergetec-staging.database.windows.net
+  tcp:
+  - match:
+    - port: 1433
+    route:
+    - destination:
+        host: {{ (list (include "mssql-latest.fullname" .) (.Values.global.environment.name) ("svc.cluster.local")) | join "." }}
+{{- end }}
+{{- end }}
