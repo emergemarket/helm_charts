@@ -3,7 +3,7 @@ name: karmada
 description: A Helm chart for karmada
 type: application
 kubeVersion: ">= 1.16.0-0"
-version: 0.0.18
+version: 0.0.19
 appVersion: v1.3.0
 
 dependencies:
