@@ -122,6 +122,7 @@ certs:
 
 ## scheduler config
 scheduler:
+  enableSchedulerEstimator: "false"
   ## @param scheduler.labels labels of the schedeler deployment
   labels:
     app: karmada-scheduler

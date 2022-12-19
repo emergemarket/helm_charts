@@ -51,6 +51,9 @@ spec:
             - --bind-address=0.0.0.0
             - --secure-port=10351
             - --leader-elect-resource-namespace={{ include "karmada.namespace" . }}
+            {{- if eq .Values.scheduler.enableSchedulerEstimator "true" }}
+            - --enable-scheduler-estimator
+            {{- end }}
           livenessProbe:
             httpGet:
               path: /healthz
