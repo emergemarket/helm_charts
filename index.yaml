@@ -941,6 +941,17 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/emerge-mssql-0.0.3/emerge-mssql-0.0.3.tgz
     version: 0.0.3
+  emerge-virtual-service:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2022-12-20T21:20:27.239931681Z"
+    description: A helm chart to deploy an istio virtual service from ArgoCD
+    digest: d811dc515cb67f42e15bc763d52b04bc1f63cc4c1f5fcdd8056a2821182a1c59
+    name: emerge-virtual-service
+    type: application
+    urls:
+    - https://github.com/emergemarket/helm_charts/releases/download/emerge-virtual-service-0.0.2/emerge-virtual-service-0.0.2.tgz
+    version: 0.0.2
   environment-template:
   - apiVersion: v2
     appVersion: latest
@@ -1590,4 +1601,4 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/query-exporter-0.0.2/query-exporter-0.0.2.tgz
     version: 0.0.2
-generated: "2022-12-19T22:11:46.203175678Z"
+generated: "2022-12-20T21:20:27.241459695Z"
