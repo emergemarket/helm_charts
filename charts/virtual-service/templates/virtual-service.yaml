@@ -1,0 +1,43 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ .Values.metadata.name }}
+  namespace: {{ .Values.metadata.namespace -}}
+  {{- include "labels" . | nindent 2 }}
+  {{- include "annotations" . | nindent 2 }}
+spec:
+  hosts:
+  {{- range .Values.hosts }}
+  - {{ . }}
+  {{- end }}
+  gateways:
+  {{- range .Values.gateways }}
+  - {{ . }}
+  {{- end }}
+{{- if .Values.httprules.enabled }}
+  http:
+  {{- if .Values.httprules.prefix.enabled }}
+  - match:
+    - uri:
+        prefix: {{ .Values.httprules.prefix.matchURI }}
+  {{- end }}
+  {{- if .Values.httprules.rewrite.enabled }}
+    rewrite:
+      uri: {{ .Values.httprules.rewrite.rewriteURI }}
+  {{- end }}
+  - route:
+    - destination:
+        host: {{ .Values.httprules.destination.host }}
+        port:
+          number: {{ .Values.httprules.destination.port }}
+  {{- if .Values.httprules.retries.enabled }}
+    retries:
+      attempts: {{ .Values.httprules.retries.attempts }}
+      perTryTimeout: {{ .Values.httprules.retries.perTryTimeout }}
+
+  {{- end }}
+{{- end }}
+{{- if .Values.tcp.enabled }}
+  tcp:
+{{ toYaml .Values.tcp | indent 4 }}
+{{- end }}

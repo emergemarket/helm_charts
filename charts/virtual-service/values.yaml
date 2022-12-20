@@ -1,0 +1,44 @@
+metadata:
+  name: virtualservice
+  namespace: default
+  labels: {}
+  annotations: {}
+
+hosts:
+  - "*"
+gateways:
+  - mesh
+
+httprules:
+  enabled: true
+
+  destination: 
+    host: 
+    port: 
+    subset: 
+
+  retries:
+    enabled: true
+    attempts: 3
+    perTryTimeout: 10s
+
+  prefix:
+    enabled: false
+    matchURI:
+
+  rewrite:
+    enabled: false
+    rewriteURI:
+
+tcp:
+  enabled: false
+
+  match:
+    enabled: false
+    rules: []
+    
+  route:
+    - destination:
+      host:
+      port:
+        number:
