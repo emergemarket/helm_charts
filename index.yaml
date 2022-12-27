@@ -532,6 +532,22 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/backstage-0.1.16/backstage-0.1.16.tgz
     version: 0.1.16
+  cni:
+  - apiVersion: v1
+    appVersion: 1.0.0
+    created: "2022-12-27T23:00:58.757219137Z"
+    description: Helm chart for istio-cni components
+    digest: e93c0bdfc9ba4df38f2ef225dcfe05e33c4b2515d08473144d17b835f1ff530e
+    icon: https://istio.io/latest/favicons/android-192x192.png
+    keywords:
+    - istio-cni
+    - istio
+    name: cni
+    sources:
+    - https://github.com/istio/istio/tree/master/cni
+    urls:
+    - https://github.com/emergemarket/helm_charts/releases/download/cni-1.0.1/cni-1.0.1.tgz
+    version: 1.0.1
   emerge-elasticsearch:
   - apiVersion: v2
     created: "2022-08-05T02:07:16.233829975Z"
@@ -1601,4 +1617,4 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/query-exporter-0.0.2/query-exporter-0.0.2.tgz
     version: 0.0.2
-generated: "2022-12-20T21:20:27.241459695Z"
+generated: "2022-12-27T23:00:58.757873386Z"
