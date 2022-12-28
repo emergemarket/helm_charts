@@ -975,6 +975,16 @@ entries:
   emerge-virtual-service:
   - apiVersion: v2
     appVersion: 0.0.1
+    created: "2022-12-28T09:49:25.325648466Z"
+    description: A helm chart to deploy an istio virtual service from ArgoCD
+    digest: 09fab488172c61405db2a25403a315eac133fdac131c204886d70e6b081706a6
+    name: emerge-virtual-service
+    type: application
+    urls:
+    - https://github.com/emergemarket/helm_charts/releases/download/emerge-virtual-service-0.0.3/emerge-virtual-service-0.0.3.tgz
+    version: 0.0.3
+  - apiVersion: v2
+    appVersion: 0.0.1
     created: "2022-12-20T21:20:27.239931681Z"
     description: A helm chart to deploy an istio virtual service from ArgoCD
     digest: d811dc515cb67f42e15bc763d52b04bc1f63cc4c1f5fcdd8056a2821182a1c59
@@ -1632,4 +1642,4 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/query-exporter-0.0.2/query-exporter-0.0.2.tgz
     version: 0.0.2
-generated: "2022-12-27T23:04:34.372030753Z"
+generated: "2022-12-28T09:49:25.326653269Z"
