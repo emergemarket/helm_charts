@@ -78,6 +78,11 @@ spec:
                 secretKeyRef:
                   name: grafana-api-token
                   key: grafana-api-token
+            - name: backstage-postgresql-westus-password
+              valueFrom:
+                secretKeyRef:
+                  name: backstage-postgresql-westus-password
+                  key: backstage-postgresql-westus-password
             - name: argoapi
               valueFrom:
                 secretKeyRef:
