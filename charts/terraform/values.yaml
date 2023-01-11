@@ -1,0 +1,31 @@
+global:
+  environment: admiralty
+  cluster: controlplane
+
+terraform:
+  cf-cluster-ingress: # module folder name
+    annotations: {}
+    labels: {}
+    tags: {}
+    interval: 1m
+    approvePlan: auto
+    destroyResourcesOnDeletion: true
+    vars:
+      - name: cloudflare_zone
+        value: emergemarket.dev
+      - name: cloudflare_api_token
+        value: cfApiToken
+      - name: kubernetes
+        value:
+          name: clusterName
+          host: apiHost
+          client_cert: clientCertBase64
+          client_key: clientKeyBase64
+          cluster_ca_cert: clientCaCertBase64
+          token: token
+    varsFrom:
+      - kind: Secret
+        name: cluster-creds
+        varsKeys:
+          - nodeCount
+          - instanceType

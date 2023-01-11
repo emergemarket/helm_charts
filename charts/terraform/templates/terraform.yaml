@@ -1,0 +1,96 @@
+{{- with .Values.terraform }}
+{{- $fullName := include "terraform.fullname" $ }}
+{{- range $key, $value := . }}
+---
+apiVersion: infra.contrib.fluxcd.io/v1alpha1
+kind: Terraform
+metadata:
+  name: {{ (list ($.Values.global.environment) ($key) (default "controlplane" $.Values.global.cluster)) | join "-" | lower }}
+  namespace: flux-system
+  annotations:
+    {{ include "terraform.annotations" $ | indent 4 | trim }}
+  {{- with .annotations }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{ include "terraform.labels" $ | indent 4 | trim }}
+    {{- with .tags }}
+    {{- range $tag, $val := . }}
+    {{ $tag }}: {{ $val | replace " " "-" | quote }}
+    {{- end }}
+    {{- end }}
+    {{- with .labels }}
+    {{- range $label, $lvalue := . }}
+    {{ $label }}: {{ $lvalue | replace " " "-" | quote }}
+    {{- end }}
+    {{- end }}
+spec:
+  interval: {{ default "15m" .interval }}
+  approvePlan: {{ default "disable" .approvePlan }}
+  destroyResourcesOnDeletion: {{ default "false" .destroyResourcesOnDeletion }}
+  backendConfig:
+    customConfiguration: |
+      backend "azurerm" {
+        storage_account_name     = "emergeterraform"
+        container_name           = {{ default "multiregion" .container }}
+        key                      = "{{ default "multiregion" .container }}.{{ $.Values.global.environment }}.{{ default "controlplane" $.Values.global.cluster }}.{{ $key }}.terraform.tfstate"
+        subscription_id          = {{ default "ad6e4f22-d39f-4a58-8edc-07929e15dde7" .subscription }}
+      }
+  path: ./tf-controller/{{ $key }}/
+  sourceRef:
+    kind: GitRepository
+    name: {{ default "tf-appinfrastructure" $.Values.global.repository }}
+    namespace: flux-system
+  vars:
+    {{- with .vars }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  varsFrom:
+    {{- with .varsFrom }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  writeOutputsToSecret:
+    name: {{ $.Values.global.cluster }}-{{ $key }}-output
+  runnerPodTemplate:
+    spec:
+      env:
+        - name: GIT_USER
+          valueFrom:
+            secretKeyRef:
+                name: gitlab-secret
+                key: username
+        - name: GIT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+                name: gitlab-secret
+                key: password
+        - name: ARM_TENANT_ID
+          value: "19db7aea-1a80-4c72-9be7-c9d614913bd1"
+        - name: ARM_USE_AZUREAD
+          value: "true"
+        - name: ARM_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+                name: azurerm-backend-secret
+                key: ARM_ACCESS_KEY
+        - name: ARM_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+                name: azurerm-backend-secret
+                key: ARM_CLIENT_ID
+        - name: ARM_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+                name: azurerm-backend-secret
+                key: ARM_CLIENT_SECRET
+      volumeMounts:
+        - name: gitconfig
+          mountPath: /home/runner/
+      volumes:
+        - name: gitconfig
+          secret:
+            secretName: gitconfig
+            defaultMode: 420
+
+{{- end }}
+{{- end -}}
