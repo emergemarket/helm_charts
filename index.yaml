@@ -1659,4 +1659,15 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/query-exporter-0.0.2/query-exporter-0.0.2.tgz
     version: 0.0.2
-generated: "2022-12-29T04:22:05.543455412Z"
+  terraform:
+  - apiVersion: v2
+    appVersion: v0.13.1
+    created: "2023-01-11T14:30:18.912483259Z"
+    description: A Helm chart for Kubernetes
+    digest: aa04736210be909f447636a76923048b9f1a4c9743f9a9323997ac51e2f9bb69
+    name: terraform
+    type: application
+    urls:
+    - https://github.com/emergemarket/helm_charts/releases/download/terraform-0.1.1/terraform-0.1.1.tgz
+    version: 0.1.1
+generated: "2023-01-11T14:30:18.913071768Z"
