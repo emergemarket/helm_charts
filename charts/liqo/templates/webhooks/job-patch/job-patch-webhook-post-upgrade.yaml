@@ -1,4 +1,4 @@
-{{- $cfg := (merge (dict "name" "webhook-certificate-patch-post" "module" "webhook-certificate-patch") .) -}}
+{{- $cfg := (merge (dict "name" "webhook-certificate-patch-post-upgrade" "module" "webhook-certificate-patch") .) -}}
 {{- $rbacConfig := (merge (dict "name" "webhook-certificate-patch") .) -}}
 {{- $webhookConfig := (merge (dict "name" "webhook" "module" "webhook") .) -}}
 
