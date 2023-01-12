@@ -1577,6 +1577,15 @@ entries:
     version: 0.0.2
   liqo:
   - apiVersion: v2
+    created: "2023-01-12T22:15:53.724757009Z"
+    description: A Helm chart for Liqo
+    digest: 2dff918ab5eb4476605c1e7240717c4f150963daa59e8cea801260ae1347f1d1
+    name: liqo
+    type: application
+    urls:
+    - https://github.com/emergemarket/helm_charts/releases/download/liqo-v0.6.3/liqo-v0.6.3.tgz
+    version: v0.6.3
+  - apiVersion: v2
     created: "2023-01-12T22:02:24.083995349Z"
     description: A Helm chart for Liqo
     digest: 298e3889cc208e1455843c51e49a8fea0446939c0c1fb5bda55791c210c3a910
@@ -1680,4 +1689,4 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/terraform-0.1.1/terraform-0.1.1.tgz
     version: 0.1.1
-generated: "2023-01-12T22:02:24.084505759Z"
+generated: "2023-01-12T22:15:53.726043547Z"
