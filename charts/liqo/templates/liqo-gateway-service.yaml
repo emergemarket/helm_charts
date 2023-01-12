@@ -1,0 +1,48 @@
+---
+{{- $gatewayConfig := (merge (dict "name" "gateway" "module" "networking") .) -}}
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "liqo.prefixedName" $gatewayConfig }}
+  annotations:
+    {{- if .Values.gateway.service.annotations }}
+    {{- toYaml .Values.gateway.service.annotations | nindent 4 }}
+    {{- end}}
+    {{- if .Values.gateway.config.addressOverride }}
+    liqo.io/override-address: {{ .Values.gateway.config.addressOverride | quote }}
+    {{- end }}
+    {{- if .Values.gateway.config.portOverride }}
+    liqo.io/override-port: {{ .Values.gateway.config.portOverride | quote }}
+    {{- end }}
+  labels:
+    {{- include "liqo.labels" $gatewayConfig | nindent 4 }}
+    {{- include "liqo.gatewayServiceLabels" $gatewayConfig | nindent 4 }}
+spec:
+  type: {{ .Values.gateway.service.type }}
+  ports:
+    - name: wireguard
+      port: {{ .Values.gateway.config.listeningPort }}
+      targetPort: wireguard
+      protocol: UDP
+  selector:
+    {{- include "liqo.gatewaySelector" $gatewayConfig | nindent 4 }}
+
+---
+{{- $gatewayMetricsConfig := (merge (dict "name" "gateway-metrics" "module" "networking") .) -}}
+
+{{- if .Values.gateway.metrics.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "liqo.prefixedName" $gatewayMetricsConfig }}
+  labels:
+    {{- include "liqo.labels" $gatewayMetricsConfig | nindent 4 }}
+spec:
+  selector:
+    {{- include "liqo.gatewaySelector" $gatewayMetricsConfig | nindent 4 }}
+  ports:
+    - name: metrics
+      port: {{ .Values.gateway.metrics.port }}
+      targetPort: metrics
+{{- end}}
