@@ -59,6 +59,9 @@ spec:
             - matchExpressions:
               - key: virtual-kubelet.io/provider
                 operator: DoesNotExist
+            - matchExpressions:
+              - key: liqo.io/type
+                operator: DoesNotExist
       priorityClassName: system-node-critical
       serviceAccountName: istio-cni
       # Minimize downtime during a rolling upgrade or deletion; tell Kubernetes to do a "force
