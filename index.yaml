@@ -552,6 +552,21 @@ entries:
   cni:
   - apiVersion: v1
     appVersion: 1.15.3
+    created: "2023-01-16T18:55:34.242864183Z"
+    description: Helm chart for istio-cni components
+    digest: 22e3660f8b1107cb210f1b4b1f9f04303b92640ef09a0efb4f4cbfb2ffe933da
+    icon: https://istio.io/latest/favicons/android-192x192.png
+    keywords:
+    - istio-cni
+    - istio
+    name: cni
+    sources:
+    - https://github.com/istio/istio/tree/master/cni
+    urls:
+    - https://github.com/emergemarket/helm_charts/releases/download/cni-1.15.4/cni-1.15.4.tgz
+    version: 1.15.4
+  - apiVersion: v1
+    appVersion: 1.15.3
     created: "2022-12-27T23:04:34.371156888Z"
     description: Helm chart for istio-cni components
     digest: 4b98574a35fc6c9fbbec8566d5f5818d1e82a5a8d956abc563506dd042a37bb8
@@ -1698,4 +1713,4 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/terraform-0.1.1/terraform-0.1.1.tgz
     version: 0.1.1
-generated: "2023-01-12T22:34:44.225404656Z"
+generated: "2023-01-16T18:55:34.243513213Z"
