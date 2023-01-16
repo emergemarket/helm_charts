@@ -57,10 +57,7 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
             - matchExpressions:
-              - key: virtual-kubelet.io/provider
-                operator: DoesNotExist
-            - matchExpressions:
-              - key: liqo.io/type
+              - key: virtual-kubelet.io/provider, liqo.io/type
                 operator: DoesNotExist
       priorityClassName: system-node-critical
       serviceAccountName: istio-cni
