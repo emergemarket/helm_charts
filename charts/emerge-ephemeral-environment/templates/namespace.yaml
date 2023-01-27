@@ -9,6 +9,7 @@ metadata:
     kubernetes.io/metadata.name: {{ .Values.global.environment.name }}
     ephemeral: "true"
     envType: "ephemeral"
+    chartVersion: {{ .Chart.Version }}
   annotations:
     # helm.sh/hook: pre-upgrade,pre-install
     helm.sh/hook-weight: "-6"
