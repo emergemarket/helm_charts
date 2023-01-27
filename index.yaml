@@ -1073,6 +1073,24 @@ entries:
   environment-template:
   - apiVersion: v2
     appVersion: latest
+    created: "2023-01-27T14:49:29.862695377Z"
+    dependencies:
+    - condition: global.environment.dependencies.database.mssql.required
+      name: emerge-mssql
+      repository: https://charts.emergemarket.io
+      version: 1.0.11
+    - condition: global.environment.dependencies.database.elasticsearch.required
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    description: A Helm chart for Kubernetes
+    digest: 3f94216c9f362b64efb735f7f743f07fac230052a9741bb857b881a59e4d9d29
+    name: environment-template
+    urls:
+    - https://github.com/emergemarket/helm_charts/releases/download/environment-template-0.0.22/environment-template-0.0.22.tgz
+    version: 0.0.22
+  - apiVersion: v2
+    appVersion: latest
     created: "2022-12-07T14:26:31.756965522Z"
     dependencies:
     - condition: global.environment.dependencies.database.mssql.required
@@ -1758,4 +1776,4 @@ entries:
     urls:
     - https://github.com/emergemarket/helm_charts/releases/download/terraform-0.1.1/terraform-0.1.1.tgz
     version: 0.1.1
-generated: "2023-01-16T20:28:10.240969982Z"
+generated: "2023-01-27T14:49:29.865103353Z"
