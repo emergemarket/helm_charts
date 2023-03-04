@@ -1,0 +1,9 @@
+{
+    "name": "trino",
+    "version": "0.0.1",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/emergemarket/helm_charts.git"
+    },
+    "homepage": "https://github.com/emergemarket/helm_charts"
+}
