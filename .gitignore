@@ -2,3 +2,4 @@ Chart.lock
 custom.yaml
 postgresql-11.6.10.tgz
 test.yaml
+charts/*/rendered/
