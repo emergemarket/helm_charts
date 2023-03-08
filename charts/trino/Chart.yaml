@@ -31,3 +31,10 @@ sources:
 
 maintainers:
   - name: Trino community
+
+dependencies:
+  - name: common
+    repository: https://charts.bitnami.com/bitnami
+    tags:
+      - bitnami-common
+    version: 2.x.x

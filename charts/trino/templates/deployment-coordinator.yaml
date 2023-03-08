@@ -2,12 +2,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ template "trino.coordinator" . }}
-  labels:
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
     app: {{ template "trino.name" . }}
     chart: {{ template "trino.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
     component: coordinator
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" (dict "value" .Values.commonLabels "context" $) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" (dict "value" .Values.commonAnnotations "context" $) | nindent 4 }}
+  {{- end }}
 spec:
   selector:
     matchLabels:
@@ -16,10 +22,21 @@ spec:
       component: coordinator
   template:
     metadata:
-      labels:
+      labels: {{- include "common.labels.standard" . | nindent 8 }}
         app: {{ template "trino.name" . }}
         release: {{ .Release.Name }}
         component: coordinator
+        {{- if .Values.commonLabels }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.commonLabels "context" $) | nindent 8 }}
+        {{- end }}
+        {{- if .Values.coordinator.podLabels }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.coordinator.podLabels "context" $) | nindent 8 }}
+        {{- end }}
+      annotations:
+        checksum/catalog: {{ include (print $.Template.BasePath "/catalog.yaml") . | sha256sum }}
+        {{- if .Values.coordinator.podAnnotations }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.coordinator.podAnnotations "context" $) | nindent 8 }}
+        {{- end }}
     spec:
       serviceAccountName: {{ include "trino.serviceAccountName" . }}
       {{- with .Values.securityContext }}
@@ -32,12 +49,18 @@ spec:
           configMap:
             name: {{ template "trino.coordinator" . }}
         - name: catalog-volume
+        {{- if and (not .Values.catalogs.secret.generate) (empty .Values.catalogs.secret.existingSecret) (or .Values.catalogs.configMap.generate .Values.catalogs.configMap.existingConfigmap) }}
           configMap:
-            name: {{ template "trino.catalog" . }}
+            name: {{ if empty .Values.catalogs.configMap.existingConfigmap }}{{ template "trino.catalog" . }}{{ else }}{{ .Values.catalogs.configMap.existingConfigmap }}{{ end }}
+        {{- end }}
+        {{- if or .Values.catalogs.secret.generate (not (empty .Values.catalogs.secret.existingSecret)) }}
+          secret:
+            secretName: {{ if empty .Values.catalogs.secret.existingSecret }}{{ template "trino.catalog" . }}{{ else }}{{ .Values.catalogs.secret.existingSecret }}{{ end }}
+        {{- end }}
         - name: schemas-volume
           configMap:
             name: schemas-volume-coordinator
-        {{- if .Values.accessControl }}{{- if eq .Values.accessControl.type "configmap" }}
+        {{- if .Values.accessControl }} {{- if eq .Values.accessControl.type "configmap" }} 
         - name: access-control-volume
           configMap:
             name: trino-access-control-volume-coordinator

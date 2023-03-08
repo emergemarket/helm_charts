@@ -2,6 +2,9 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+commonLabels: {}
+commonAnnotations: {}
+
 image:
   repository: trinodb/trino
   pullPolicy: IfNotPresent
@@ -108,6 +111,14 @@ eventListenerProperties: {}
 
 additionalCatalogs: {}
 
+catalogs:
+  secret:
+    generate: true
+    existingSecret: ""
+  configMap:
+    generate: true
+    existingConfigmap: ""
+
 # Array of EnvVar (https://v1-18.docs.kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#envvar-v1-core)
 env: []
 
@@ -190,6 +201,9 @@ coordinator:
     # timeoutSeconds: 5
     # failureThreshold: 6
     # successThreshold: 1
+  podLabels: {}
+  podAnnotations: {}
+
 
 worker:
   jvm:
@@ -229,6 +243,8 @@ worker:
     # timeoutSeconds: 5
     # failureThreshold: 6
     # successThreshold: 1
+  podLabels: {}
+  podAnnotations: {}
 
 kafka:
   mountPath: "/etc/trino/schemas"
